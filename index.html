@@ -6,7 +6,7 @@
 <title>The Price of Blood</title>
 <link rel="stylesheet" href="shared.css">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Fraunces:ital,opsz,wght@1,144,700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&display=swap');
 
 /* ══════════════════════════════════════════════
    COLOR TOKENS
@@ -111,24 +111,26 @@ body {
 
 .slide-counter {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.3em;
-  color: var(--dim);
+  color: var(--grey);
   text-transform: uppercase;
   margin-bottom: 48px;
   position: absolute;
-  top: 40px;
+  top: 44px;
   left: 50%;
   transform: translateX(-50%);
 }
 
 .slide-text {
-  font-family: var(--display);
-  font-size: clamp(52px, 9vw, 140px);
-  line-height: 0.9;
-  letter-spacing: 0.02em;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(64px, 10.5vw, 160px);
+  font-style: italic;
+  font-weight: 700;
+  line-height: 1.0;
+  letter-spacing: -0.02em;
   color: var(--white);
-  max-width: 1100px;
+  max-width: 1200px;
 }
 
 /* Only animate text when slide is active */
@@ -172,9 +174,9 @@ body {
   left: 50%;
   transform: translateX(-50%);
   font-family: var(--mono);
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 0.25em;
-  color: var(--dim);
+  color: var(--grey);
   text-transform: uppercase;
   animation: blink 1.8s ease-in-out infinite;
 }
@@ -690,7 +692,7 @@ footer {
   <div class="slide slide-1 active" id="slide-1">
     <div class="slide-counter">01 &mdash; 03</div>
     <p class="slide-text">
-      Every barrel<br>of oil is paid<br>for in <span class="hl">blood.</span>
+      The human body<br>contains 5 liters of blood.<br>We used this as a <span class="hl">unit of measurement.</span>
     </p>
     <span class="slide-continue">— click anywhere to continue —</span>
   </div>
@@ -698,7 +700,7 @@ footer {
   <div class="slide slide-2" id="slide-2">
     <div class="slide-counter">02 &mdash; 03</div>
     <p class="slide-text">
-      The machine has spilled<br><span class="hl">1.19 billion</span><br>liters of blood.
+      6,000 years. 237 million deaths.<br><span class="hl">1.19 billion liters.</span><br>314 million gallons.
     </p>
     <span class="slide-continue">— click anywhere to continue —</span>
   </div>
@@ -706,10 +708,10 @@ footer {
   <div class="slide slide-3" id="slide-3">
     <div class="slide-counter">03 &mdash; 03</div>
     <p class="slide-text">
-      The accounting<br>is <span class="hl">complete.</span>
+      The market pays $880 per liter.<br>The actual price is <span class="hl">$2.2 million.</span><br>It's been this way for 6,000 years.
     </p>
     <button class="slide-enter" id="slide-enter-btn">
-      <span>Enter the Archive &rarr;</span>
+      <span>Open the ledger &rarr;</span>
     </button>
   </div>
 
