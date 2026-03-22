@@ -50,16 +50,11 @@
     var a = document.createElement('a');
     a.id = 'back-nav';
     a.href = 'index.html';
-    a.textContent = 'The Archive';
+    a.textContent = 'The Filing Cabinet';
 
-    // Insert as first child of body (or after hero)
+    // Insert as first child of body
     var body = document.body;
-    var hero = body.querySelector('.hero');
-    if (hero && hero.nextSibling) {
-      body.insertBefore(a, hero.nextSibling);
-    } else {
-      body.insertBefore(a, body.firstChild);
-    }
+    body.insertBefore(a, body.firstChild);
   }
 
   if (document.readyState === 'loading') {

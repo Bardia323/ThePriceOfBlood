@@ -3,231 +3,362 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BU — Blood Standard</title>
+<title>BU — The Blood Standard</title>
 <link rel="stylesheet" href="shared.css">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap');
-
-:root {
-  --ink:    #060409;
-  --deep:   #0a0710;
-  --sfc:    #0e0b18;
-  --rule:   #1c1830;
-  --dim:    #5a5480;
-  --grey:   #8880b0;
-  --text:   #c0b8dc;
-  --light:  #dcd4f0;
-  --white:  #ece8f8;
-
-  --blood:  #8b0000;
-  --blood2: #cc1a00;
-  --blood3: #e84020;
-  --scarlet:#ff3820;
-  --plasma: #e8c080;
-  --dollar: #407850;
-  --dollar2:#60a870;
-  --cold:   #3070a0;
-
-  --mono:   'DM Mono', monospace;
-  --serif:  'Cormorant Garamond', serif;
-}
-
-/* ── Light mode ──────────────────────────────────────────────── */
-[data-theme="light"] {
-  --ink:    #faf8ff;
-  --deep:   #f2eff8;
-  --sfc:    #eae7f5;
-  --rule:   #d0caeb;
-  --dim:    #806888;
-  --grey:   #a090b8;
-  --text:   #201830;
-  --light:  #100820;
-  --white:  #040210;
-  --blood:  #7a0000;
-  --blood2: #aa1400;
-  --blood3: #c83010;
-  --scarlet:#e02808;
-  --plasma: #906020;
-  --dollar: #306040;
-  --dollar2:#408858;
-  --cold:   #205080;
-}
-
-* { margin:0; padding:0; box-sizing:border-box; }
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Archivo+Black&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Caveat:wght@400;700&display=swap');
 
 body {
-  background: var(--ink);
-  color: var(--text);
-  font-family: var(--mono);
-  font-size: 14px;
-  font-weight: 300;
-  padding: 52px 56px 80px;
-  max-width: 1380px;
+  padding: 52px 40px 80px;
+  max-width: 1420px;
   margin: 0 auto;
 }
 
-/* ── HEADER ─────────────────────────────────── */
+/* ── HEADER ──────────────────────────────────── */
 header {
-  border-bottom: 1px solid var(--rule);
-  padding-bottom: 22px;
-  margin-bottom: 36px;
+  border-bottom: 3px solid var(--red-dark);
+  padding-bottom: 24px;
+  margin-bottom: 40px;
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: end;
+  position: relative;
+}
+
+header::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--red), var(--red-dark), transparent);
+  animation: bloodFill 1.5s var(--ease-out) both;
 }
 
 .title-stack .eyebrow {
-  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--grey); margin-bottom: 14px;
+  font-family: var(--font-stamp);
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--red);
+  border: 2px solid var(--red-dark);
+  display: inline-block;
+  padding: 3px 10px;
+  margin-bottom: 14px;
 }
 
 h1 {
-  font-family: var(--serif);
-  font-size: 60px; font-weight: 300; font-style: italic;
-  color: var(--white); line-height: 0.92; letter-spacing: -0.02em;
+  font-family: var(--font-book);
+  font-size: 52px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--bone);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
 }
-h1 .bu { color: var(--blood3); font-weight: 600; font-style: normal; }
-h1 .em { color: var(--plasma); }
+
+h1 .bu {
+  font-family: var(--font-stamp);
+  color: var(--red-bright);
+  font-weight: 900;
+  font-style: normal;
+  font-size: 56px;
+}
+
+h1 .em { color: var(--rust); }
 
 .header-rates {
   text-align: right;
-  font-size: 11px; color: var(--dim); line-height: 2.4;
+  font-family: var(--font-type);
+  font-size: 11px;
+  color: var(--smoke);
+  line-height: 2.4;
 }
-.header-rates .hl  { color: var(--blood3); }
-.header-rates .hl2 { color: var(--plasma); }
-.header-rates .hl3 { color: var(--dollar2); }
 
-/* ── LAYOUT ─────────────────────────────────── */
+.header-rates .hl  { color: var(--red-bright); font-weight: 700; }
+.header-rates .hl2 { color: var(--rust); }
+.header-rates .hl3 { color: var(--teal); }
+
+/* ── LAYOUT ──────────────────────────────────── */
 .body {
   display: grid;
   grid-template-columns: 1fr 340px;
   gap: 32px;
 }
 
-/* section heads */
+/* ── Section Heads (toggleable) ──────────────── */
 .sh {
-  display: flex; align-items: baseline; gap: 16px;
-  border-bottom: 1px solid var(--rule);
-  padding-bottom: 10px; margin-bottom: 20px; margin-top: 48px;
-  font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim);
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  margin-top: 48px;
+  cursor: pointer;
+  user-select: none;
+  transition: border-color 0.2s ease;
 }
+
+.sh:hover { border-color: var(--red-dark); }
 .sh:first-child { margin-top: 0; }
+
+.sh-num {
+  font-family: var(--font-stamp);
+  font-size: 28px;
+  color: var(--red-dark);
+  opacity: 0.5;
+  line-height: 1;
+}
+
 .sh-t {
-  font-family: var(--serif); font-style: italic; font-size: 26px;
-  color: var(--light); font-weight: 400; letter-spacing: 0; text-transform: none;
+  font-family: var(--font-book);
+  font-style: italic;
+  font-size: 24px;
+  color: var(--bone);
+  font-weight: 400;
 }
 
-/* ── EXCHANGE RATE TABLE ─────────────────────── */
-.xt { width: 100%; border-collapse: collapse; margin-bottom: 0; }
-.xt th {
-  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--grey); text-align: right; padding: 10px 12px;
-  border-bottom: 1px solid var(--rule); font-weight: 400; white-space: nowrap;
+.sh-sub {
+  font-family: var(--font-type);
+  font-size: 9px;
+  color: var(--smoke);
+  margin-left: auto;
 }
-.xt th:first-child { text-align: left; }
-.xt td {
-  padding: 14px 12px; border-bottom: 1px solid rgba(255,255,255,0.022);
-  text-align: right; vertical-align: middle; white-space: nowrap;
+
+.sh-toggle {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--red);
+  transition: transform 0.3s var(--ease-out);
+  display: inline-block;
 }
-.xt td:first-child { text-align: left; }
-.xt tr:hover td { background: rgba(255,255,255,0.01); }
 
-.era-cell { display: flex; flex-direction: column; gap: 3px; }
-.era-n { font-family: var(--serif); font-style: italic; font-size: 20px;
-         font-weight: 400; color: var(--white); line-height: 1.1; }
-.era-p { font-size: 10px; color: var(--dim); }
-.era-g { font-size: 10px; color: var(--grey); }
+.sh.closed .sh-toggle {
+  transform: rotate(-90deg);
+}
 
-.rb  { color: var(--blood3); }
-.rp  { color: var(--plasma); }
-.rd  { color: var(--dollar2); }
-.rg  { color: var(--grey); }
-.rc  { color: var(--cold); }
+.section-body {
+  overflow: hidden;
+  max-height: 6000px;
+  transition: max-height 0.6s var(--ease-out), opacity 0.4s ease;
+  opacity: 1;
+}
 
-/* inline blood bar */
+.section-body.collapsed {
+  max-height: 0;
+  opacity: 0;
+}
+
+/* ── EXCHANGE TABLE ──────────────────────────── */
+.tbl-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--border);
+  background: var(--card);
+  background-image: var(--stripe);
+}
+
+.era-cell { display: flex; flex-direction: column; gap: 4px; }
+.era-n {
+  font-family: var(--font-book);
+  font-style: italic;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--bone);
+  line-height: 1.1;
+}
+.era-p { font-size: 10px; color: var(--smoke); font-family: var(--font-type); }
+.era-g { font-size: 10px; color: var(--bruise); font-family: var(--font-type); }
+
+.rb  { color: var(--red-bright); }
+.rp  { color: var(--rust); }
+.rd  { color: var(--teal); }
+.rg  { color: var(--ash); }
+.rc  { color: var(--teal); }
+
 .bb { display: flex; align-items: center; gap: 6px; }
-.bt { flex:1; height:2px; background: var(--rule); position:relative; min-width:30px; }
-.bf { position:absolute; left:0; top:0; height:100%; }
+.bt { flex:1; height:3px; background: var(--border); position:relative; min-width:30px; }
+.bf { position:absolute; left:0; top:0; height:100%; transition: width 1s var(--ease-out); }
 
-/* ── CANVASES ────────────────────────────────── */
-canvas { display: block; width: 100% !important; }
-
+/* ── CHART WRAP ──────────────────────────────── */
 .chart-wrap {
-  background: var(--deep);
-  border: 1px solid var(--rule);
-  border-left: 3px solid var(--blood);
-  padding: 28px 24px 24px;
-  margin-bottom: 4px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--red);
+  padding: 28px 24px 20px;
+  margin-bottom: 8px;
+  position: relative;
+  background-image: var(--stripe);
 }
 
-/* ── PRICE LADDER ────────────────────────────── */
-/* right column */
-.sidebar {}
+.chart-wrap.rust { border-left-color: var(--rust); }
 
+canvas { display: block; width: 100% !important; cursor: crosshair; }
+
+/* ── SIDEBAR PANELS ──────────────────────────── */
 .bl-panel {
-  border: 1px solid var(--rule);
-  background: var(--deep);
-  margin-bottom: 10px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  margin-bottom: 12px;
+  transition: border-color 0.2s ease;
 }
-.bl-head {
-  padding: 9px 14px 7px;
-  border-bottom: 1px solid var(--rule);
-  display: flex; align-items: baseline; gap: 8px;
-}
-.bl-title {
-  font-family: var(--serif); font-style: italic; font-size: 17px;
-  color: var(--light); font-weight: 400;
-}
-.bl-tag { font-size: 9px; letter-spacing: 0.15em; color: var(--dim); }
-.bl-body { padding: 12px 14px 14px; }
-.bl-row {
-  display: flex; justify-content: space-between; align-items: baseline;
-  margin-bottom: 9px; gap: 6px;
-}
-.bl-l { font-size: 10px; color: var(--dim); flex-shrink:0; max-width:140px; }
-.bl-v { font-size: 12px; font-weight: 400; text-align: right; }
 
-.footnote {
-  margin-top: 48px; border-top: 1px solid var(--rule); padding-top: 24px;
-  font-size: 11px; color: var(--dim); line-height: 2.2;
-  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px;
+.bl-panel:hover { border-color: var(--border-hi); }
+
+.bl-head {
+  padding: 10px 14px 8px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
 }
-.footnote strong { color: var(--grey); }
+
+.bl-title {
+  font-family: var(--font-book);
+  font-style: italic;
+  font-size: 16px;
+  color: var(--bone);
+  font-weight: 400;
+}
+
+.bl-tag {
+  font-family: var(--font-stamp);
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--smoke);
+}
+
+.bl-body { padding: 12px 14px 14px; }
+
+.bl-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+  gap: 8px;
+  padding: 4px 0;
+  border-bottom: 1px dotted var(--border);
+  transition: background 0.15s ease;
+}
+
+.bl-row:last-child { border-bottom: none; }
+
+.bl-row:hover {
+  background: var(--surface);
+  padding-left: 4px;
+  margin-left: -4px;
+}
+
+.bl-l {
+  font-family: var(--font-type);
+  font-size: 10px;
+  color: var(--smoke);
+  flex-shrink: 0;
+  max-width: 150px;
+}
+
+.bl-v {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: right;
+}
 
 /* ── BOTTOM CELLS ────────────────────────────── */
 .cells {
-  display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; margin-top: 32px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 32px;
 }
-.cell { background: var(--deep); border: 1px solid var(--rule); padding: 18px 14px 14px; }
-.cv { font-family: var(--serif); font-style: italic; font-size: 28px;
-      line-height:1; margin-bottom:8px; }
-.cl { font-size: 9px; letter-spacing:0.1em; text-transform:uppercase;
-      color: var(--dim); line-height:1.8; }
 
-/* ── Responsive ──────────────────────────────────────────────── */
+.cell {
+  background: var(--card);
+  padding: 18px 14px;
+  transition: background 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.cell::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--red);
+  transition: width 0.5s var(--ease-out);
+}
+
+.cell:hover { background: var(--surface); }
+.cell:hover::before { width: 100%; }
+
+.cv {
+  font-family: var(--font-stamp);
+  font-size: 24px;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.cl {
+  font-family: var(--font-type);
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--smoke);
+  line-height: 1.8;
+}
+
+/* ── Handwritten notes ───────────────────────── */
+.margin-note {
+  font-family: var(--font-hand);
+  font-size: 16px;
+  color: var(--red);
+  transform: rotate(-2deg);
+  margin-top: 12px;
+  opacity: 0.7;
+}
+
+/* ── Footnote ────────────────────────────────── */
+.footnote {
+  margin-top: 56px;
+  border-top: 2px solid var(--border);
+  padding-top: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 32px;
+}
+
+.footnote-block {
+  font-family: var(--font-type);
+  font-size: 11px;
+  color: var(--smoke);
+  line-height: 2;
+}
+
+.footnote-block strong { color: var(--ash); }
+
+/* ── Responsive ──────────────────────────────── */
 @media (max-width: 900px) {
-  body { padding: 28px 20px 60px; }
-
+  body { padding: 28px 16px 60px; }
   header { grid-template-columns: 1fr; }
   .header-rates { text-align: left; margin-top: 12px; }
-
   .body { grid-template-columns: 1fr; }
-
-  /* 7-col cell grid → 4 */
-  .cells { grid-template-columns: repeat(4, 1fr) !important; }
-
-  /* 3-col footnote → 1 */
+  .cells { grid-template-columns: repeat(2, 1fr) !important; }
   .footnote { grid-template-columns: 1fr; gap: 12px; }
-
-  canvas { overflow-x: auto; }
+  .sh-sub { display: none; }
 }
 
 @media (max-width: 600px) {
-  h1 { font-size: 36px; }
-
-  .cells { grid-template-columns: repeat(3, 1fr) !important; }
-
-  .footnote { grid-template-columns: 1fr; }
+  h1 { font-size: 32px; }
+  h1 .bu { font-size: 36px; }
+  .cells { grid-template-columns: 1fr !important; }
 }
 </style>
 </head>
@@ -235,7 +366,7 @@ canvas { display: block; width: 100% !important; }
 
 <header>
   <div class="title-stack">
-    <div class="eyebrow">Blood Standard · Primary Currency Inversion · Real Value of the Dollar</div>
+    <div class="eyebrow">Exhibit B · Blood Standard · Primary Currency Inversion</div>
     <h1>
       <span class="bu">BU</span> —<br>
       The <span class="em">Blood</span> Standard
@@ -247,92 +378,131 @@ canvas { display: block; width: 100% !important; }
     <span class="hl2">1 USD = 0.4459 µL blood</span> (real rate)<br>
     <span class="hl2">1 USD = 1,136 µL blood</span> (market rate)<br>
     <span class="hl3">Blood inflated 21.7× since Bronze Age</span><br>
-    <span style="color:var(--dim)">Unit: 1 BU = 1 litre human blood · 5 BU per person</span>
+    <span style="color:var(--smoke)">Unit: 1 BU = 1 litre human blood · 5 BU per person</span>
   </div>
 </header>
 
 <div class="body">
 <div>
 
-<!-- ERA TABLE -->
-<div class="sh"><span class="sh-t">Exchange Rate History</span>
-  <span>real BU/$ rate across eras · derived from energy extraction accounting</span>
+<!-- SECTION 1: ERA TABLE -->
+<div class="sh reveal" data-target="bs1" onclick="toggleSection(this)">
+  <span class="sh-num">I</span>
+  <span class="sh-t">Exchange Rate History</span>
+  <span class="sh-sub">real BU/$ rate across eras · derived from energy extraction accounting</span>
+  <span class="sh-toggle">▾</span>
 </div>
-<table class="xt" id="xt"></table>
-
-<!-- MAIN CHART: blood-dollar rate history -->
-<div class="sh"><span class="sh-t">The Blood-Dollar Rate</span>
-  <span>µL blood per dollar (real, log) · BU price in dollars · era bands · deflation arc</span>
-</div>
-<div class="chart-wrap">
-  <canvas id="c1" height="280"></canvas>
-</div>
-
-<!-- PURCHASING POWER CHART -->
-<div class="sh"><span class="sh-t">Dollar Purchasing Power in Blood</span>
-  <span>what $1 through $1T actually buys in blood at real rate · log scale</span>
-</div>
-<div class="chart-wrap">
-  <canvas id="c2" height="130"></canvas>
+<div class="section-body reveal" id="bs1">
+  <div class="tbl-wrap">
+    <table class="xt" id="xt"></table>
+  </div>
 </div>
 
-<!-- CELLS -->
-<div class="cells" id="cells"></div>
+<!-- SECTION 2: BLOOD-DOLLAR RATE -->
+<div class="sh reveal" data-target="bs2" onclick="toggleSection(this)">
+  <span class="sh-num">II</span>
+  <span class="sh-t">The Blood-Dollar Rate</span>
+  <span class="sh-sub">µL blood per dollar (real, log) · BU price in dollars · era bands · deflation arc</span>
+  <span class="sh-toggle">▾</span>
+</div>
+<div class="section-body reveal" id="bs2">
+  <div class="chart-wrap">
+    <canvas id="c1" height="300"></canvas>
+  </div>
+  <div class="margin-note">↑ Your dollar buys less blood every century. Congratulations on being devalued.</div>
+</div>
 
-<div class="footnote">
-  <div><strong>Method.</strong> Blood Unit (BU) = 1 litre. Real BU price = shadow energy value per litre of blood
+<!-- SECTION 3: PURCHASING POWER -->
+<div class="sh reveal" data-target="bs3" onclick="toggleSection(this)">
+  <span class="sh-num">III</span>
+  <span class="sh-t">Dollar Purchasing Power in Blood</span>
+  <span class="sh-sub">what $1 through $1T actually buys in blood at real rate · log scale</span>
+  <span class="sh-toggle">▾</span>
+</div>
+<div class="section-body reveal" id="bs3">
+  <div class="chart-wrap rust">
+    <canvas id="c2" height="140"></canvas>
+  </div>
+</div>
+
+<!-- SECTION 4: CELLS -->
+<div class="sh reveal" data-target="bs4" onclick="toggleSection(this)">
+  <span class="sh-num">IV</span>
+  <span class="sh-t">The Numbers</span>
+  <span class="sh-sub">aggregate · cross-era · the bottom line</span>
+  <span class="sh-toggle">▾</span>
+</div>
+<div class="section-body reveal" id="bs4">
+  <div class="cells" id="cells"></div>
+</div>
+
+<!-- FOOTNOTES -->
+<div class="footnote reveal">
+  <div class="footnote-block"><strong>Method.</strong> Blood Unit (BU) = 1 litre. Real BU price = shadow energy value per litre of blood
     = (shadow_$/GJ × GJ/death) ÷ 5L. Shadow $/GJ = $12.30 (Brent $75 ÷ 6.1 GJ/bbl).
     GJ/death = per-capita energy base ÷ war-attributable deaths per era.</div>
-  <div><strong>Blood inflation.</strong> BU price rose from $103K (Bronze Age) to $2.24M (Modern) = 21.7×
+  <div class="footnote-block"><strong>Blood inflation.</strong> BU price rose from $103K (Bronze Age) to $2.24M (Modern) = 21.7×
     over ~6000 years. As extraction efficiency increases, each death purchases more energy,
-    making blood more expensive in dollar terms. The dollar has deflated 21.7× in blood terms.</div>
-  <div><strong>Market vs real.</strong> Medical market: $880/L — the only price set by intrinsic
+    making blood more expensive in dollar terms. The dollar has deflated 21.7× in blood terms.
+    <div class="margin-note">Your blood is worth more every year. You aren't.</div>
+  </div>
+  <div class="footnote-block"><strong>Market vs real.</strong> Medical market: $880/L — the only price set by intrinsic
     biological value. Real rate: $2.24M/L — set by energy extraction value.
-    Gap: 2,548×. The dollar is overvalued vs blood by exactly this factor.
-    Or: the market systematically underprices blood by 2,548×.</div>
+    Gap: 2,548×. The dollar is overvalued vs blood by exactly this factor.</div>
 </div>
 
 </div>
 
 <!-- SIDEBAR -->
-<div class="sidebar" id="sb"></div>
+<div class="sidebar reveal" id="sb"></div>
 </div>
 
 <script>
+/* ═══════ TOGGLE SECTIONS ═══════ */
+function toggleSection(el) {
+  var target = document.getElementById(el.getAttribute('data-target'));
+  if (!target) return;
+  el.classList.toggle('closed');
+  target.classList.toggle('collapsed');
+  if (!target.classList.contains('collapsed')) {
+    setTimeout(function() { init(); }, 100);
+  }
+}
+
+/* ═══════ DATA ═══════ */
 const SGJ  = 75 / 6.1;
 const MED  = 880;
 const EJ   = 1e9;
 
 const ERAS = [
   {n:'Bronze Age', p:'4000–1200 BCE', g:'Apep / Tiamat',
-   pop:50e6,  gpc:6,  yrs:2800, d:20e6, col:'#8b1a00'},
+   pop:50e6,  gpc:6,  yrs:2800, d:20e6, col:'#c87820'},
   {n:'Roman',      p:'500 BCE–476 CE', g:'Kronos / Saturn',
    pop:60e6,  gpc:10, yrs:900,  d:15e6, col:'#a02818'},
   {n:'Feudal',     p:'476–1400 CE',  g:'Christus Rex',
-   pop:80e6,  gpc:12, yrs:900,  d:50e6, col:'#5a3018'},
+   pop:80e6,  gpc:12, yrs:900,  d:50e6, col:'#5a8a3a'},
   {n:'Colonial',   p:'1400–1750 CE', g:'Crown / El',
-   pop:80e6,  gpc:15, yrs:350,  d:12e6, col:'#6a2840'},
+   pop:80e6,  gpc:15, yrs:350,  d:12e6, col:'#8050c0'},
   {n:'Industrial', p:'1750–1950 CE', g:'The Nation-State',
-   pop:400e6, gpc:25, yrs:200,  d:120e6,col:'#284860'},
+   pop:400e6, gpc:25, yrs:200,  d:120e6,col:'#607090'},
   {n:'Modern',     p:'1950–2026 CE', g:'The Market',
-   pop:4e9,   gpc:75, yrs:76,   d:25e6, col:'#8b0000'},
+   pop:4e9,   gpc:75, yrs:76,   d:25e6, col:'#a01818'},
 ];
 
 ERAS.forEach(e => {
   e.tGJ       = e.pop * e.gpc * e.yrs;
   e.tEJ       = e.tGJ / EJ;
   e.gpd       = e.tGJ / e.d;
-  e.BU_price  = SGJ * e.gpd / 5;         // $/BU real
-  e.uL_per_d  = 1e6 / e.BU_price;        // µL blood per dollar
-  e.mL_per_d  = 1000 / e.BU_price;       // mL blood per dollar
-  e.GJ_per_BU = e.gpd / 5;               // energy per litre
+  e.BU_price  = SGJ * e.gpd / 5;
+  e.uL_per_d  = 1e6 / e.BU_price;
+  e.mL_per_d  = 1000 / e.BU_price;
+  e.GJ_per_BU = e.gpd / 5;
   e.kWh_BU    = e.GJ_per_BU * 277.78;
 });
 
 const MODERN = ERAS[5];
 const BRONZE = ERAS[0];
 
-// FORMATTERS
 const fB = n => {
   if (n >= 1e6)  return (n/1e6).toFixed(2)+'M litres';
   if (n >= 1e3)  return (n/1e3).toFixed(2)+'K litres';
@@ -344,7 +514,9 @@ const fB = n => {
 const fD = n => n>=1e12?'$'+(n/1e12).toFixed(1)+'T':n>=1e9?'$'+(n/1e9).toFixed(1)+'B':n>=1e6?'$'+(n/1e6).toFixed(2)+'M':n>=1e3?'$'+(n/1e3).toFixed(0)+'K':'$'+n.toFixed(0);
 const fN = n => n>=1e6?(n/1e6).toFixed(2)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':n.toFixed(2);
 
-// ── ERA TABLE ─────────────────────────────────────────────────────
+function isDark(){ return document.documentElement.getAttribute('data-theme') !== 'light'; }
+
+/* ═══════ ERA TABLE ═══════ */
 const xt = document.getElementById('xt');
 const maxBU = Math.max(...ERAS.map(e=>e.BU_price));
 
@@ -361,7 +533,7 @@ xt.innerHTML = `<thead><tr>
 </tr></thead><tbody>`;
 
 ERAS.forEach(e => {
-  const dollar_per_drop = e.BU_price / (50/1e6);  // $50µL = 1 drop
+  const dollar_per_drop = e.BU_price / (50/1e6);
   const infl = e.BU_price / BRONZE.BU_price;
   const bw   = (e.BU_price / maxBU) * 100;
   xt.innerHTML += `<tr>
@@ -372,7 +544,7 @@ ERAS.forEach(e => {
     </div></td>
     <td class="rp">${fN(e.GJ_per_BU)} GJ</td>
     <td class="rp">${fN(e.kWh_BU)} kWh</td>
-    <td class="rb" style="font-weight:400">${fD(e.BU_price)}</td>
+    <td class="rb" style="font-weight:700">${fD(e.BU_price)}</td>
     <td class="rd">${e.uL_per_d.toFixed(4)}</td>
     <td class="rd">${(e.mL_per_d*1000).toFixed(4)}</td>
     <td class="rg">${fD(dollar_per_drop)}</td>
@@ -380,32 +552,31 @@ ERAS.forEach(e => {
     <td>
       <div class="bb">
         <div class="bt"><div class="bf" style="width:${bw}%;background:${e.col}"></div></div>
-        <span style="font-size:7px;color:var(--dim);min-width:28px;text-align:right">${(e.BU_price/1e3).toFixed(0)}K</span>
+        <span style="font-size:7px;color:var(--smoke);min-width:28px;text-align:right">${(e.BU_price/1e3).toFixed(0)}K</span>
       </div>
     </td>
   </tr>`;
 });
 xt.innerHTML += '</tbody>';
 
-// ── MAIN CHART ────────────────────────────────────────────────────
+/* ═══════ CHARTS ═══════ */
 function drawC1() {
-  const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
-  const bgCol   = isDark ? '#060409' : '#faf8ff';
-  const gridCol = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.06)';
-  const textCol = isDark ? '#5a5480' : '#4a3a78';
-  const axisCol = isDark ? '#4a1818' : '#7a2828';
+  const dk = isDark();
+  const bgCol   = dk ? '#111111' : '#ebe2cc';
+  const gridCol = dk ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.07)';
+  const textCol = dk ? '#605848' : '#5a5040';
+  const axisCol = dk ? '#5a2020' : '#7a3030';
 
   const cv = document.getElementById('c1');
-  const W = cv.offsetWidth, H = 280;
+  const W = cv.offsetWidth, H = 300;
   cv.width = W; cv.height = H;
   const c = cv.getContext('2d');
-  const P = {t:28, r:80, b:40, l:80};
+  const P = {t:30, r:84, b:42, l:84};
   const pw = W-P.l-P.r, ph = H-P.t-P.b;
 
   const tMin = -4300, tMax = 2100;
   const midYr = [-2600, -100, 900, 1575, 1850, 1990];
 
-  // Two series: BU price in $ (left), µL/$ (right — inverse)
   const logBU = ERAS.map(e => Math.log10(e.BU_price));
   const loguL = ERAS.map(e => Math.log10(e.uL_per_d));
 
@@ -419,98 +590,111 @@ function drawC1() {
   c.fillStyle = bgCol; c.fillRect(0,0,W,H);
 
   // Era bands
-  [{t0:-4300,t1:-1000,lb:'APEP',    cl:'#5a100a'},
-   {t0:-1000,t1:-100, lb:'MOLOCH',  cl:'#4a0808'},
-   {t0:-100, t1:500,  lb:'KRONOS',  cl:'#3a1840'},
-   {t0:500,  t1:1500, lb:'REX',     cl:'#2a1808'},
-   {t0:1500, t1:1900, lb:'STATE',   cl:'#0a1820'},
-   {t0:1900, t1:2100, lb:'MARKET',  cl:'#3a0808'},
+  [{t0:-4300,t1:-1000,lb:'APEP',    cl:dk?'#1a1008':'#e8dcc0'},
+   {t0:-1000,t1:-100, lb:'MOLOCH',  cl:dk?'#1a0808':'#e8c8c0'},
+   {t0:-100, t1:500,  lb:'KRONOS',  cl:dk?'#140c18':'#d8c8d8'},
+   {t0:500,  t1:1500, lb:'REX',     cl:dk?'#141008':'#d8d4c4'},
+   {t0:1500, t1:1900, lb:'STATE',   cl:dk?'#0c1014':'#c8d0d4'},
+   {t0:1900, t1:2100, lb:'MARKET',  cl:dk?'#1a0808':'#e0c4c4'},
   ].forEach(b=>{
     const x0=cx(b.t0), x1=cx(b.t1);
-    c.fillStyle=b.cl+'38'; c.fillRect(x0,0,x1-x0,H);
-    c.fillStyle=b.cl+'cc'; c.font='7px DM Mono,monospace'; c.textAlign='center';
-    if(x1-x0>20) c.fillText(b.lb,(x0+x1)/2,12);
+    c.fillStyle=b.cl; c.fillRect(x0,0,x1-x0,H);
+    c.fillStyle=dk?'rgba(255,255,255,0.15)':'rgba(0,0,0,0.18)';
+    c.font='bold 7px "Space Mono",monospace'; c.textAlign='center';
+    if(x1-x0>20) c.fillText(b.lb,(x0+x1)/2,13);
   });
 
   // Grid
   for(let y=Math.floor(yBUn); y<=Math.ceil(yBUx); y++){
     c.beginPath(); c.moveTo(P.l,cyB(y)); c.lineTo(W-P.r,cyB(y));
-    c.strokeStyle=isDark?'rgba(139,0,0,0.1)':'rgba(120,0,0,0.08)'; c.lineWidth=1; c.stroke();
-    c.fillStyle=axisCol; c.font='7px DM Mono,monospace'; c.textAlign='right';
-    c.fillText('$10^'+y,P.l-5,cyB(y)+3);
+    c.strokeStyle=dk?'rgba(160,24,24,0.08)':'rgba(120,16,16,0.06)'; c.lineWidth=1; c.stroke();
+    c.fillStyle=axisCol; c.font='8px "Special Elite",monospace'; c.textAlign='right';
+    c.fillText('$10^'+y,P.l-6,cyB(y)+3);
   }
+
   [-3000,-2000,-1000,0,500,1000,1500,1800,1950,2000].forEach(t=>{
     c.beginPath(); c.moveTo(cx(t),P.t); c.lineTo(cx(t),H-P.b);
     c.strokeStyle=gridCol; c.lineWidth=1; c.stroke();
-    c.fillStyle=textCol; c.font='7px DM Mono,monospace'; c.textAlign='center';
-    c.fillText(t<0?Math.abs(t)+'B':t+'CE',cx(t),H-P.b+11);
+    c.fillStyle=textCol; c.font='8px "Special Elite",monospace'; c.textAlign='center';
+    c.fillText(t<0?Math.abs(t)+'B':t+'CE',cx(t),H-P.b+12);
   });
 
   // Right axis: µL/$
   for(let y=Math.floor(yuLn); y<=Math.ceil(yuLx); y++){
-    c.fillStyle=isDark?'#3a6040':'#205030'; c.font='7px DM Mono,monospace'; c.textAlign='left';
-    c.fillText('10^'+y+'µL/$',W-P.r+4,cyU(y)+3);
+    c.fillStyle=dk?'#208880':'#106858'; c.font='8px "Special Elite",monospace'; c.textAlign='left';
+    c.fillText('10^'+y+'µL/$',W-P.r+5,cyU(y)+3);
   }
 
   // Axis labels
-  c.fillStyle=isDark?'#8b000066':'#7a000055'; c.font='7px DM Mono,monospace';
-  c.save(); c.translate(12,P.t+ph/2); c.rotate(-Math.PI/2); c.textAlign='center';
+  c.fillStyle=dk?'rgba(160,24,24,0.4)':'rgba(120,16,16,0.35)';
+  c.font='bold 8px "Space Mono",monospace';
+  c.save(); c.translate(13,P.t+ph/2); c.rotate(-Math.PI/2); c.textAlign='center';
   c.fillText('$/BU (real)',0,0); c.restore();
-  c.fillStyle=isDark?'#3a604066':'#205030aa'; c.font='7px DM Mono,monospace';
-  c.save(); c.translate(W-10,P.t+ph/2); c.rotate(Math.PI/2); c.textAlign='center';
+
+  c.fillStyle=dk?'rgba(32,136,128,0.4)':'rgba(16,104,88,0.35)';
+  c.font='bold 8px "Space Mono",monospace';
+  c.save(); c.translate(W-9,P.t+ph/2); c.rotate(Math.PI/2); c.textAlign='center';
   c.fillText('µL blood / $1',0,0); c.restore();
 
   // Medical reference line ($880/L)
   const medLog = Math.log10(880);
   const ym = cyB(medLog);
   c.beginPath(); c.moveTo(P.l,ym); c.lineTo(W-P.r,ym);
-  c.strokeStyle='rgba(232,192,128,0.25)'; c.lineWidth=1; c.setLineDash([2,5]); c.stroke(); c.setLineDash([]);
-  c.fillStyle='rgba(232,192,128,0.5)'; c.font='7px DM Mono,monospace'; c.textAlign='left';
-  c.fillText('market $880/L',P.l+4,ym-3);
+  c.strokeStyle=dk?'rgba(184,104,48,0.2)':'rgba(128,80,32,0.15)';
+  c.lineWidth=1; c.setLineDash([3,5]); c.stroke(); c.setLineDash([]);
+  c.fillStyle=dk?'rgba(184,104,48,0.4)':'rgba(128,80,32,0.35)';
+  c.font='8px "Special Elite",monospace'; c.textAlign='left';
+  c.fillText('market $880/L',P.l+4,ym-4);
 
-  // µL/$ line (green, right axis — inverse of BU price)
+  // µL/$ line (teal, right axis)
   c.beginPath();
   midYr.forEach((t,i) => i===0?c.moveTo(cx(t),cyU(loguL[i])):c.lineTo(cx(t),cyU(loguL[i])));
-  c.strokeStyle='rgba(96,168,112,0.4)'; c.lineWidth=1.5; c.setLineDash([3,3]); c.stroke(); c.setLineDash([]);
+  c.strokeStyle=dk?'rgba(32,136,128,0.35)':'rgba(16,104,88,0.3)';
+  c.lineWidth=1.5; c.setLineDash([3,3]); c.stroke(); c.setLineDash([]);
   midYr.forEach((t,i) => {
-    c.beginPath(); c.arc(cx(t),cyU(loguL[i]),3,0,Math.PI*2);
-    c.fillStyle='#60a870'; c.fill();
+    c.beginPath(); c.arc(cx(t),cyU(loguL[i]),4,0,Math.PI*2);
+    c.fillStyle=dk?'#208880':'#106858'; c.fill();
+    c.strokeStyle=bgCol; c.lineWidth=1; c.stroke();
   });
 
-  // BU price line (blood red, left axis)
-  // Gradient line — gets redder as blood gets more expensive
+  // BU price line (red, left axis)
   c.beginPath();
   midYr.forEach((t,i) => i===0?c.moveTo(cx(t),cyB(logBU[i])):c.lineTo(cx(t),cyB(logBU[i])));
-  c.strokeStyle='rgba(180,20,0,0.4)'; c.lineWidth=1.5; c.stroke();
+  c.strokeStyle=dk?'rgba(160,24,24,0.35)':'rgba(120,16,16,0.3)'; c.lineWidth=2; c.stroke();
 
   ERAS.forEach((e,i) => {
     const x=cx(midYr[i]), y=cyB(logBU[i]);
-    c.beginPath(); c.arc(x,y,6,0,Math.PI*2);
+    // Glow
+    c.beginPath();c.arc(x,y,12,0,Math.PI*2);
+    c.fillStyle=e.col+'18';c.fill();
+    // Dot
+    c.beginPath(); c.arc(x,y,7,0,Math.PI*2);
     c.fillStyle=e.col; c.fill();
-    c.strokeStyle='#060409'; c.lineWidth=1.5; c.stroke();
-    c.fillStyle=e.col+'dd'; c.font='7px DM Mono,monospace'; c.textAlign='center';
-    c.fillText(e.n.split(' ')[0],x,y-11);
+    c.strokeStyle=bgCol; c.lineWidth=2; c.stroke();
+    c.fillStyle=dk?(e.col+'dd'):e.col;
+    c.font='bold 8px "Space Mono",monospace'; c.textAlign='center';
+    c.fillText(e.n.split(' ')[0],x,y-14);
   });
 
   // Legend
-  c.fillStyle='#4a1818cc'; c.font='7px DM Mono,monospace'; c.textAlign='left';
-  c.beginPath(); c.arc(P.l+8,H-P.b+18,3,0,Math.PI*2); c.fillStyle='#8b0000'; c.fill();
-  c.fillStyle='#4a1818'; c.fillText('$/BU (real, left axis)',P.l+16,H-P.b+21);
-  c.beginPath(); c.arc(P.l+160,H-P.b+18,3,0,Math.PI*2); c.fillStyle='#60a870'; c.fill();
-  c.fillStyle='#2e4838'; c.fillText('µL per dollar (right axis)',P.l+168,H-P.b+21);
+  c.beginPath(); c.arc(P.l+8,H-P.b+20,3,0,Math.PI*2); c.fillStyle=dk?'#a01818':'#801010'; c.fill();
+  c.fillStyle=textCol; c.font='8px "Special Elite",monospace'; c.textAlign='left';
+  c.fillText('$/BU (real, left)',P.l+16,H-P.b+23);
+  c.beginPath(); c.arc(P.l+170,H-P.b+20,3,0,Math.PI*2); c.fillStyle=dk?'#208880':'#106858'; c.fill();
+  c.fillText('µL/$ (right)',P.l+178,H-P.b+23);
 }
 
-// ── PURCHASING POWER CHART ────────────────────────────────────────
+/* ═══════ PURCHASING POWER CHART ═══════ */
 function drawC2() {
-  const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
-  const bgCol   = isDark ? '#060409' : '#faf8ff';
-  const textCol = isDark ? '#5a5480' : '#4a3a78';
+  const dk = isDark();
+  const bgCol   = dk ? '#111111' : '#ebe2cc';
+  const textCol = dk ? '#605848' : '#5a5040';
 
   const cv = document.getElementById('c2');
-  const W = cv.offsetWidth, H = 130;
+  const W = cv.offsetWidth, H = 140;
   cv.width = W; cv.height = H;
   const c = cv.getContext('2d');
-  const P = {t:16, r:20, b:28, l:180};
+  const P = {t:18, r:20, b:28, l:180};
   const pw = W-P.l-P.r, ph = H-P.t-P.b;
   c.fillStyle = bgCol; c.fillRect(0,0,W,H);
 
@@ -532,13 +716,11 @@ function drawC2() {
 
   const rowH = ph / items.length;
 
-  // Axis
   for(let v=Math.ceil(minL); v<=Math.floor(maxL)+1; v++){
     const x = P.l+(v-minL)/(maxL-minL)*pw;
     c.beginPath(); c.moveTo(x,P.t); c.lineTo(x,H-P.b);
-    c.strokeStyle=isDark?'rgba(255,255,255,0.04)':'rgba(0,0,0,0.07)'; c.stroke();
-    c.fillStyle=textCol; c.font='6.5px DM Mono,monospace'; c.textAlign='center';
-    // label in meaningful units
+    c.strokeStyle=dk?'rgba(255,255,255,0.04)':'rgba(0,0,0,0.07)'; c.stroke();
+    c.fillStyle=textCol; c.font='7px "Special Elite",monospace'; c.textAlign='center';
     const val = Math.pow(10,v);
     let lbl;
     if(val>=1)      lbl = val.toFixed(0)+'L';
@@ -548,52 +730,56 @@ function drawC2() {
     c.fillText(lbl,x,H-P.b+10);
   }
 
-  // person lines: 5L, 5000L (1000 people)
+  // 1 person line
   const personL = Math.log10(5);
   const px5 = P.l+(personL-minL)/(maxL-minL)*pw;
   c.beginPath(); c.moveTo(px5,P.t); c.lineTo(px5,H-P.b);
-  c.strokeStyle='rgba(139,0,0,0.3)'; c.lineWidth=1; c.setLineDash([2,4]); c.stroke(); c.setLineDash([]);
-  c.fillStyle='rgba(139,0,0,0.5)'; c.font='6.5px DM Mono,monospace'; c.textAlign='center';
-  c.fillText('1 person',px5,P.t+9);
+  c.strokeStyle=dk?'rgba(160,24,24,0.25)':'rgba(120,16,16,0.2)';
+  c.lineWidth=1; c.setLineDash([2,4]); c.stroke(); c.setLineDash([]);
+  c.fillStyle=dk?'rgba(160,24,24,0.45)':'rgba(120,16,16,0.4)';
+  c.font='7px "Special Elite",monospace'; c.textAlign='center';
+  c.fillText('1 person',px5,P.t+10);
 
   items.forEach((item,i) => {
     const y = P.t+rowH*(i+0.5);
     const lv = logVals[i];
     const bx = P.l+(lv-minL)/(maxL-minL)*pw;
 
-    // Color intensity by magnitude
     const intensity = (lv-minL)/(maxL-minL);
-    const r = Math.round(80+intensity*110);
-    const col = `rgb(${r},0,0)`;
+    const r = Math.round(60+intensity*100);
+    const col = dk ? `rgb(${r+40},${Math.round(r*0.15)},${Math.round(r*0.1)})` : `rgb(${r+20},${Math.round(r*0.1)},${Math.round(r*0.05)})`;
 
-    c.fillStyle=col+'25'; c.fillRect(P.l,y-5,bx-P.l,10);
-    c.beginPath(); c.arc(bx,y,3,0,Math.PI*2);
+    c.fillStyle=col+'20'; c.fillRect(P.l,y-6,bx-P.l,12);
+    c.beginPath(); c.arc(bx,y,3.5,0,Math.PI*2);
     c.fillStyle=col; c.fill();
+    c.strokeStyle=bgCol; c.lineWidth=1; c.stroke();
 
-    c.fillStyle=textCol; c.font='7px DM Mono,monospace'; c.textAlign='right';
+    c.fillStyle=textCol; c.font='8px "Special Elite",monospace'; c.textAlign='right';
     c.fillText(item.l, P.l-5, y+3);
 
-    c.fillStyle=col+'cc'; c.textAlign='left';
-    c.fillText(fB(bloodLitres[i]), bx+6, y+3);
+    c.fillStyle=col; c.textAlign='left';
+    c.fillText(fB(bloodLitres[i]), bx+7, y+3);
   });
 }
 
-// ── GLOBAL CELLS ─────────────────────────────────────────────────
+/* ═══════ GLOBAL CELLS ═══════ */
 const cellData = [
   {v: '$'+MODERN.BU_price.toLocaleString('en',{maximumFractionDigits:0}),
-   l:'Real $/BU\n(Modern)', c:'var(--blood3)'},
+   l:'Real $/BU\n(Modern)', c:'var(--red-bright)'},
   {v: '$880',
-   l:'Market $/BU\n(medical)', c:'var(--plasma)'},
+   l:'Market $/BU\n(medical)', c:'var(--rust)'},
   {v: (MODERN.BU_price/880).toFixed(0)+'×',
-   l:'Market under-\nprices blood by', c:'var(--blood3)'},
+   l:'Market under-\nprices blood by', c:'var(--red-bright)'},
   {v: MODERN.uL_per_d.toFixed(4)+'µL',
-   l:'Real: 1 USD\nbuy in blood', c:'var(--dollar2)'},
+   l:'Real: 1 USD\nbuy in blood', c:'var(--teal)'},
   {v: (1/880*1e6).toFixed(0)+'µL',
-   l:'Market: 1 USD\nbuy in blood', c:'var(--dollar2)'},
+   l:'Market: 1 USD\nbuy in blood', c:'var(--teal)'},
   {v: (MODERN.BU_price/BRONZE.BU_price).toFixed(1)+'×',
-   l:'Blood inflation\nBronze→Modern', c:'var(--cold)'},
+   l:'Blood inflation\nBronze→Modern', c:'var(--bruise)'},
   {v: (MODERN.GJ_per_BU/1000).toFixed(0)+'K GJ',
-   l:'Energy per BU\n(Modern)', c:'var(--plasma)'},
+   l:'Energy per BU\n(Modern)', c:'var(--rust)'},
+  {v: '5.00 L',
+   l:'Blood per\nperson', c:'var(--red-bright)'},
 ];
 
 const cells = document.getElementById('cells');
@@ -604,27 +790,27 @@ cellData.forEach(cd => {
   </div>`;
 });
 
-// ── SIDEBAR ───────────────────────────────────────────────────────
+/* ═══════ SIDEBAR ═══════ */
 const sb = document.getElementById('sb');
 
-// Purchasing power ladder
+// Blood Price Ladder
 const ladder = [
-  {l:'1 drop of blood (50µL)',       v: fD(MODERN.BU_price * 50e-6)},
-  {l:'1 mL blood',                   v: fD(MODERN.BU_price * 0.001)},
-  {l:'1 teaspoon (5mL)',             v: fD(MODERN.BU_price * 0.005)},
-  {l:'1 tablespoon (15mL)',          v: fD(MODERN.BU_price * 0.015)},
-  {l:'1 unit donation (450mL)',      v: fD(MODERN.BU_price * 0.45)},
-  {l:'1 BU — 1 litre',              v: fD(MODERN.BU_price)},
-  {l:'1 person (5 BU)',             v: fD(MODERN.BU_price * 5)},
-  {l:'10 people (50 BU)',           v: fD(MODERN.BU_price * 50)},
-  {l:'100 people (500 BU)',         v: fD(MODERN.BU_price * 500)},
-  {l:'1 combat platoon (~160L)',    v: fD(MODERN.BU_price * 160)},
-  {l:'Hiroshima dead (~80K)',       v: fD(MODERN.BU_price * 80000 * 5)},
-  {l:'Iraq War dead (~940K)',       v: fD(MODERN.BU_price * 940000 * 5)},
-  {l:'WWII dead (~70M)',            v: fD(MODERN.BU_price * 70e6 * 5)},
+  {l:'1 drop (50µL)',            v: fD(MODERN.BU_price * 50e-6)},
+  {l:'1 mL blood',              v: fD(MODERN.BU_price * 0.001)},
+  {l:'1 teaspoon (5mL)',        v: fD(MODERN.BU_price * 0.005)},
+  {l:'1 tablespoon (15mL)',     v: fD(MODERN.BU_price * 0.015)},
+  {l:'1 donation (450mL)',      v: fD(MODERN.BU_price * 0.45)},
+  {l:'1 BU — 1 litre',         v: fD(MODERN.BU_price)},
+  {l:'1 person (5 BU)',         v: fD(MODERN.BU_price * 5)},
+  {l:'10 people (50 BU)',       v: fD(MODERN.BU_price * 50)},
+  {l:'100 people (500 BU)',     v: fD(MODERN.BU_price * 500)},
+  {l:'1 platoon (~160L)',       v: fD(MODERN.BU_price * 160)},
+  {l:'Hiroshima (~80K)',        v: fD(MODERN.BU_price * 80000 * 5)},
+  {l:'Iraq War (~940K)',        v: fD(MODERN.BU_price * 940000 * 5)},
+  {l:'WWII (~70M)',             v: fD(MODERN.BU_price * 70e6 * 5)},
 ];
 
-sb.innerHTML += `<div class="bl-panel" style="border-left:2px solid var(--blood)">
+sb.innerHTML += `<div class="bl-panel" style="border-left:3px solid var(--red)">
   <div class="bl-head">
     <span class="bl-title">Blood Price Ladder</span>
     <span class="bl-tag">MODERN RATE</span>
@@ -637,7 +823,7 @@ sb.innerHTML += `<div class="bl-panel" style="border-left:2px solid var(--blood)
   </div>
 </div>`;
 
-// Dollar in blood units
+// Dollar in blood
 const dlad = [
   {l:'$0.01 (penny)',      d:0.01},
   {l:'$1',                 d:1},
@@ -649,7 +835,7 @@ const dlad = [
   {l:'$1T',                d:1e12},
 ];
 
-sb.innerHTML += `<div class="bl-panel" style="border-left:2px solid var(--dollar2)">
+sb.innerHTML += `<div class="bl-panel" style="border-left:3px solid var(--teal)">
   <div class="bl-head">
     <span class="bl-title">Dollar in Blood</span>
     <span class="bl-tag">REAL RATE</span>
@@ -666,7 +852,7 @@ sb.innerHTML += `<div class="bl-panel" style="border-left:2px solid var(--dollar
 </div>`;
 
 // Historical BU rates
-sb.innerHTML += `<div class="bl-panel" style="border-left:2px solid var(--grey)">
+sb.innerHTML += `<div class="bl-panel" style="border-left:3px solid var(--ash)">
   <div class="bl-head">
     <span class="bl-title">BU Exchange Rate</span>
     <span class="bl-tag">ALL ERAS</span>
@@ -676,7 +862,7 @@ sb.innerHTML += `<div class="bl-panel" style="border-left:2px solid var(--grey)"
       <span class="bl-l" style="color:${e.col}">${e.n}</span>
       <span class="bl-v" style="color:${e.col}">${fD(e.BU_price)}/BU</span>
     </div>`).join('')}
-    <div style="border-top:1px solid var(--rule);padding-top:8px;margin-top:4px;font-size:7.5px;color:var(--dim);line-height:1.9">
+    <div style="border-top:1px dotted var(--border);padding-top:8px;margin-top:4px;font-family:var(--font-type);font-size:8px;color:var(--smoke);line-height:2">
       Market (medical): $880/BU<br>
       Inflation Bronze→Modern: 21.7×<br>
       Dollar devaluation in blood: 21.7×
@@ -689,6 +875,17 @@ window.addEventListener('resize',init);
 window.addEventListener('load',init);
 setTimeout(init,80);
 window.redrawCharts = init;
+
+/* ═══════ SCROLL REVEAL ═══════ */
+(function(){
+  var els = document.querySelectorAll('.reveal');
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('vis'); obs.unobserve(e.target); }
+    });
+  }, {threshold:0.05, rootMargin:'0px 0px -20px 0px'});
+  els.forEach(function(el){ obs.observe(el); });
+})();
 </script>
 <script src="theme.js"></script>
 </body>

@@ -3,195 +3,328 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Accounting</title>
+<title>The Accounting — The Price of Blood</title>
 <link rel="stylesheet" href="shared.css">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Archivo+Black&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Caveat:wght@400;700&display=swap');
 
-:root {
-  --ink:   #07060e;
-  --deep:  #0b0a18;
-  --plate: #100f1e;
-  --rule:  #1a1830;
-  --dim:   #5a5480;
-  --grey:  #8880b0;
-  --text:  #c0b8dc;
-  --bone:  #dcd4f0;
-  --white: #f0ecff;
-
-  --amber:  #d4a040;
-  --cold:   #3a8ab8;
-  --warm:   #b85830;
-  --blood:  #b02818;
-  --energy: #38a870;
-  --god:    #7050a8;
-  --gap:    #c87820;
-
-  --mono:  'DM Mono', monospace;
-  --serif: 'Playfair Display', serif;
-}
-
-/* ── Light mode ──────────────────────────────────────────────── */
-[data-theme="light"] {
-  --ink:   #f5f3ff;
-  --deep:  #edeaf8;
-  --plate: #e5e2f2;
-  --rule:  #cfc9e8;
-  --dim:   #8070a8;
-  --grey:  #9088b0;
-  --text:  #2a2040;
-  --bone:  #140c28;
-  --white: #08041a;
-  --amber: #a07018;
-  --cold:  #205a88;
-  --warm:  #883818;
-  --blood: #901808;
-  --energy:#207050;
-  --god:   #503890;
-  --gap:   #906010;
-}
-
-* { margin:0; padding:0; box-sizing:border-box; }
 body {
-  background: var(--ink);
-  color: var(--text);
-  font-family: var(--mono);
-  font-weight: 300;
-  font-size: 14px;
-  padding: 52px 56px 80px;
+  padding: 52px 40px 80px;
   max-width: 1440px;
   margin: 0 auto;
 }
 
+/* ── HEADER ──────────────────────────────────── */
 .hdr {
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: end;
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 3px solid var(--red-dark);
   padding-bottom: 28px;
-  margin-bottom: 44px;
+  margin-bottom: 48px;
+  position: relative;
 }
+
+.hdr::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--red), var(--red-dark), transparent);
+  animation: bloodFill 1.5s var(--ease-out) both;
+}
+
+.hdr-pre {
+  font-family: var(--font-stamp);
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: var(--red);
+  text-transform: uppercase;
+  border: 2px solid var(--red-dark);
+  display: inline-block;
+  padding: 3px 10px;
+  margin-bottom: 14px;
+}
+
 h1 {
-  font-family: var(--serif);
-  font-size: 52px; font-weight: 400; font-style: italic;
-  color: var(--white); letter-spacing: -0.02em; line-height: 0.95;
+  font-family: var(--font-book);
+  font-size: 48px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--bone);
+  letter-spacing: -0.02em;
+  line-height: 0.95;
 }
-h1 span { color: var(--amber); }
+
+h1 span { color: var(--rust); }
+
 .hdr-meta {
-  text-align: right; font-size: 11px; color: var(--dim);
-  letter-spacing: 0.06em; line-height: 2.2;
+  text-align: right;
+  font-family: var(--font-type);
+  font-size: 10px;
+  color: var(--smoke);
+  line-height: 2.2;
 }
-.hdr-meta strong { color: var(--grey); }
 
-/* Single-column layout — sidebar content moves below */
-.page { display: flex; flex-direction: column; gap: 0; }
+.hdr-meta strong { color: var(--ash); }
 
+/* ── Section Heads (toggle) ──────────────────── */
 .sh {
-  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--dim); border-bottom: 1px solid var(--rule);
-  padding-bottom: 10px; margin-bottom: 20px; margin-top: 48px;
-  display: flex; gap: 16px; align-items: baseline;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  margin-top: 56px;
+  cursor: pointer;
+  user-select: none;
+  transition: border-color 0.2s ease;
 }
+
+.sh:hover { border-color: var(--red-dark); }
 .sh:first-child { margin-top: 0; }
+
+.sh-num {
+  font-family: var(--font-stamp);
+  font-size: 28px;
+  color: var(--red-dark);
+  opacity: 0.5;
+  line-height: 1;
+}
+
 .sh-t {
-  font-family: var(--serif); font-style: italic;
-  font-size: 26px; color: var(--bone); font-weight: 400;
-  letter-spacing: 0; text-transform: none;
+  font-family: var(--font-book);
+  font-style: italic;
+  font-size: 24px;
+  color: var(--bone);
+  font-weight: 400;
 }
 
-.tbl { width: 100%; border-collapse: collapse; }
-.tbl th {
-  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--grey); text-align: right; padding: 10px 12px;
-  border-bottom: 1px solid var(--rule); font-weight: 400; white-space: nowrap;
+.sh-sub {
+  font-family: var(--font-type);
+  font-size: 9px;
+  color: var(--smoke);
+  margin-left: auto;
 }
-.tbl th:first-child { text-align: left; }
-.tbl td {
-  padding: 14px 12px; border-bottom: 1px solid rgba(255,255,255,0.035);
-  text-align: right; vertical-align: middle; white-space: nowrap;
+
+.sh-toggle {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--red);
+  transition: transform 0.3s var(--ease-out);
+  display: inline-block;
 }
-.tbl td:first-child { text-align: left; }
-.tbl tr:hover td { background: rgba(255,255,255,0.018); }
 
-.ec { display: flex; flex-direction: column; gap: 3px; }
-.en { font-family: var(--serif); font-style: italic; font-size: 18px; font-weight: 400; color: var(--white); line-height: 1.1; }
-.ep { font-size: 10px; color: var(--dim); }
-.eg { font-size: 10px; letter-spacing: 0.04em; color: var(--god); }
-.es { font-size: 9px; color: var(--grey); font-style: italic; }
+.sh.closed .sh-toggle {
+  transform: rotate(-90deg);
+}
 
-.n  { color: var(--amber); }
-.nd { color: var(--blood); }
-.ne { color: var(--energy); }
-.nc { color: var(--cold); }
-.nw { color: var(--warm); }
-.ng { color: var(--gap); }
-.nm { color: var(--grey); }
+.section-body {
+  overflow: hidden;
+  max-height: 6000px;
+  transition: max-height 0.6s var(--ease-out), opacity 0.4s ease, margin 0.4s ease;
+  opacity: 1;
+  margin-bottom: 0;
+}
 
-.bw { display: flex; align-items: center; gap: 5px; }
-.bt { flex: 1; height: 2px; background: var(--rule); position: relative; min-width: 28px; }
-.bf { position: absolute; left:0; top:0; height:100%; }
+.section-body.collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin-bottom: -20px;
+}
 
-/* Canvas fills container */
-canvas { display: block; width: 100% !important; }
+/* ── ERA TABLE ───────────────────────────────── */
+.tbl-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--border);
+  background: var(--card);
+  background-image: var(--stripe);
+}
 
-/* Chart wrapper */
+/* Era cell styling */
+.ec { display: flex; flex-direction: column; gap: 4px; }
+.en {
+  font-family: var(--font-book);
+  font-style: italic;
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--bone);
+  line-height: 1.1;
+}
+.ep { font-size: 10px; color: var(--smoke); font-family: var(--font-type); }
+.eg { font-size: 10px; color: var(--bruise); font-family: var(--font-type); }
+.es { font-size: 9px; color: var(--ash); font-family: var(--font-type); font-style: italic; }
+
+/* Column accents */
+.n  { color: var(--rust); }
+.nd { color: var(--red-bright); }
+.ne { color: var(--teal); }
+.nc { color: var(--teal); }
+.nw { color: var(--rust); }
+.ng { color: var(--bile); }
+.nm { color: var(--ash); }
+
+.bw { display: flex; align-items: center; gap: 6px; }
+.bt { flex: 1; height: 3px; background: var(--border); position: relative; min-width: 30px; }
+.bf { position: absolute; left:0; top:0; height:100%; transition: width 1s var(--ease-out); }
+
+/* ── CHART WRAP ──────────────────────────────── */
 .chart-wrap {
-  background: var(--deep);
-  border: 1px solid var(--rule);
-  border-left: 3px solid var(--amber);
-  padding: 28px 24px 24px;
-  margin-bottom: 4px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--red);
+  padding: 28px 24px 20px;
+  margin-bottom: 8px;
+  position: relative;
+  background-image: var(--stripe);
 }
 
-.panel {
-  border: 1px solid var(--rule); margin-bottom: 10px; background: var(--deep);
-}
-.ph {
-  padding: 9px 12px 7px; border-bottom: 1px solid var(--rule);
-  display: flex; align-items: baseline; gap: 8px;
-}
-.pn { font-family: var(--serif); font-style: italic; font-size: 16px; color: var(--bone); font-weight: 400; }
-.pt { font-size: 9px; letter-spacing: 0.15em; }
-.pb { padding: 10px 14px 12px; }
-.pr { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
-.pl { font-size: 10px; color: var(--dim); }
-.pv { font-size: 12px; }
-.pf {
-  font-size: 10px; color: var(--dim); border-top: 1px solid var(--rule);
-  padding-top: 8px; margin-top: 4px; line-height: 2;
-}
+.chart-wrap.rust { border-left-color: var(--rust); }
+.chart-wrap.teal { border-left-color: var(--teal); }
 
-.vp {
-  border: 1px solid var(--rule); border-left: 2px solid var(--warm);
-  background: var(--deep); padding: 10px 12px; margin-bottom: 10px;
-}
-.vt { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--warm); margin-bottom: 10px; }
-.vr { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; gap: 4px; }
-.vrl { font-size: 10px; color: var(--dim); flex-shrink: 0; width: 80px; }
-.vrf { font-size: 9px; color: var(--grey); }
-.vra { font-size: 9px; color: var(--dim); }
-.vrv { font-size: 9px; color: var(--warm); text-align: right; }
+canvas { display: block; width: 100% !important; cursor: crosshair; }
 
-.sg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.sb { border: 1px solid var(--rule); background: var(--deep); padding: 8px 10px; }
-.sl { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); margin-bottom: 6px; }
-.sr { display: flex; justify-content: space-between; font-size: 9px; color: var(--dim); margin-top: 4px; }
-
+/* ── GLOBAL CELLS ────────────────────────────── */
 .gc {
-  display: grid; grid-template-columns: repeat(8,1fr); gap: 3px; margin-top: 32px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 32px;
 }
-.gcell { background: var(--deep); border: 1px solid var(--rule); padding: 18px 14px 14px; }
-.gv { font-family: var(--serif); font-style: italic; font-size: 28px; line-height: 1; margin-bottom: 8px; }
-.gl { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); line-height: 1.8; }
 
-.note {
-  margin-top: 48px; border-top: 1px solid var(--rule); padding-top: 24px;
-  font-size: 11px; color: var(--dim); line-height: 2.2;
-  display: grid; grid-template-columns: repeat(3,1fr); gap: 32px;
+.gcell {
+  background: var(--card);
+  padding: 20px 16px;
+  transition: background 0.2s ease;
+  position: relative;
+  overflow: hidden;
 }
-.note strong { color: var(--grey); }
 
-/* Bottom responsive grid */
+.gcell::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--red);
+  transition: width 0.5s var(--ease-out);
+}
+
+.gcell:hover { background: var(--surface); }
+.gcell:hover::before { width: 100%; }
+
+.gv {
+  font-family: var(--font-stamp);
+  font-size: 26px;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.gl {
+  font-family: var(--font-type);
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--smoke);
+  line-height: 1.8;
+}
+
+/* ── Panels / Invariants ─────────────────────── */
+.panel {
+  border: 1px solid var(--border);
+  margin-bottom: 10px;
+  background: var(--card);
+  transition: border-color 0.2s ease;
+}
+
+.panel:hover { border-color: var(--border-hi); }
+
+.ph {
+  padding: 10px 14px 8px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.pn { font-family: var(--font-book); font-style: italic; font-size: 16px; color: var(--bone); font-weight: 400; }
+.pt { font-family: var(--font-stamp); font-size: 8px; letter-spacing: 0.15em; text-transform: uppercase; }
+.pb { padding: 12px 14px 14px; }
+.pr { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+.pl { font-family: var(--font-type); font-size: 10px; color: var(--smoke); }
+.pv { font-family: var(--font-mono); font-size: 12px; }
+.pf {
+  font-family: var(--font-type);
+  font-size: 10px;
+  color: var(--smoke);
+  border-top: 1px dotted var(--border);
+  padding-top: 10px;
+  margin-top: 6px;
+  line-height: 2;
+}
+
+/* ── Variants panel ──────────────────────────── */
+.vp {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--rust);
+  background: var(--card);
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+
+.vt {
+  font-family: var(--font-stamp);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 12px;
+}
+
+.vr { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; gap: 6px; }
+.vrl { font-family: var(--font-type); font-size: 10px; color: var(--smoke); flex-shrink: 0; width: 80px; }
+.vrf { font-family: var(--font-type); font-size: 9px; color: var(--ash); }
+.vra { font-size: 9px; color: var(--smoke); }
+.vrv { font-family: var(--font-type); font-size: 9px; color: var(--rust); text-align: right; }
+
+/* ── Sparklines ──────────────────────────────── */
+.sg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+.sb {
+  border: 1px solid var(--border);
+  background: var(--card);
+  padding: 10px 12px;
+  transition: border-color 0.2s ease;
+}
+
+.sb:hover { border-color: var(--border-hi); }
+
+.sl {
+  font-family: var(--font-stamp);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--smoke);
+  margin-bottom: 6px;
+}
+
+.sr {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-type);
+  font-size: 8px;
+  color: var(--smoke);
+  margin-top: 4px;
+}
+
+/* ── Bottom grid ─────────────────────────────── */
 .bottom-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -199,29 +332,50 @@ canvas { display: block; width: 100% !important; }
   margin-top: 24px;
 }
 
-/* ── Responsive ──────────────────────────────────────────────── */
+/* ── Handwritten note ────────────────────────── */
+.note {
+  margin-top: 56px;
+  border-top: 2px solid var(--border);
+  padding-top: 28px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.note-block {
+  font-family: var(--font-type);
+  font-size: 11px;
+  color: var(--smoke);
+  line-height: 2;
+}
+
+.note-block strong { color: var(--ash); }
+
+/* ── Handwritten margin note ─────────────────── */
+.margin-note {
+  font-family: var(--font-hand);
+  font-size: 16px;
+  color: var(--red);
+  transform: rotate(-2deg);
+  margin-top: 12px;
+  opacity: 0.7;
+}
+
+/* ── Responsive ──────────────────────────────── */
 @media (max-width: 900px) {
   body { padding: 20px 16px 60px; }
-
   .hdr { grid-template-columns: 1fr; }
-  .hdr-meta { text-align: left; margin-top: 8px; }
-
-  /* 8-column era grid → 4 col */
-  .gc { grid-template-columns: repeat(4, 1fr) !important; }
-
-  /* 3-col note grid → 1 col */
+  .hdr-meta { text-align: left; margin-top: 12px; }
+  .gc { grid-template-columns: repeat(2, 1fr) !important; }
   .note { grid-template-columns: 1fr; gap: 12px; }
-
   .bottom-grid { grid-template-columns: 1fr; }
-
-  .sg { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .sg { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 600px) {
-  .gc { grid-template-columns: repeat(2, 1fr) !important; }
-  .sg { grid-template-columns: 1fr; }
-  .note { grid-template-columns: 1fr; }
-  h1 { font-size: 26px; }
+  h1 { font-size: 28px; }
+  .gc { grid-template-columns: 1fr !important; }
+  .sh-sub { display: none; }
 }
 </style>
 </head>
@@ -229,62 +383,113 @@ canvas { display: block; width: 100% !important; }
 
 <div class="hdr">
   <div>
-    <div style="font-size:8px;letter-spacing:0.2em;color:var(--dim);text-transform:uppercase;margin-bottom:10px;">
-      Shadow Accounting · Six Eras · All Variables · Blood Volume Denominated
-    </div>
+    <div class="hdr-pre">Exhibit A · Shadow Accounting</div>
     <h1>The <span>Accounting</span></h1>
   </div>
   <div class="hdr-meta">
     <strong>Energy method:</strong> population × GJ/cap/yr × duration (primary energy base)<br>
     <strong>Units:</strong> 1 GJ = 277.78 kWh · 1 EJ = 10⁹ GJ · 1 bbl = 6.1 GJ<br>
     <strong>Shadow $/GJ:</strong> $12.30 (Brent $75 ÷ 6.1 GJ/bbl)<br>
-    <strong>Blood price:</strong> value extracted per litre · medical market ref $880/L · (5 liters/person = 1.32 gal)<br>
-    <strong>War dead:</strong> direct conflict deaths only · mid-estimates · CI ranges shown
+    <strong>Blood price:</strong> value extracted per litre · medical ref $880/L<br>
+    <strong>War dead:</strong> direct conflict deaths only · mid-estimates
   </div>
 </div>
 
-<div class="page">
+<div class="page" style="display:flex;flex-direction:column;gap:0;">
 
-<div class="sh"><span class="sh-t">Era Record</span>
-  <span>6 eras · 12 variables · war deaths × 5L/person vs total civilizational energy base</span>
+<!-- SECTION 1: ERA TABLE -->
+<div class="sh reveal" data-target="s1" onclick="toggleSection(this)">
+  <span class="sh-num">I</span>
+  <span class="sh-t">Era Record</span>
+  <span class="sh-sub">6 eras · 12 variables · war deaths × 5L/person vs total civilizational energy</span>
+  <span class="sh-toggle">▾</span>
 </div>
-<div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
-  <table class="tbl" id="tbl"></table>
-</div>
-
-<div class="sh"><span class="sh-t">The Hunger Line</span>
-  <span>liters blood/EJ ● · $/L extracted ◆ · substrate GJ/unit ✕ · god bands · OLS</span>
-</div>
-<div class="chart-wrap">
-  <canvas id="c1" height="300"></canvas>
-</div>
-
-<div class="sh"><span class="sh-t">Substrate Compression</span>
-  <span>GJ per primary unit · log scale · multiplier vs grain baseline</span>
-</div>
-<div class="chart-wrap">
-  <canvas id="c2" height="100"></canvas>
+<div class="section-body reveal" id="s1">
+  <div class="tbl-wrap">
+    <table class="tbl" id="tbl"></table>
+  </div>
 </div>
 
-<div class="gc" id="gc"></div>
-
-<div class="note">
-  <div><strong>Energy method.</strong> The math is simple. Population × energy per person per year × years. The substrate changed across six eras — grain, wood, coal, oil — but the formula did not. We ran the numbers. The accountant remains unbothered.</div>
-  <div><strong>Blood volume.</strong> 5 liters per person. That's 1.32 gallons — roughly the size of a large gas station Slurpee. Your car's gas tank: approximately 0.003 people. A barrel of oil: 158.99 liters of petroleum, or about 31.8 people's worth of blood. This is not a metaphor. This is a unit conversion.</div>
-  <div><strong>Blood price.</strong> Modern energy extraction yields $2.2M in value per liter of blood spilled. The medical market charges $880 for the same liter. Externality gap: 2,548×. This is simply the most favorable accounting in the history of civilization, and it runs on a currency that never appears on the balance sheet.</div>
+<!-- SECTION 2: HUNGER LINE CHART -->
+<div class="sh reveal" data-target="s2" onclick="toggleSection(this)">
+  <span class="sh-num">II</span>
+  <span class="sh-t">The Hunger Line</span>
+  <span class="sh-sub">liters blood/EJ ● · $/L extracted ◆ · substrate GJ/unit ✕ · god bands · OLS</span>
+  <span class="sh-toggle">▾</span>
+</div>
+<div class="section-body reveal" id="s2">
+  <div class="chart-wrap">
+    <canvas id="c1" height="320"></canvas>
+  </div>
+  <div class="margin-note">↑ The machine eats the same amount. Every time.</div>
 </div>
 
-<div class="bottom-grid" id="bottom-grid">
-  <div id="sb-panels"></div>
-  <div id="sb-sparklines"></div>
+<!-- SECTION 3: SUBSTRATE -->
+<div class="sh reveal" data-target="s3" onclick="toggleSection(this)">
+  <span class="sh-num">III</span>
+  <span class="sh-t">Substrate Compression</span>
+  <span class="sh-sub">GJ per primary unit · log scale · multiplier vs grain baseline</span>
+  <span class="sh-toggle">▾</span>
+</div>
+<div class="section-body reveal" id="s3">
+  <div class="chart-wrap rust">
+    <canvas id="c2" height="110"></canvas>
+  </div>
+</div>
+
+<!-- SECTION 4: GLOBAL NUMBERS -->
+<div class="sh reveal" data-target="s4" onclick="toggleSection(this)">
+  <span class="sh-num">IV</span>
+  <span class="sh-t">The Numbers</span>
+  <span class="sh-sub">aggregate figures · cross-era · the bottom line</span>
+  <span class="sh-toggle">▾</span>
+</div>
+<div class="section-body reveal" id="s4">
+  <div class="gc" id="gc"></div>
+</div>
+
+<!-- SECTION 5: INVARIANTS & ANALYSIS -->
+<div class="sh reveal" data-target="s5" onclick="toggleSection(this)">
+  <span class="sh-num">V</span>
+  <span class="sh-t">The Invariants</span>
+  <span class="sh-sub">what doesn't change · the equation · the price</span>
+  <span class="sh-toggle">▾</span>
+</div>
+<div class="section-body reveal" id="s5">
+  <div class="bottom-grid" id="bottom-grid">
+    <div id="sb-panels"></div>
+    <div id="sb-sparklines"></div>
+  </div>
+</div>
+
+<!-- NOTES -->
+<div class="note reveal">
+  <div class="note-block"><strong>Energy method.</strong> The math is simple. Population × energy per person per year × years. The substrate changed across six eras — grain, wood, coal, oil — but the formula did not. We ran the numbers. The accountant remains unbothered.</div>
+  <div class="note-block"><strong>Blood volume.</strong> 5 liters per person. That's 1.32 gallons — roughly the size of a large gas station Slurpee. Your car's gas tank: approximately 0.003 people. A barrel of oil: 158.99 liters of petroleum, or about 31.8 people's worth of blood. This is not a metaphor. This is a unit conversion.</div>
+  <div class="note-block"><strong>Blood price.</strong> Modern energy extraction yields $2.2M in value per liter of blood spilled. The medical market charges $880 for the same liter. Externality gap: 2,548×. This is simply the most favorable accounting in the history of civilization, and it runs on a currency that never appears on the balance sheet.
+    <div class="margin-note">Congratulations. You are undervalued.</div>
+  </div>
 </div>
 
 </div><!-- .page -->
 
 <script>
-const SGJ  = 75/6.1;   // shadow $/GJ
-const MED  = 880;      // medical blood $/L
-const EJ   = 1e9;      // GJ per EJ
+/* ═══════ TOGGLE SECTIONS ═══════ */
+function toggleSection(el) {
+  var target = document.getElementById(el.getAttribute('data-target'));
+  if (!target) return;
+  el.classList.toggle('closed');
+  target.classList.toggle('collapsed');
+  // Redraw charts when opening
+  if (!target.classList.contains('collapsed')) {
+    setTimeout(function() { init(); }, 100);
+  }
+}
+
+/* ═══════ DATA ═══════ */
+const SGJ  = 75/6.1;
+const MED  = 880;
+const EJ   = 1e9;
 
 const D = [
   {name:'Bronze Age', period:'4000–1200 BCE', god:'Apep / Tiamat',
@@ -312,8 +517,8 @@ D.forEach(e=>{
   e.tEJ  = e.tGJ/EJ;
   e.gpd  = e.tGJ/e.dM;
   e.kpd  = e.gpd*277.78;
-  e.bpej = e.dM * 5 / e.tEJ;       // liters blood per EJ
-  e.bgpej = e.bpej / 3.785;         // gallons blood per EJ
+  e.bpej = e.dM * 5 / e.tEJ;
+  e.bgpej = e.bpej / 3.785;
   e.bext = SGJ*e.gpd/5;
   e.gap  = e.bext/MED;
   e.mult = e.gjU/14.4;
@@ -323,13 +528,12 @@ const maxB = Math.max(...D.map(d=>d.bpej));
 const bHI  = D[0].bpej;
 D.forEach(e=>e.hi=e.bpej/bHI);
 
-// Input is GJ. 1 EJ = 1e9 GJ. 1 ZJ = 1e12 GJ.
 const fE=n=>n>=1e12?(n/1e12).toFixed(1)+'ZJ':n>=1e9?(n/1e9).toFixed(0)+'EJ':n>=1e6?(n/1e6).toFixed(0)+'PJ':n>=1e3?(n/1e3).toFixed(0)+'TJ':(n).toFixed(0)+'GJ';
 const fD=n=>n>=1e9?(n/1e9).toFixed(1)+'B':n>=1e6?(n/1e6).toFixed(0)+'M':n>=1e3?(n/1e3).toFixed(0)+'K':n.toFixed(0);
 const fG=n=>n>=1e9?(n/1e9).toFixed(1)+'B GJ':n>=1e6?(n/1e6).toFixed(0)+'M GJ':n>=1e3?(n/1e3).toFixed(0)+'K GJ':n.toFixed(0)+' GJ';
 const fM=n=>n>=1e6?'$'+(n/1e6).toFixed(1)+'M/L':n>=1e3?'$'+(n/1e3).toFixed(0)+'K/L':'$'+n.toFixed(0)+'/L';
 
-// TABLE
+/* ═══════ TABLE ═══════ */
 const tbl=document.getElementById('tbl');
 tbl.innerHTML=`<thead><tr>
   <th style="text-align:left">Era</th>
@@ -342,7 +546,6 @@ tbl.innerHTML=`<thead><tr>
 </tr></thead><tbody>`;
 
 D.forEach(e=>{
-  const hc=e.hi>1.5?'var(--blood)':e.hi<0.5?'var(--energy)':'var(--amber)';
   const bw=Math.min(100,(e.bpej/maxB)*100);
   tbl.innerHTML+=`<tr>
     <td><div class="ec">
@@ -358,7 +561,7 @@ D.forEach(e=>{
     <td class="n">${fD(e.kpd)} kWh</td>
     <td class="nd">${e.bpej>=1e6?(e.bpej/1e6).toFixed(1)+'M':e.bpej>=1e3?(e.bpej/1e3).toFixed(0)+'K':e.bpej.toFixed(0)}</td>
     <td class="nw">${e.bgpej>=1e6?(e.bgpej/1e6).toFixed(1)+'M':e.bgpej>=1e3?(e.bgpej/1e3).toFixed(0)+'K':e.bgpej.toFixed(0)}</td>
-    <td class="nm">${(e.bpej/1e6).toFixed(1)}M L/EJ<br><span style="font-size:6.5px;color:var(--dim)">${(e.bgpej/1e6).toFixed(2)}M gal</span></td>
+    <td class="nm">${(e.bpej/1e6).toFixed(1)}M L/EJ<br><span style="font-size:7px;color:var(--smoke)">${(e.bgpej/1e6).toFixed(2)}M gal</span></td>
     <td class="ng">${fM(e.bext)}</td>
     <td class="nc">${e.gap.toFixed(0)}×</td>
     <td><div class="bw">
@@ -369,18 +572,21 @@ D.forEach(e=>{
 });
 tbl.innerHTML+='</tbody>';
 
-// MAIN CHART
+/* ═══════ HOVER TOOLTIP ON CHART ═══════ */
+var tooltipData = null;
+
+/* ═══════ MAIN CHART: The Hunger Line ═══════ */
 function drawC1(){
   const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
-  const gridCol = isDark ? 'rgba(255,255,255,0.035)' : 'rgba(0,0,0,0.06)';
-  const textCol = isDark ? '#5a5480' : '#4a3a78';
-  const bgCol   = isDark ? '#07060e' : '#f5f3ff';
+  const gridCol = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.07)';
+  const textCol = isDark ? '#605848' : '#5a5040';
+  const bgCol   = isDark ? '#111111' : '#ebe2cc';
 
   const cv=document.getElementById('c1');
-  const W=cv.offsetWidth,H=300;
+  const W=cv.offsetWidth,H=320;
   cv.width=W;cv.height=H;
   const c=cv.getContext('2d');
-  const P={t:28,r:82,b:36,l:72};
+  const P={t:32,r:88,b:40,l:76};
   const pw=W-P.l-P.r,ph=H-P.t-P.b;
   const tMin=-4300,tMax=2100;
   const yr=[-2600,-100,900,1575,1850,1990];
@@ -395,56 +601,64 @@ function drawC1(){
   const cyB=y=>P.t+(1-(y-yBn)/(yBx-yBn))*ph;
   const cyG=y=>P.t+(1-(y-yGn)/(yGx-yGn))*ph;
 
-  // Background
   c.fillStyle=bgCol;c.fillRect(0,0,W,H);
 
-  // God bands
-  [{t0:-4300,t1:-1000,lb:'APEP · TIAMAT',cl:'#1a6a40'},
-   {t0:-1000,t1:-100, lb:'MOLOCH · BAAL', cl:'#6a1808'},
-   {t0:-100, t1:500,  lb:'KRONOS · SAT',  cl:'#502880'},
-   {t0:500,  t1:1500, lb:'CHRISTUS REX',  cl:'#3a3010'},
-   {t0:1500, t1:1900, lb:'CROWN · STATE', cl:'#1a3050'},
-   {t0:1900, t1:2100, lb:'THE MARKET',    cl:'#5a3880'}
+  // God bands with Burton-esque styling
+  [{t0:-4300,t1:-1000,lb:'APEP · TIAMAT',  cl:isDark?'#2a1808':'#e8d0b0'},
+   {t0:-1000,t1:-100, lb:'MOLOCH · BAAL',  cl:isDark?'#2a0808':'#e8c0b8'},
+   {t0:-100, t1:500,  lb:'KRONOS · SAT',   cl:isDark?'#1a1028':'#d8c8e0'},
+   {t0:500,  t1:1500, lb:'CHRISTUS REX',   cl:isDark?'#1a1808':'#d8d4c0'},
+   {t0:1500, t1:1900, lb:'CROWN · STATE',  cl:isDark?'#0a1418':'#c8d4d8'},
+   {t0:1900, t1:2100, lb:'THE MARKET',     cl:isDark?'#1a0808':'#e0c0c0'},
   ].forEach(b=>{
     const x0=cx(b.t0),x1=cx(b.t1);
-    c.fillStyle=b.cl+'28';c.fillRect(x0,0,x1-x0,H);
-    c.fillStyle=b.cl+'cc';c.font='7px DM Mono,monospace';c.textAlign='center';
-    if(x1-x0>22)c.fillText(b.lb,(x0+x1)/2,12);
+    c.fillStyle=b.cl;c.fillRect(x0,0,x1-x0,H);
+    c.fillStyle=isDark?'rgba(255,255,255,0.15)':'rgba(0,0,0,0.2)';
+    c.font='bold 7px "Space Mono",monospace';c.textAlign='center';
+    if(x1-x0>22)c.fillText(b.lb,(x0+x1)/2,14);
   });
 
-  // Grid
+  // Grid lines
   for(let y=Math.floor(yCn);y<=Math.ceil(yCx);y++){
     c.beginPath();c.moveTo(P.l,cyC(y));c.lineTo(W-P.r,cyC(y));
     c.strokeStyle=gridCol;c.lineWidth=1;c.stroke();
-    c.fillStyle=textCol;c.font='7px DM Mono,monospace';c.textAlign='right';
-    c.fillText('10^'+y,P.l-5,cyC(y)+3);
+    c.fillStyle=textCol;c.font='8px "Special Elite",monospace';c.textAlign='right';
+    c.fillText('10^'+y,P.l-6,cyC(y)+3);
   }
 
   [-3000,-2000,-1000,0,500,1000,1500,1800,1900,1950,2000].forEach(t=>{
     c.beginPath();c.moveTo(cx(t),P.t);c.lineTo(cx(t),H-P.b);
     c.strokeStyle=gridCol;c.lineWidth=1;c.stroke();
-    c.fillStyle=textCol;c.font='7px DM Mono,monospace';c.textAlign='center';
-    c.fillText(t<0?Math.abs(t)+'B':t+'CE',cx(t),H-P.b+11);
+    c.fillStyle=textCol;c.font='8px "Special Elite",monospace';c.textAlign='center';
+    c.fillText(t<0?Math.abs(t)+'B':t+'CE',cx(t),H-P.b+12);
   });
+
   for(let y=Math.floor(yBn);y<=Math.ceil(yBx);y++){
-    c.fillStyle='#c87820';c.font='7px DM Mono,monospace';c.textAlign='left';
-    c.fillText('$10^'+y,W-P.r+4,cyB(y)+3);
+    c.fillStyle=isDark?'#b86830':'#805020';c.font='8px "Special Elite",monospace';c.textAlign='left';
+    c.fillText('$10^'+y,W-P.r+5,cyB(y)+3);
   }
-  c.fillStyle='#b0281866';c.font='7px DM Mono,monospace';
-  c.save();c.translate(11,P.t+ph/2);c.rotate(-Math.PI/2);c.textAlign='center';
+
+  // Axis labels
+  c.fillStyle=isDark?'rgba(160,24,24,0.5)':'rgba(120,16,16,0.5)';
+  c.font='bold 8px "Space Mono",monospace';
+  c.save();c.translate(12,P.t+ph/2);c.rotate(-Math.PI/2);c.textAlign='center';
   c.fillText('LITERS BLOOD / EJ',0,0);c.restore();
-  c.fillStyle='#c8782066';c.font='7px DM Mono,monospace';
-  c.save();c.translate(W-7,P.t+ph/2);c.rotate(Math.PI/2);c.textAlign='center';
+
+  c.fillStyle=isDark?'rgba(184,104,48,0.5)':'rgba(128,80,32,0.5)';
+  c.font='bold 8px "Space Mono",monospace';
+  c.save();c.translate(W-8,P.t+ph/2);c.rotate(Math.PI/2);c.textAlign='center';
   c.fillText('$/L EXTRACTED',0,0);c.restore();
 
-  // Medical ref
+  // Medical ref line
   const ml=Math.log10(MED);
   if(ml>=yBn&&ml<=yBx){
     const ym=cyB(ml);
     c.beginPath();c.moveTo(P.l,ym);c.lineTo(W-P.r,ym);
-    c.strokeStyle='#c8782035';c.lineWidth=1;c.setLineDash([2,5]);c.stroke();c.setLineDash([]);
-    c.fillStyle='#c8782068';c.font='7px DM Mono,monospace';c.textAlign='left';
-    c.fillText('medical $880/L',P.l+4,ym-3);
+    c.strokeStyle=isDark?'rgba(184,104,48,0.25)':'rgba(128,80,32,0.2)';
+    c.lineWidth=1;c.setLineDash([3,5]);c.stroke();c.setLineDash([]);
+    c.fillStyle=isDark?'rgba(184,104,48,0.5)':'rgba(128,80,32,0.4)';
+    c.font='8px "Special Elite",monospace';c.textAlign='left';
+    c.fillText('medical $880/L',P.l+4,ym-4);
   }
 
   // OLS
@@ -455,49 +669,109 @@ function drawC1(){
   const b1=ssxy/ssxx,b0=ym2-b1*xm,r2=ssxy**2/(ssxx*ssyy);
   c.beginPath();
   c.moveTo(cx(tMin),cyC(b0+b1*tMin));c.lineTo(cx(tMax),cyC(b0+b1*tMax));
-  c.strokeStyle='#b0281830';c.lineWidth=1.5;c.setLineDash([8,5]);c.stroke();c.setLineDash([]);
-  c.fillStyle='#b0281868';c.font='7px DM Mono,monospace';c.textAlign='left';
-  c.fillText(`OLS β₁=${b1.toFixed(5)}  R²=${r2.toFixed(3)}`,P.l+6,P.t+22);
+  c.strokeStyle=isDark?'rgba(160,24,24,0.2)':'rgba(120,16,16,0.15)';
+  c.lineWidth=2;c.setLineDash([8,5]);c.stroke();c.setLineDash([]);
+  c.fillStyle=isDark?'rgba(160,24,24,0.5)':'rgba(120,16,16,0.4)';
+  c.font='bold 8px "Space Mono",monospace';c.textAlign='left';
+  c.fillText(`OLS β₁=${b1.toFixed(5)}  R²=${r2.toFixed(3)}`,P.l+6,P.t+24);
 
-  // Blood extracted line
+  // Blood extracted line (dashed)
   c.beginPath();
   yr.forEach((t,i)=>i===0?c.moveTo(cx(t),cyB(lB[i])):c.lineTo(cx(t),cyB(lB[i])));
-  c.strokeStyle='#c8782055';c.lineWidth=1.5;c.setLineDash([3,3]);c.stroke();c.setLineDash([]);
-  yr.forEach((t,i)=>{c.beginPath();c.arc(cx(t),cyB(lB[i]),3,0,Math.PI*2);c.fillStyle='#c87820';c.fill();});
+  c.strokeStyle=isDark?'rgba(184,104,48,0.45)':'rgba(128,80,32,0.4)';
+  c.lineWidth=1.5;c.setLineDash([3,3]);c.stroke();c.setLineDash([]);
+  yr.forEach((t,i)=>{
+    c.beginPath();c.arc(cx(t),cyB(lB[i]),4,0,Math.PI*2);
+    c.fillStyle=isDark?'#b86830':'#805020';c.fill();
+    c.strokeStyle=bgCol;c.lineWidth=1;c.stroke();
+  });
 
   // Substrate crosses
   c.beginPath();
   yr.forEach((t,i)=>i===0?c.moveTo(cx(t),cyG(lG[i])):c.lineTo(cx(t),cyG(lG[i])));
-  c.strokeStyle='#38a87055';c.lineWidth=1.5;c.stroke();
+  c.strokeStyle=isDark?'rgba(32,136,128,0.4)':'rgba(16,104,88,0.4)';c.lineWidth=1.5;c.stroke();
   yr.forEach((t,i)=>{
     const x=cx(t),y=cyG(lG[i]);
-    c.strokeStyle='#38a870';c.lineWidth=1.5;
+    c.strokeStyle=isDark?'#208880':'#106858';c.lineWidth=2;
     c.beginPath();c.moveTo(x-4,y);c.lineTo(x+4,y);c.moveTo(x,y-4);c.lineTo(x,y+4);c.stroke();
   });
 
-  // Blood volume dots
+  // Blood volume dots — fat, prominent
   yr.forEach((t,i)=>{
     const d=D[i],x=cx(t),y=cyC(lC[i]);
-    c.beginPath();c.arc(x,y,6,0,Math.PI*2);
+    // Glow
+    c.beginPath();c.arc(x,y,12,0,Math.PI*2);
+    c.fillStyle=d.col+'18';c.fill();
+    // Dot
+    c.beginPath();c.arc(x,y,7,0,Math.PI*2);
     c.fillStyle=d.col;c.fill();
-    c.strokeStyle=bgCol;c.lineWidth=1.5;c.stroke();
-    c.fillStyle=d.col+'dd';c.font='7px DM Mono,monospace';c.textAlign='center';
-    c.fillText(d.god.split('/')[0].trim(),x,y-10);
+    c.strokeStyle=bgCol;c.lineWidth=2;c.stroke();
+    // Label
+    c.fillStyle=isDark?(d.col+'dd'):(d.col);
+    c.font='bold 8px "Space Mono",monospace';c.textAlign='center';
+    c.fillText(d.god.split('/')[0].trim(),x,y-14);
   });
+
+  // Store data for hover
+  tooltipData = yr.map((t,i)=>({ x:cx(t), y:cyC(lC[i]), d:D[i] }));
 }
 
-// SUBSTRATE CHART
+/* ═══════ CHART HOVER TOOLTIP ═══════ */
+(function(){
+  var cv = document.getElementById('c1');
+  var tip = document.createElement('div');
+  tip.style.cssText = 'position:fixed;z-index:999;background:var(--card);border:1px solid var(--red-dark);padding:10px 14px;font-family:"Special Elite",monospace;font-size:11px;color:var(--bone);pointer-events:none;opacity:0;transition:opacity 0.15s;max-width:220px;line-height:1.8;';
+  document.body.appendChild(tip);
+
+  cv.addEventListener('mousemove', function(e){
+    if(!tooltipData) return;
+    var rect = cv.getBoundingClientRect();
+    var mx = e.clientX - rect.left;
+    var my = e.clientY - rect.top;
+    var scaleX = cv.width / rect.width;
+    var scaleY = cv.height / rect.height;
+    mx *= scaleX;
+    my *= scaleY;
+
+    var closest = null, minDist = 40;
+    tooltipData.forEach(function(p){
+      var dist = Math.sqrt((mx-p.x)**2 + (my-p.y)**2);
+      if(dist < minDist) { closest = p; minDist = dist; }
+    });
+
+    if(closest) {
+      var d = closest.d;
+      tip.innerHTML = '<strong style="color:'+d.col+'">'+d.name+'</strong><br>'
+        +d.period+'<br>'
+        +'Deaths: <span style="color:var(--red-bright)">'+fD(d.dM)+'</span><br>'
+        +'Blood/EJ: <span style="color:var(--red)">'+(d.bpej/1e6).toFixed(1)+'M L</span><br>'
+        +'$/L: <span style="color:var(--rust)">'+fM(d.bext)+'</span><br>'
+        +'Gap: <span style="color:var(--teal)">'+d.gap.toFixed(0)+'×</span>';
+      tip.style.left = (e.clientX + 16) + 'px';
+      tip.style.top = (e.clientY - 10) + 'px';
+      tip.style.opacity = '1';
+    } else {
+      tip.style.opacity = '0';
+    }
+  });
+
+  cv.addEventListener('mouseleave', function(){
+    tip.style.opacity = '0';
+  });
+})();
+
+/* ═══════ SUBSTRATE CHART ═══════ */
 function drawC2(){
   const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
-  const gridCol = isDark ? 'rgba(255,255,255,0.035)' : 'rgba(0,0,0,0.06)';
-  const textCol = isDark ? '#5a5480' : '#4a3a78';
-  const bgCol   = isDark ? '#07060e' : '#f5f3ff';
+  const gridCol = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.07)';
+  const textCol = isDark ? '#605848' : '#5a5040';
+  const bgCol   = isDark ? '#111111' : '#ebe2cc';
 
   const cv=document.getElementById('c2');
-  const W=cv.offsetWidth,H=100;
+  const W=cv.offsetWidth,H=110;
   cv.width=W;cv.height=H;
   const c=cv.getContext('2d');
-  const P={t:12,r:16,b:22,l:72};
+  const P={t:14,r:16,b:24,l:76};
   const pw=W-P.l-P.r,ph=H-P.t-P.b;
 
   c.fillStyle=bgCol;c.fillRect(0,0,W,H);
@@ -505,43 +779,43 @@ function drawC2(){
   const lv=D.map(d=>Math.log10(d.gjU));
   const mn=Math.min(...lv)-.3,mx=Math.max(...lv)+.3;
   const rH=ph/D.length;
+
   for(let v=Math.ceil(mn);v<=Math.floor(mx)+1;v++){
     const x=P.l+(v-mn)/(mx-mn)*pw;
     c.beginPath();c.moveTo(x,P.t);c.lineTo(x,H-P.b);
     c.strokeStyle=gridCol;c.stroke();
-    c.fillStyle=textCol;c.font='6.5px DM Mono,monospace';c.textAlign='center';
-    c.fillText('10^'+v+' GJ',x,H-P.b+9);
+    c.fillStyle=textCol;c.font='7px "Special Elite",monospace';c.textAlign='center';
+    c.fillText('10^'+v+' GJ',x,H-P.b+10);
   }
+
   D.forEach((d,i)=>{
     const y=P.t+rH*(i+.5),bx=P.l+(Math.log10(d.gjU)-mn)/(mx-mn)*pw;
-    c.fillStyle=d.col+'25';c.fillRect(P.l,y-5,bx-P.l,10);
-    c.beginPath();c.arc(bx,y,3.5,0,Math.PI*2);c.fillStyle=d.col;c.fill();
-    c.fillStyle=textCol;c.font='7px DM Mono,monospace';c.textAlign='right';
-    c.fillText(d.name,P.l-4,y+3);
+    c.fillStyle=d.col+'20';c.fillRect(P.l,y-6,bx-P.l,12);
+    c.beginPath();c.arc(bx,y,4.5,0,Math.PI*2);c.fillStyle=d.col;c.fill();
+    c.strokeStyle=bgCol;c.lineWidth=1;c.stroke();
+    c.fillStyle=textCol;c.font='8px "Special Elite",monospace';c.textAlign='right';
+    c.fillText(d.name,P.l-5,y+3);
     c.fillStyle=d.col+'cc';c.textAlign='left';
-    c.fillText(d.gjU+' '+d.uL+'  ×'+d.mult.toFixed(2)+'  vs grain',bx+6,y+3);
+    c.fillText(d.gjU+' '+d.uL+'  ×'+d.mult.toFixed(2),bx+8,y+3);
   });
 }
 
-// GLOBAL CELLS
+/* ═══════ GLOBAL CELLS ═══════ */
 const totD=D.reduce((a,d)=>a+d.dM,0);
 const totE=D.reduce((a,d)=>a+d.tGJ,0);
-const totEJ=D.reduce((a,d)=>a+d.tEJ,0);
-const maxH=Math.max(...D.map(d=>d.bpej));
-const minH=Math.min(...D.map(d=>d.bpej));
 const maxG=Math.max(...D.map(d=>d.gap));
-const peakN=D.find(d=>d.bpej===maxH).name;
-const minN=D.find(d=>d.bpej===minH).name;
+const peakN=D.find(d=>d.bpej===Math.max(...D.map(x=>x.bpej))).name;
+const minN=D.find(d=>d.bpej===Math.min(...D.map(x=>x.bpej))).name;
 
 [
-  {v:fD(totD),         l:'Total deaths\nall eras',              c:'var(--blood)'},
-  {v:fE(totE),         l:'Total EJ extracted\nall eras',        c:'var(--energy)'},
-  {v:fG(D.reduce((a,d)=>a+d.gpd,0)/D.length), l:'Mean GJ/death\nacross eras',  c:'var(--amber)'},
-  {v:(Math.max(...D.map(d=>d.bpej))/1e6).toFixed(1)+'M',  l:'Peak L Blood/EJ\n('+peakN+')',   c:'var(--blood)'},
-  {v:(Math.min(...D.map(d=>d.bpej))/1e3).toFixed(0)+'K',  l:'Min L Blood/EJ\n('+minN+')',     c:'var(--energy)'},
-  {v:(D[5].gjU/D[0].gjU).toFixed(2)+'×', l:'Oil vs grain\nGJ/unit ratio',  c:'var(--cold)'},
-  {v:maxG.toFixed(0)+'×',  l:'Peak profit/L extracted\n(Modern)', c:'var(--gap)'},
-  {v:'$'+SGJ.toFixed(2)+'/GJ', l:'Shadow energy price\n(Brent $75/bbl basis)', c:'var(--amber)'},
+  {v:fD(totD),         l:'Total deaths\nall eras',              c:'var(--red-bright)'},
+  {v:fE(totE),         l:'Total EJ extracted\nall eras',        c:'var(--teal)'},
+  {v:fG(D.reduce((a,d)=>a+d.gpd,0)/D.length), l:'Mean GJ/death\nacross eras',  c:'var(--rust)'},
+  {v:(Math.max(...D.map(d=>d.bpej))/1e6).toFixed(1)+'M',  l:'Peak L Blood/EJ\n('+peakN+')',   c:'var(--red-bright)'},
+  {v:(Math.min(...D.map(d=>d.bpej))/1e3).toFixed(0)+'K',  l:'Min L Blood/EJ\n('+minN+')',     c:'var(--teal)'},
+  {v:(D[5].gjU/D[0].gjU).toFixed(2)+'×', l:'Oil vs grain\nGJ/unit ratio',  c:'var(--teal)'},
+  {v:maxG.toFixed(0)+'×',  l:'Peak profit/L\n(Modern)', c:'var(--bile)'},
+  {v:'$'+SGJ.toFixed(2)+'/GJ', l:'Shadow energy price\n(Brent $75/bbl)', c:'var(--rust)'},
 ].forEach(g=>{
   document.getElementById('gc').innerHTML+=`<div class="gcell">
     <div class="gv" style="color:${g.c}">${g.v}</div>
@@ -549,21 +823,20 @@ const minN=D.find(d=>d.bpej===minH).name;
   </div>`;
 });
 
-// SIDEBAR PANELS
+/* ═══════ SIDEBAR PANELS ═══════ */
 const sbPanels=document.getElementById('sb-panels');
 
-// Invariants
 [
-  {name:'Feed Equation',tag:'INVARIANT',tc:'var(--cold)',
+  {name:'Feed Equation',tag:'INVARIANT',tc:'var(--teal)',
    rows:[
      {l:'Formula',     v:'L blood/EJ = deaths×5 ÷ (GJ_total/10⁹)'},
      {l:'Structure',   v:'energy ÷ life → surplus (all eras)'},
      {l:'Substrate',   v:'interchangeable; function identical'},
      {l:'God-name',    v:'changes; equation does not'},
    ],
-   f:'E = pop × GJ/cap/yr × duration\nSubstrate changes; hunger equation invariant\nRecognition: same structure, different mask\nNote: substrate changes. The hunger does not. The accountant calls this "stable unit economics."',
+   f:'E = pop × GJ/cap/yr × duration\nSubstrate changes; hunger equation invariant\nNote: substrate changes. The hunger does not.',
   },
-  {name:'OLS: Hunger',tag:'INVARIANT',tc:'var(--cold)',
+  {name:'OLS: Hunger',tag:'INVARIANT',tc:'var(--teal)',
    rows:(()=>{
      const xs=[-2600,-100,900,1575,1850,1990];
      const ys=D.map(d=>Math.log10(d.bpej));
@@ -582,7 +855,7 @@ const sbPanels=document.getElementById('sb-panels');
    })(),
    f:'log₁₀(L blood/EJ) ~ year\nNegative slope = more GJ per kill over time\nMachine efficiency increasing (not mercy)',
   },
-  {name:'Blood Price',tag:'INVARIANT',tc:'var(--cold)',
+  {name:'Blood Price',tag:'INVARIANT',tc:'var(--teal)',
    rows:[
      {l:'Formula',     v:'($/GJ × GJ/death) ÷ 5L'},
      {l:'Meaning',     v:'value extracted per litre blood'},
@@ -591,15 +864,15 @@ const sbPanels=document.getElementById('sb-panels');
      {l:'Modern gap',  v:D[5].gap.toFixed(0)+'× above medical'},
      {l:'Peak gap era',v:D.find(d=>d.gap===maxG).name},
    ],
-   f:'NOT "how cheaply blood is bought"\nBUT "how much value per kill extracted"\nGap ↑ as machine scales = larger externality\nThe modern externality gap: your liter of blood is worth 2,548× what the hospital charges for it. Congratulations. You are undervalued.',
+   f:'NOT "how cheaply blood is bought"\nBUT "how much value per kill extracted"\nGap ↑ as machine scales = larger externality',
   },
 ].forEach(inv=>{
-  sbPanels.innerHTML+=`<div class="panel" style="border-left:2px solid ${inv.tc}">
+  sbPanels.innerHTML+=`<div class="panel" style="border-left:3px solid ${inv.tc}">
     <div class="ph"><span class="pn">${inv.name}</span>
       <span class="pt" style="color:${inv.tc}">${inv.tag}</span></div>
     <div class="pb">
       ${inv.rows.map(r=>`<div class="pr"><span class="pl">${r.l}</span>
-        <span class="pv nc">${r.v}</span></div>`).join('')}
+        <span class="pv" style="color:var(--teal)">${r.v}</span></div>`).join('')}
       <div class="pf">${inv.f.replace(/\n/g,'<br>')}</div>
     </div></div>`;
 });
@@ -618,18 +891,18 @@ sbPanels.innerHTML+=`<div class="vp"><div class="vt">Invariants of Variants</div
     <span class="vrv">${r.t}</span></div>`).join('')}
 </div>`;
 
-// Sparklines
+/* ═══════ SPARKLINES ═══════ */
 const sbSpark=document.getElementById('sb-sparklines');
 const spDiv=document.createElement('div');spDiv.className='sg';
 [
-  {l:'GJ / death',          v:D.map(d=>Math.log10(d.gpd)),  c:'#d4a040'},
-  {l:'Liters Blood / EJ',   v:D.map(d=>Math.log10(d.bpej)), c:'#b02818'},
+  {l:'GJ / death',          v:D.map(d=>Math.log10(d.gpd)),  c:'#b86830'},
+  {l:'Liters Blood / EJ',   v:D.map(d=>Math.log10(d.bpej)), c:'#a01818'},
   {l:'$/L extracted',       v:D.map(d=>Math.log10(d.bext)),  c:'#c87820'},
-  {l:'Substrate GJ/u',      v:D.map(d=>Math.log10(d.gjU)),  c:'#38a870'},
+  {l:'Substrate GJ/u',      v:D.map(d=>Math.log10(d.gjU)),  c:'#208880'},
 ].forEach(sd=>{
   const bl=document.createElement('div');bl.className='sb';
   bl.innerHTML=`<div class="sl">${sd.l}</div>`;
-  const cv=document.createElement('canvas');cv.height=34;bl.appendChild(cv);
+  const cv=document.createElement('canvas');cv.height=36;bl.appendChild(cv);
   const rng=document.createElement('div');rng.className='sr';
   const mn=Math.min(...sd.v),mx=Math.max(...sd.v);
   rng.innerHTML=`<span>${(10**mn).toExponential(1)}</span><span>${(10**mx).toExponential(1)}</span>`;
@@ -637,25 +910,42 @@ const spDiv=document.createElement('div');spDiv.className='sg';
   requestAnimationFrame(()=>{
     const W=cv.offsetWidth||128;cv.width=W;
     const ctx=cv.getContext('2d');
-    const cy=v=>2+(1-(v-mn)/(mx-mn))*30;
+    const cy=v=>3+(1-(v-mn)/(mx-mn))*30;
     const cxf=i=>i/(sd.v.length-1)*W;
-    ctx.beginPath();ctx.moveTo(cxf(0),34);
+    ctx.beginPath();ctx.moveTo(cxf(0),36);
     sd.v.forEach((v,i)=>ctx.lineTo(cxf(i),cy(v)));
-    ctx.lineTo(cxf(sd.v.length-1),34);ctx.closePath();
-    ctx.fillStyle=sd.c+'18';ctx.fill();
+    ctx.lineTo(cxf(sd.v.length-1),36);ctx.closePath();
+    ctx.fillStyle=sd.c+'15';ctx.fill();
     ctx.beginPath();
     sd.v.forEach((v,i)=>i===0?ctx.moveTo(cxf(i),cy(v)):ctx.lineTo(cxf(i),cy(v)));
-    ctx.strokeStyle=sd.c+'cc';ctx.lineWidth=1.5;ctx.stroke();
-    sd.v.forEach((v,i)=>{ctx.beginPath();ctx.arc(cxf(i),cy(v),2,0,Math.PI*2);ctx.fillStyle=sd.c;ctx.fill();});
+    ctx.strokeStyle=sd.c+'cc';ctx.lineWidth=2;ctx.stroke();
+    sd.v.forEach((v,i)=>{
+      ctx.beginPath();ctx.arc(cxf(i),cy(v),3,0,Math.PI*2);
+      ctx.fillStyle=sd.c;ctx.fill();
+      ctx.strokeStyle=isDark()?'#111':'#ebe2cc';ctx.lineWidth=1;ctx.stroke();
+    });
   });
 });
 sbSpark.appendChild(spDiv);
+
+function isDark(){ return document.documentElement.getAttribute('data-theme') !== 'light'; }
 
 function init(){drawC1();drawC2();}
 window.addEventListener('resize',init);
 window.addEventListener('load',init);
 setTimeout(init,80);
 window.redrawCharts = init;
+
+/* ═══════ SCROLL REVEAL ═══════ */
+(function(){
+  var els = document.querySelectorAll('.reveal');
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('vis'); obs.unobserve(e.target); }
+    });
+  }, {threshold:0.05, rootMargin:'0px 0px -20px 0px'});
+  els.forEach(function(el){ obs.observe(el); });
+})();
 </script>
 <script src="theme.js"></script>
 </body>
