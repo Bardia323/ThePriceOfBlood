@@ -39,7 +39,7 @@ body { overflow-x:hidden; }
 /* ── MAIN APP ────────────────────────────────── */
 #app { display:none; }
 
-/* ── TOP BAR (Burton style) ──────────────────── */
+/* ── TOP BAR (hidden initially) ──────────────── */
 .topbar {
   position:fixed; top:0; left:0; right:0; z-index:800;
   height:48px;
@@ -47,7 +47,11 @@ body { overflow-x:hidden; }
   border-bottom:2px solid var(--red-dark);
   display:flex; align-items:center; justify-content:space-between;
   padding:0 24px;
+  transform:translateY(-100%);
+  transition:transform 0.5s ease;
 }
+
+.topbar.show { transform:translateY(0); }
 
 .topbar-brand {
   font-family:var(--font-stamp);
@@ -240,98 +244,66 @@ body { overflow-x:hidden; }
 }
 
 /* ── RESULTS ─────────────────────────────────── */
-#result-phase { display:none; padding:64px 24px 40px; max-width:1100px; margin:0 auto; }
+#result-phase { display:none; }
 
-/* Split ledger */
-.ledger {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:1px;
-  background:var(--border);
-  border:1px solid var(--border);
-  margin-bottom:16px;
+/* ── STEP CARDS (click to advance) ───────────── */
+.step {
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:40px 24px;
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity 0.5s ease, transform 0.5s ease;
 }
 
-.ledger-side {
-  background:var(--card);
-  background-image:var(--stripe);
-  padding:24px 22px 18px;
+.step.vis {
+  opacity:1;
+  transform:translateY(0);
 }
 
-.ledger-label {
+.step-label {
   font-family:var(--font-stamp);
   font-size:8px;
-  letter-spacing:0.2em;
+  letter-spacing:0.3em;
   text-transform:uppercase;
-  padding-bottom:8px;
-  border-bottom:1px solid var(--border);
+  color:var(--smoke);
   margin-bottom:16px;
 }
 
-.ledger-label.you { color:var(--teal); }
-.ledger-label.blood { color:var(--red); }
-
-.lrow {
-  display:flex;
-  justify-content:space-between;
-  align-items:baseline;
-  padding:7px 0;
-  border-bottom:1px dotted var(--border);
-  transition:background 0.15s, padding-left 0.15s;
+.step-num {
+  font-family:var(--font-stamp);
+  font-size:clamp(40px,10vw,80px);
+  line-height:0.95;
+  margin-bottom:16px;
 }
 
-.lrow:hover { background:var(--surface); padding-left:4px; }
-.lrow:last-child { border-bottom:none; }
+.step-num.red { color:var(--red-bright); }
+.step-num.teal { color:var(--teal); }
 
-.lrow-l {
-  font-family:var(--font-type);
-  font-size:10px;
-  color:var(--smoke);
+.step-interp {
+  font-family:var(--font-book);
+  font-style:italic;
+  font-size:clamp(14px,2.2vw,20px);
+  font-weight:400;
+  color:var(--ash);
+  line-height:1.6;
+  max-width:480px;
 }
 
-.lrow-v {
-  font-family:var(--font-mono);
-  font-size:13px;
+.step-interp em {
+  color:var(--red);
+  font-style:normal;
   font-weight:700;
 }
 
-.lrow-v.teal { color:var(--teal); }
-.lrow-v.red  { color:var(--red-bright); }
-.lrow-v.rust { color:var(--rust); }
-.lrow-v.bone { color:var(--bone); }
-
-/* Verdict */
-.verdict {
-  text-align:center;
-  padding:48px 24px;
-  border:1px solid var(--border);
-  background:var(--card);
-  background-image:var(--stripe);
-  margin-bottom:16px;
-  position:relative;
-}
-
-.verdict::after {
-  content:'';
-  position:absolute; inset:0;
-  background:radial-gradient(ellipse at 50% 50%, rgba(160,24,24,0.04), transparent 70%);
-  pointer-events:none;
-}
-
-.verdict-pre {
-  font-family:var(--font-stamp);
-  font-size:8px;
-  letter-spacing:0.25em;
-  text-transform:uppercase;
-  color:var(--ash);
-  margin-bottom:12px;
-}
-
-.verdict-num {
-  font-family:var(--font-stamp);
-  font-size:clamp(56px,12vw,120px);
-  color:var(--red);
-  line-height:0.85;
+/* Big verdict step */
+.step.verdict .step-num {
+  font-size:clamp(64px,16vw,180px);
+  color:var(--red-vivid);
   animation:heartbeat 2s ease-in-out infinite;
 }
 
@@ -339,43 +311,17 @@ body { overflow-x:hidden; }
   0%,100%{transform:scale(1);} 14%{transform:scale(1.03);} 28%{transform:scale(1);} 42%{transform:scale(1.02);} 56%{transform:scale(1);}
 }
 
-.verdict-sub {
-  font-family:var(--font-type);
-  font-size:11px;
-  color:var(--smoke);
-  margin-top:16px;
-  line-height:1.9;
-}
-
-.verdict-sub em {
-  color:var(--red);
-  font-style:normal;
-  font-weight:700;
-}
-
 /* Gauge bar */
-.gauge {
-  border:1px solid var(--border);
-  background:var(--card);
-  padding:18px 22px;
-  margin-bottom:16px;
-}
-
-.gauge-label {
-  font-family:var(--font-stamp);
-  font-size:8px;
-  letter-spacing:0.15em;
-  text-transform:uppercase;
-  color:var(--ash);
-  margin-bottom:10px;
+.gauge-wrap {
+  width:min(500px, 80vw);
 }
 
 .gauge-track {
   position:relative;
-  height:20px;
+  height:24px;
   background:var(--bg2);
   border:1px solid var(--border);
-  margin-bottom:6px;
+  margin-bottom:8px;
 }
 
 .gauge-fill-blood {
@@ -398,15 +344,40 @@ body { overflow-x:hidden; }
 
 .gauge-meta .r { color:var(--red); }
 
-/* Handwritten annotation */
-.margin-note {
+/* Margin note */
+.step .margin-note {
   font-family:var(--font-hand);
   font-size:clamp(16px,2.5vw,22px);
   color:var(--red);
-  transform:rotate(-1.5deg);
+  margin-top:20px;
+  opacity:0.7;
+}
+
+/* Continue hint */
+#continue-hint {
+  position:fixed;
+  bottom:24px;
+  left:50%;
+  transform:translateX(-50%);
+  font-family:var(--font-type);
+  font-size:9px;
+  letter-spacing:0.15em;
+  color:var(--shadow);
+  z-index:700;
   text-align:center;
-  margin:20px 0 24px;
-  opacity:0.75;
+  cursor:pointer;
+  transition:opacity 0.3s;
+}
+
+#continue-hint span {
+  display:block;
+  font-size:14px;
+  margin-top:4px;
+  animation:floatDown 1.2s ease-in-out infinite;
+}
+
+@keyframes floatDown {
+  0%,100%{transform:translateY(0);} 50%{transform:translateY(4px);}
 }
 
 /* ── DIVIDER ─────────────────────────────────── */
@@ -744,57 +715,22 @@ body { overflow-x:hidden; }
   <!-- ═══════ RESULTS ═══════ -->
   <div id="result-phase">
 
-    <!-- LEDGER: side by side -->
-    <div class="ledger">
-      <div class="ledger-side">
-        <div class="ledger-label you">Your File — What the System Sees</div>
-        <div class="lrow"><span class="lrow-l">Annual salary</span><span class="lrow-v teal" id="r-sal">—</span></div>
-        <div class="lrow"><span class="lrow-l">Hourly rate</span><span class="lrow-v teal" id="r-hr">—</span></div>
-        <div class="lrow"><span class="lrow-l">Daily rate</span><span class="lrow-v teal" id="r-day">—</span></div>
-        <div class="lrow"><span class="lrow-l">Lifetime earnings (45 yrs)</span><span class="lrow-v teal" id="r-life">—</span></div>
-      </div>
-      <div class="ledger-side">
-        <div class="ledger-label blood">Your Blood File — What You're Worth</div>
-        <div class="lrow"><span class="lrow-l">Blood volume</span><span class="lrow-v red">5.00 litres</span></div>
-        <div class="lrow"><span class="lrow-l">Value per litre (extracted)</span><span class="lrow-v red">$2,242,623</span></div>
-        <div class="lrow"><span class="lrow-l">Total blood value</span><span class="lrow-v red">$11,213,115</span></div>
-        <div class="lrow"><span class="lrow-l">System keeps</span><span class="lrow-v red" id="r-keeps">—</span></div>
-      </div>
-    </div>
+    <!-- Steps appear one by one on click -->
+    <div id="steps"></div>
 
-    <!-- VERDICT -->
-    <div class="verdict">
-      <div class="verdict-pre">Years to earn what's already inside you</div>
-      <div class="verdict-num" id="v-years">—</div>
-      <div class="verdict-sub">
-        The system pays you <em id="v-pct">—</em> of your actual value per year.<br>
-        The other <em id="v-rest">—</em> is the margin it keeps. It calls this "a fair wage."
-      </div>
-    </div>
+    <div id="continue-hint" style="display:none;">continue<span>↓</span></div>
 
-    <div class="margin-note">You are the most undervalued asset in the economy.</div>
+    <!-- Below is hidden until all steps revealed -->
+    <div id="after-steps" style="display:none; max-width:1100px; margin:0 auto; padding:24px;">
 
-    <!-- GAUGE -->
-    <div class="gauge">
-      <div class="gauge-label">Your salary vs your blood value</div>
-      <div class="gauge-track">
-        <div class="gauge-fill-blood"></div>
-        <div class="gauge-fill-you" id="gauge-you"></div>
-      </div>
-      <div class="gauge-meta">
-        <span id="gauge-sal">$0</span>
-        <span class="r">$11,213,115 (your blood)</span>
-      </div>
-    </div>
-
-    <div class="dagger">†</div>
+    <div style="text-align:center;padding:32px 0;font-size:14px;color:var(--red-dark);">†</div>
 
     <!-- ═══════ ERA GAME ═══════ -->
     <div class="era-section">
       <div class="era-head">
         <span class="era-head-num">II</span>
-        <span class="era-head-title">The Machine</span>
-        <span class="era-head-sub">click an era · watch the equation stay the same</span>
+        <span class="era-head-title">Six Eras. One Equation.</span>
+        <span class="era-head-sub">click an era · watch the ratio hold</span>
       </div>
 
       <div class="era-tabs" id="era-tabs"></div>
@@ -813,13 +749,13 @@ body { overflow-x:hidden; }
         <a href="the_accounting.html" class="ev-card">
           <div class="ev-badge">EXHIBIT A</div>
           <div class="ev-name">The Accounting</div>
-          <div class="ev-desc">Six eras. 12 variables. The machine eats the same amount every time. The accountant remains unbothered.</div>
+          <div class="ev-desc">Six eras. 12 variables. The extraction rate holds across every substrate, every deity, every century. The accountant remains unbothered.</div>
           <div class="ev-foot"><span>Open the ledger</span><span class="ev-arrow">→</span></div>
         </a>
         <a href="blood_standard.html" class="ev-card">
           <div class="ev-badge">EXHIBIT B</div>
           <div class="ev-name">The Blood Standard</div>
-          <div class="ev-desc">1 BU = 1 litre. Your dollar buys 0.45 µL at the real rate. The mispricing is the system.</div>
+          <div class="ev-desc">1 BU = 1 litre. Your dollar buys 0.45 µL at the real rate. The 2,548× gap is not a bug.</div>
           <div class="ev-foot"><span>Open the ledger</span><span class="ev-arrow">→</span></div>
         </a>
       </div>
@@ -913,35 +849,130 @@ function go(){
   if(salary<1)salary=60000;
   document.getElementById('prompt-phase').style.display='none';
   document.getElementById('result-phase').style.display='block';
-  fill();
+  buildSteps();
   buildEra();
-  animateIn();
 }
 
-/* ═══════ FILL ═══════ */
-function fill(){
-  var hr=salary/2080,dy=salary/260,life=salary*45;
-  var yrs=PVAL/salary,pct=salary/PVAL*100;
-  document.getElementById('r-sal').textContent='$'+fN(salary);
-  document.getElementById('r-hr').textContent='$'+hr.toFixed(2)+'/hr';
-  document.getElementById('r-day').textContent='$'+fN(Math.round(dy))+'/day';
-  document.getElementById('r-life').textContent=fD(life);
-  document.getElementById('r-keeps').textContent=(100-pct).toFixed(2)+'%';
-  document.getElementById('v-years').textContent=fN(Math.round(yrs));
-  document.getElementById('v-pct').textContent=pct.toFixed(2)+'%';
-  document.getElementById('v-rest').textContent=(100-pct).toFixed(2)+'%';
-  var mp=Math.max(0.4,pct);
-  document.getElementById('gauge-you').style.width=mp+'%';
-  document.getElementById('gauge-sal').textContent='$'+fN(salary)+' ('+pct.toFixed(2)+'%)';
-}
+/* ═══════ BUILD STEPS (click to advance) ═══════ */
+function buildSteps(){
+  var hr=salary/2080;
+  var yrs=PVAL/salary, pct=salary/PVAL*100;
+  var bloodVal=PVAL*1; // 5L * $2.24M/L
 
-/* ═══════ ANIMATE ═══════ */
-function animateIn(){
-  var els=document.querySelectorAll('#result-phase > *');
-  els.forEach(function(el,i){
-    el.style.opacity='0';el.style.transform='translateY(24px)';
-    el.style.transition='opacity 0.5s ease, transform 0.5s ease';
-    setTimeout(function(){el.style.opacity='1';el.style.transform='translateY(0)';},80+i*100);
+  var steps=[
+    {
+      label:'YOUR SALARY',
+      num:'$'+fN(salary), cls:'teal',
+      interp:'Logged. The ledger has been assigning numbers like this for 6,000 years. The substrate changed — grain, wood, coal, oil. The number it assigns you did not.'
+    },
+    {
+      label:'YOUR HOURLY RATE',
+      num:'$'+hr.toFixed(2)+'/hr', cls:'teal',
+      interp:'A parking meter in Manhattan charges more per hour. A vending machine Snapple costs more per minute. The economy has priced your time accordingly.'
+    },
+    {
+      label:'YOUR BLOOD',
+      num:'5 LITRES', cls:'red',
+      interp:'That\'s how much is inside you right now. That\'s also 1.32 gallons, for anyone doing unit conversions. Every civilization priced it at something. The price kept changing. The blood did not.'
+    },
+    {
+      label:'WHAT YOUR BLOOD IS ACTUALLY WORTH',
+      num:'$'+fN(Math.round(bloodVal)), cls:'red',
+      interp:'This is the energy-derived value of your blood — computed from the extraction accounting across all six eras. <em>$2,242,623 per litre.</em> The hospital sells the same litre for $880. The gap between those two numbers is the oldest running arbitrage in recorded history.'
+    },
+    {
+      label:'THE GAP',
+      num:'2,548\u00d7', cls:'red', big:true,
+      interp:'Blood is underpriced by a factor of 2,548. This is not an accident. If blood were priced correctly, <em>every financial institution on earth would be insolvent overnight.</em> The gap is the load-bearing wall. <em>The structure defends itself.</em>'
+    },
+    {
+      label:'YEARS TO EARN WHAT\'S ALREADY INSIDE YOU',
+      num:fN(Math.round(yrs))+' YEARS', cls:'red', big:true,
+      interp:'That\'s more than '+Math.floor(yrs/80)+' full lifetimes at your current salary. You will never earn what you are worth. Not because you\'re bad at your job. Because the entire economy is structurally dependent on you not knowing this number.'
+    },
+    {
+      label:'THE EXTRACTION RATE',
+      num:(100-pct).toFixed(2)+'%', cls:'red',
+      interp:'<em>'+(100-pct).toFixed(2)+'%</em> of your actual blood value does not appear in your paycheck. Your paycheck is the <em>'+pct.toFixed(2)+'%</em> that cleared accounting. This isn\'t politics. It\'s the operating margin of a 6,000-year-old extraction model that learned to call the sacrifice "an externality" and the tithe "a tax bracket."'
+    },
+    {
+      label:'YOUR SALARY vs YOUR BLOOD VALUE',
+      num:'', cls:'', gauge:true, pct:pct,
+      interp:'The teal sliver is you. The rest is the gap. Every civilization, every era — the ratio holds. Only the paperwork changed.',
+      note:'The gods changed. The equation didn\'t.'
+    },
+  ];
+
+  var container=document.getElementById('steps');
+  container.innerHTML='';
+  var hint=document.getElementById('continue-hint');
+  hint.style.display='none';
+
+  steps.forEach(function(s,i){
+    var div=document.createElement('div');
+    div.className='step'+(s.big?' verdict':'');
+    var html='<div class="step-label">'+s.label+'</div>';
+    if(s.gauge){
+      var mp=Math.max(0.4,s.pct);
+      html+='<div class="gauge-track" style="position:relative;height:24px;background:var(--bg2);border:1px solid var(--border);">';
+      html+='<div class="gauge-fill-blood" style="position:absolute;left:0;top:0;bottom:0;width:100%;background:var(--red-deep);z-index:1;"></div>';
+      html+='<div class="gauge-fill-you" id="gauge-you-'+i+'" style="position:absolute;left:0;top:0;bottom:0;width:0%;background:var(--teal);z-index:2;transition:width 1.5s cubic-bezier(0.16,1,0.3,1);"></div>';
+      html+='</div>';
+      html+='<div class="gauge-meta"><span>$'+fN(salary)+' ('+s.pct.toFixed(2)+'%)</span><span class="r">$'+fN(Math.round(bloodVal))+' (blood value)</span></div>';
+      div.dataset.gaugeFill=mp;
+      div.dataset.gaugeId='gauge-you-'+i;
+    } else {
+      html+='<div class="step-num '+s.cls+'">'+s.num+'</div>';
+    }
+    html+='<div class="step-interp">'+s.interp+'</div>';
+    if(s.note) html+='<div class="margin-note">'+s.note+'</div>';
+    div.innerHTML=html;
+    container.appendChild(div);
+  });
+
+  // All steps visible immediately — staggered entrance via CSS delay
+  var allSteps=container.querySelectorAll('.step');
+  allSteps.forEach(function(el,i){
+    el.style.transitionDelay=(i*60)+'ms';
+    setTimeout(function(){ el.classList.add('vis'); },30);
+    if(el.dataset.gaugeFill){
+      setTimeout(function(){
+        var g=document.getElementById(el.dataset.gaugeId);
+        if(g) g.style.width=el.dataset.gaugeFill+'%';
+      }, 400 + i*60);
+    }
+  });
+
+  // after-steps always visible too
+  document.getElementById('after-steps').style.display='block';
+
+  // Continue hint scrolls to next step in sequence
+  var scrollIdx=0;
+  var targets=Array.prototype.slice.call(allSteps);
+  targets.push(document.getElementById('after-steps'));
+
+  function scrollNext(){
+    if(scrollIdx>=targets.length) return;
+    targets[scrollIdx].scrollIntoView({behavior:'smooth',block:'start'});
+    scrollIdx++;
+    if(scrollIdx>=targets.length){
+      hint.innerHTML='back to top<span>↑</span>';
+    } else {
+      hint.innerHTML='continue<span>↓</span>';
+    }
+  }
+
+  hint.innerHTML='continue<span>↓</span>';
+  hint.style.display='block';
+  hint.addEventListener('click',function(e){
+    e.stopPropagation();
+    if(scrollIdx>=targets.length){
+      window.scrollTo({top:0,behavior:'smooth'});
+      scrollIdx=0;
+      hint.innerHTML='continue<span>↓</span>';
+    } else {
+      scrollNext();
+    }
   });
 }
 
@@ -992,23 +1023,23 @@ function selectEra(idx){
   });
 
   var insights=[
-    'Grain powered the world. Apep swallowed the sun nightly and had to be fed. <b>'+fN(e.dM)+' died</b> to extract <b>'+e.tEJ.toFixed(0)+' EJ</b>. Blood price: <em>'+fD(e.bext)+'/L</em>. Gap: <em>'+e.gap.toFixed(0)+'×</em>. The sacrifice was public. The altar was named.',
-    'Kronos ate his children. Rome expanded. Still grain. Fewer deaths per EJ — more energy per kill. Blood price: <em>'+fD(e.bext)+'/L</em>. Gap: <em>'+e.gap.toFixed(0)+'×</em>. The machine got more efficient. The accountant\'s expression did not change.',
-    'Christ replaced Saturn. Tithes replaced sacrifices. Wood replaced grain. <b>50 million died</b>. Blood-per-EJ went up — busier machine, less efficient. <em>'+e.gap.toFixed(0)+'× above market</em>.',
-    'The Crown sailed. Colonies bled. Biomass. <b>12M dead</b> over 350 years. Blood: <em>'+fD(e.bext)+'/L</em>. They called it commerce.',
-    'Coal. Steam. Nationalism. <b>120M dead</b> in 200 years. Two world wars. Energy tripled. Blood: <em>'+fD(e.bext)+'/L</em>. Gap: <em>'+e.gap.toFixed(0)+'×</em>. They called it progress.',
-    'Oil. <b>25M dead</b> in 76 years. But <b>'+e.tEJ.toFixed(0)+' EJ</b> extracted — more than all other eras combined. Blood: <em>'+fD(e.bext)+'/L</em>. Gap: <em>'+e.gap.toFixed(0)+'×</em>. The god is "The Market." The ritual is the quarterly earnings call. The sacrifice is called "an externality." <b>The equation has not changed in 6,000 years.</b>',
+    'Apep, Tiamat, Moloch. The sacrifice was public — you could see the blood. <b>'+fN(e.dM)+' died</b> to power <b>'+e.tEJ.toFixed(0)+' EJ</b> of grain civilization. Blood price: <em>'+fD(e.bext)+'/L</em>. The gap was already <em>'+e.gap.toFixed(0)+'×</em>. The model was established here. The numbers have barely moved.',
+    'Kronos ate his children. Rome ran on grain and conquest — fewer deaths per unit of energy, more output per kill. Blood price: <em>'+fD(e.bext)+'/L</em>. Gap: <em>'+e.gap.toFixed(0)+'×</em>. The sacrifice was still visible. The Senate just called it "tribute." Same math, better branding.',
+    'The deity changed. The accounting didn\'t. Wood replaced grain, tithes replaced offerings, Christ replaced Saturn. But <b>50 million still died</b>. Crusades, Inquisition, feudal warfare — operating costs. Gap: <em>'+e.gap.toFixed(0)+'×</em>. The church kept the books. The books balanced.',
+    'The Crown sailed. The colonies bled. <b>12 million dead</b> over 350 years. The altar was called "the plantation." The sacrifice was called "labor." Blood: <em>'+fD(e.bext)+'/L</em>. Geographic distance turned out to be an excellent substitute for moral accountability.',
+    'Coal. Steam. The Nation-State. <b>120 million dead</b> in 200 years. Energy tripled. The extraction went industrial. A new word was needed for why you had to go: <em>"patriotism."</em> Blood: <em>'+fD(e.bext)+'/L</em>. Gap: <em>'+e.gap.toFixed(0)+'×</em>. The trench was the altar. The draft was the collection plate.',
+    'Oil. <b>25 million dead</b> in 76 years. Civilization now extracts <b>'+e.tEJ.toFixed(0)+' EJ</b> — more than all other eras combined. The sacrifice is called <em>"an externality."</em> Blood: <em>'+fD(e.bext)+'/L</em>. Gap: <em>'+e.gap.toFixed(0)+'×</em>. <b>The equation never changed. It just got better at paperwork.</b>',
   ];
 
   document.getElementById('era-insight').innerHTML=insights[idx];
 
   var notes=[
-    'The first ledger. Someone was counting even then.',
-    'Saturn devours. The books balance.',
-    'Holy wars. Holy profits.',
-    'They mapped the world. Then they drained it.',
+    'The first altar. The first ledger. The first blood.',
+    'Saturn devours. The accountant is unbothered.',
+    'The cross replaced the altar. The tithe replaced the offering. The math stayed.',
+    'They mapped the world. Then they priced it.',
     'Progress is a body count with good PR.',
-    'You are here. The machine is still running.',
+    'You are here. The equation is still running.',
   ];
   document.getElementById('era-note').textContent=notes[idx];
 }
