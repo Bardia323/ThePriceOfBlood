@@ -870,37 +870,37 @@ function buildSteps(){
     {
       label:'YOUR ERA',
       num:'Modern · 1950–2026', cls:'teal',
-      interp:'Oil substrate. <em>75 GJ per person per year.</em> More energy per capita than any previous era by a factor of three. You earn $'+fN(salary)+' — which locates you here, in the era that extracts more energy annually than all prior eras combined. This is the reference point. The accounting begins.'
+      interp:'Good news: you picked the most energy-rich era in history. Oil substrate, <em>75 GJ per person per year</em>, more extraction than all previous eras combined. You earn $'+fN(salary)+'. That\'s your ticket. Welcome to the ledger.'
     },
     {
-      label:'BLOOD IS A CURRENCY',
+      label:'HERE\'S THE THING ABOUT BLOOD',
       num:'5 L / person', cls:'red',
-      interp:'Not a metaphor. A unit of account. Every civilization in the record priced its resource extraction in deaths — and deaths have a fixed volume: five liters each. Grain, wood, coal, oil — the substrate changed. The denomination didn\'t. Blood is the currency through which civilizations purchase their energy base. The dollar came later. It\'s a translation.'
+      interp:'Every person who ever lived contained exactly five litres of it. And every civilization — without exception, without a single outlier — priced its resource extraction in deaths. Not dollars. Not gold. Deaths, at five litres each. The fuel kept changing. That part didn\'t.'
     },
     {
-      label:'THE BLOOD PRICE OF YOUR ERA',
+      label:'WHAT YOUR ERA ACTUALLY SPENT',
       num:fN(eraBloodL/1e6)+'M litres', cls:'red',
-      interp:'The Modern era: <em>25 million deaths</em> × 5L = <em>125 million litres of blood</em> spent to extract <em>'+eraEJ.toFixed(0)+' EJ</em> of energy. That\'s the transaction. The oil didn\'t come free. The pipeline was priced in something that doesn\'t appear on the invoice.'
+      interp:'25 million deaths × 5L = <em>125 million litres of blood</em> to pull <em>'+eraEJ.toFixed(0)+' EJ</em> out of the ground. That\'s the transaction your era ran on. It\'s not on the invoice — but it\'s in the accounting. You\'re reading the accounting.'
     },
     {
-      label:'THE RATE ACROSS ALL SIX ERAS',
+      label:'AND HERE\'S WHERE IT GETS WEIRD',
       num:'~const', cls:'red', big:true,
-      interp:'Bronze Age. Roman. Feudal. Colonial. Industrial. Modern. Six different fuels, six different gods, six different political systems. The blood price per unit of energy extracted shows <em>negligible variance</em> across 6,000 years. This is either the most useful accounting identity ever discovered, or the most inconvenient one. Probably both.'
+      interp:'Do that same calculation for the Bronze Age. Then Rome. Then the Feudal era, the Colonial, the Industrial. Six fuels, six gods, six completely different political arrangements. The blood price per unit of energy? <em>Barely moves.</em> For 6,000 years. That\'s either a coincidence or a law. We\'re not saying which.'
     },
     {
-      label:'THE DOLLAR IS THE TRANSLATION LAYER',
+      label:'SO WHAT\'S THE DOLLAR, THEN',
       num:'2,548\u00d7', cls:'red',
-      interp:'Real blood value: $2.24M per litre (energy-derived). Market blood value: $880 per litre (hospital). The gap isn\'t a scandal — it\'s the conversion rate between the original currency and the translation. <em>The dollar didn\'t replace blood as the currency of resource extraction. It just made the accounting invisible.</em>'
+      interp:'The real blood value of a litre — derived from what energy costs in deaths — is $2.24M. The hospital charges $880 for the same litre. That 2,548× gap isn\'t a crime. It\'s just the exchange rate between the original currency and the translation. <em>The dollar didn\'t replace blood. It just made the ledger harder to read.</em>'
     },
     {
-      label:'WHERE YOUR SALARY FITS',
+      label:'WHERE YOU SIT',
       num:'$'+fN(salary)+' / yr', cls:'teal',
-      interp:'At $'+fN(salary)+'/year, you participate in an energy system that runs at '+fN(Math.round(eraEJ))+' EJ total, priced at 125 million litres of blood. Your salary is denominated in dollars. The energy it buys was denominated in something else first. The ledger below shows you the full accounting — all six eras, all the math.'
+      interp:'Your $'+fN(salary)+' gets you a seat in a system running at '+fN(Math.round(eraEJ))+' EJ, priced at 125 million litres. You\'re not responsible for that number. You also didn\'t make it up. It\'s in the data — all six eras, all the math — and it\'s sitting right below this.'
     },
     {
-      label:'YOUR SALARY IN BLOOD',
+      label:'YOUR SALARY, TRANSLATED',
       num:'', cls:'', gauge:true, pct:pct,
-      interp:'The teal is what your salary represents as a fraction of the total blood expenditure of your era. The rest of the bar is what the era spent that your paycheck doesn\'t reflect. This ratio has been consistent for 6,000 years. The substrate is different. The denominator is the same.',
+      interp:'Teal is your salary as a share of the total blood expenditure of your era. The rest of the bar is what the era spent that your paycheck doesn\'t mention. Scroll down and pick an era — the bar looks different, the ratio doesn\'t.',
       note:'The fuel changed. The price in blood did not.'
     },
   ];
@@ -1025,23 +1025,23 @@ function selectEra(idx){
   });
 
   var insights=[
-    'Apep, Tiamat, Moloch. The sacrifice was public — you could see the blood. <b>'+fN(e.dM)+' died</b> to power <b>'+e.tEJ.toFixed(0)+' EJ</b> of grain civilization. Blood price: <em>'+fD(e.bext)+'/L</em>. The gap was already <em>'+e.gap.toFixed(0)+'×</em>. The model was established here. The numbers have barely moved.',
-    'Kronos ate his children. Rome ran on grain and conquest — fewer deaths per unit of energy, more output per kill. Blood price: <em>'+fD(e.bext)+'/L</em>. Gap: <em>'+e.gap.toFixed(0)+'×</em>. The sacrifice was still visible. The Senate just called it "tribute." Same math, better branding.',
-    'The deity changed. The accounting didn\'t. Wood replaced grain, tithes replaced offerings, Christ replaced Saturn. But <b>50 million still died</b>. Crusades, Inquisition, feudal warfare — operating costs. Gap: <em>'+e.gap.toFixed(0)+'×</em>. The church kept the books. The books balanced.',
-    'The Crown sailed. The colonies bled. <b>12 million dead</b> over 350 years. The altar was called "the plantation." The sacrifice was called "labor." Blood: <em>'+fD(e.bext)+'/L</em>. Geographic distance turned out to be an excellent substitute for moral accountability.',
-    'Coal. Steam. The Nation-State. <b>120 million dead</b> in 200 years. Energy tripled. The extraction went industrial. A new word was needed for why you had to go: <em>"patriotism."</em> Blood: <em>'+fD(e.bext)+'/L</em>. Gap: <em>'+e.gap.toFixed(0)+'×</em>. The trench was the altar. The draft was the collection plate.',
-    'Oil. <b>25 million dead</b> in 76 years. Civilization now extracts <b>'+e.tEJ.toFixed(0)+' EJ</b> — more than all other eras combined. The sacrifice is called <em>"an externality."</em> Blood: <em>'+fD(e.bext)+'/L</em>. Gap: <em>'+e.gap.toFixed(0)+'×</em>. <b>The equation never changed. It just got better at paperwork.</b>',
+    'Grain civilization. The gods were named — Apep, Tiamat, Moloch — and the altar was literal. <b>'+fN(e.dM)+' people</b> to run <b>'+e.tEJ.toFixed(0)+' EJ</b> of it. Blood going for <em>'+fD(e.bext)+'/L</em> in real terms, gap already at <em>'+e.gap.toFixed(0)+'×</em>. First entry in the ledger. The accountant opened a fresh column and got to work.',
+    'Rome figured out you could get more energy per death if you just got better at conquest. Fewer kills, more output — classic efficiency play. Still grain, still <em>'+fD(e.bext)+'/L</em>, gap at <em>'+e.gap.toFixed(0)+'×</em>. The Senate called the blood price "tribute." Kronos called it lunch. Either way, the math worked out.',
+    'New god, same invoice. Christ replaced Saturn, the tithe replaced the blood offering, wood replaced grain — and <b>50 million people</b> still died to keep the lights on. Gap: <em>'+e.gap.toFixed(0)+'×</em>. The church kept the books. Turns out "render unto Caesar" was also a line item.',
+    'The Crown discovered something useful: if the dying happens far enough away, nobody at home does the math. <b>12 million dead</b>, 350 years, the altar rebranded as "the plantation," the sacrifice rebranded as "labor." Blood: <em>'+fD(e.bext)+'/L</em>. Geographic distance: excellent substitute for a reckoning.',
+    '<b>120 million dead</b> in 200 years. Two world wars, industrial-scale extraction, and a new word invented specifically for why you personally had to go: <em>patriotism.</em> Blood: <em>'+fD(e.bext)+'/L</em>. Gap: <em>'+e.gap.toFixed(0)+'×</em>. The trench was the altar. Nobody put that on the poster.',
+    'Your era. <b>25 million dead</b>, <b>'+e.tEJ.toFixed(0)+' EJ</b> — more than every previous era combined. Blood going for <em>'+fD(e.bext)+'/L</em>, gap at <em>'+e.gap.toFixed(0)+'×</em>. The sacrifice got a new name too: <em>"an externality."</em> The accounting got a lot better at being invisible. The numbers stayed the same.',
   ];
 
   document.getElementById('era-insight').innerHTML=insights[idx];
 
   var notes=[
-    'The first altar. The first ledger. The first blood.',
-    'Saturn devours. The accountant is unbothered.',
-    'The cross replaced the altar. The tithe replaced the offering. The math stayed.',
-    'They mapped the world. Then they priced it.',
-    'Progress is a body count with good PR.',
-    'You are here. The equation is still running.',
+    'First entry. The accountant has been at this desk ever since.',
+    'Kronos ate his children. The Senate called it tribute. Same thing.',
+    'New god. Fresh column in the ledger. Same total at the bottom.',
+    'The further away the dying, the cleaner the books.',
+    'Progress is a body count with a good PR department.',
+    'You are here. The ledger is current.',
   ];
   document.getElementById('era-note').textContent=notes[idx];
 }
