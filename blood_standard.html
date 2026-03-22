@@ -13,10 +13,10 @@
   --deep:   #0a0710;
   --sfc:    #0e0b18;
   --rule:   #1c1830;
-  --dim:    #2e2848;
-  --grey:   #4a4468;
-  --text:   #8880a8;
-  --light:  #c0b8d8;
+  --dim:    #5a5480;
+  --grey:   #8880b0;
+  --text:   #c0b8dc;
+  --light:  #dcd4f0;
   --white:  #ece8f8;
 
   --blood:  #8b0000;
@@ -59,9 +59,9 @@ body {
   background: var(--ink);
   color: var(--text);
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 300;
-  padding: 44px 48px 72px;
+  padding: 52px 56px 80px;
   max-width: 1380px;
   margin: 0 auto;
 }
@@ -77,21 +77,21 @@ header {
 }
 
 .title-stack .eyebrow {
-  font-size: 8px; letter-spacing: 0.25em; text-transform: uppercase;
-  color: var(--dim); margin-bottom: 10px;
+  font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--grey); margin-bottom: 14px;
 }
 
 h1 {
   font-family: var(--serif);
-  font-size: 52px; font-weight: 300; font-style: italic;
-  color: var(--white); line-height: 0.95; letter-spacing: -0.02em;
+  font-size: 60px; font-weight: 300; font-style: italic;
+  color: var(--white); line-height: 0.92; letter-spacing: -0.02em;
 }
 h1 .bu { color: var(--blood3); font-weight: 600; font-style: normal; }
 h1 .em { color: var(--plasma); }
 
 .header-rates {
   text-align: right;
-  font-size: 8px; color: var(--dim); line-height: 2.2;
+  font-size: 9px; color: var(--dim); line-height: 2.4;
 }
 .header-rates .hl  { color: var(--blood3); }
 .header-rates .hl2 { color: var(--plasma); }
@@ -106,14 +106,14 @@ h1 .em { color: var(--plasma); }
 
 /* section heads */
 .sh {
-  display: flex; align-items: baseline; gap: 14px;
+  display: flex; align-items: baseline; gap: 16px;
   border-bottom: 1px solid var(--rule);
-  padding-bottom: 8px; margin-bottom: 16px; margin-top: 32px;
+  padding-bottom: 10px; margin-bottom: 20px; margin-top: 48px;
   font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim);
 }
 .sh:first-child { margin-top: 0; }
 .sh-t {
-  font-family: var(--serif); font-style: italic; font-size: 16px;
+  font-family: var(--serif); font-style: italic; font-size: 20px;
   color: var(--light); font-weight: 400; letter-spacing: 0; text-transform: none;
 }
 
@@ -150,7 +150,15 @@ h1 .em { color: var(--plasma); }
 .bf { position:absolute; left:0; top:0; height:100%; }
 
 /* ── CANVASES ────────────────────────────────── */
-canvas { display: block; }
+canvas { display: block; width: 100% !important; }
+
+.chart-wrap {
+  background: var(--deep);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--blood);
+  padding: 28px 24px 24px;
+  margin-bottom: 4px;
+}
 
 /* ── PRICE LADDER ────────────────────────────── */
 /* right column */
@@ -180,21 +188,21 @@ canvas { display: block; }
 .bl-v { font-size: 9px; font-weight: 400; text-align: right; }
 
 .footnote {
-  margin-top: 32px; border-top: 1px solid var(--rule); padding-top: 14px;
-  font-size: 7.5px; color: var(--dim); line-height: 2;
-  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px;
+  margin-top: 48px; border-top: 1px solid var(--rule); padding-top: 24px;
+  font-size: 9px; color: var(--dim); line-height: 2.2;
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px;
 }
 .footnote strong { color: var(--grey); }
 
 /* ── BOTTOM CELLS ────────────────────────────── */
 .cells {
-  display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; margin-top: 22px;
+  display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; margin-top: 32px;
 }
-.cell { background: var(--deep); border: 1px solid var(--rule); padding: 12px 10px 10px; }
-.cv { font-family: var(--serif); font-style: italic; font-size: 20px;
-      line-height:1; margin-bottom:4px; }
-.cl { font-size: 6.5px; letter-spacing:0.1em; text-transform:uppercase;
-      color: var(--dim); line-height:1.6; }
+.cell { background: var(--deep); border: 1px solid var(--rule); padding: 18px 14px 14px; }
+.cv { font-family: var(--serif); font-style: italic; font-size: 24px;
+      line-height:1; margin-bottom:6px; }
+.cl { font-size: 7.5px; letter-spacing:0.1em; text-transform:uppercase;
+      color: var(--dim); line-height:1.8; }
 
 /* ── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 900px) {
@@ -253,16 +261,20 @@ canvas { display: block; }
 <table class="xt" id="xt"></table>
 
 <!-- MAIN CHART: blood-dollar rate history -->
-<div class="sh" style="margin-top:28px;"><span class="sh-t">The Blood-Dollar Rate</span>
+<div class="sh"><span class="sh-t">The Blood-Dollar Rate</span>
   <span>µL blood per dollar (real, log) · BU price in dollars · era bands · deflation arc</span>
 </div>
-<canvas id="c1" height="280"></canvas>
+<div class="chart-wrap">
+  <canvas id="c1" height="280"></canvas>
+</div>
 
 <!-- PURCHASING POWER CHART -->
 <div class="sh"><span class="sh-t">Dollar Purchasing Power in Blood</span>
   <span>what $1 through $1T actually buys in blood at real rate · log scale</span>
 </div>
-<canvas id="c2" height="130"></canvas>
+<div class="chart-wrap">
+  <canvas id="c2" height="130"></canvas>
+</div>
 
 <!-- CELLS -->
 <div class="cells" id="cells"></div>
@@ -377,6 +389,12 @@ xt.innerHTML += '</tbody>';
 
 // ── MAIN CHART ────────────────────────────────────────────────────
 function drawC1() {
+  const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+  const bgCol   = isDark ? '#060409' : '#faf8ff';
+  const gridCol = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.06)';
+  const textCol = isDark ? '#5a5480' : '#4a3a78';
+  const axisCol = isDark ? '#4a1818' : '#7a2828';
+
   const cv = document.getElementById('c1');
   const W = cv.offsetWidth, H = 280;
   cv.width = W; cv.height = H;
@@ -398,7 +416,7 @@ function drawC1() {
   const cyB = y => P.t+(1-(y-yBUn)/(yBUx-yBUn))*ph;
   const cyU = y => P.t+(1-(y-yuLn)/(yuLx-yuLn))*ph;
 
-  c.clearRect(0,0,W,H);
+  c.fillStyle = bgCol; c.fillRect(0,0,W,H);
 
   // Era bands
   [{t0:-4300,t1:-1000,lb:'APEP',    cl:'#5a100a'},
@@ -417,28 +435,28 @@ function drawC1() {
   // Grid
   for(let y=Math.floor(yBUn); y<=Math.ceil(yBUx); y++){
     c.beginPath(); c.moveTo(P.l,cyB(y)); c.lineTo(W-P.r,cyB(y));
-    c.strokeStyle='rgba(139,0,0,0.1)'; c.lineWidth=1; c.stroke();
-    c.fillStyle='#4a1818'; c.font='7px DM Mono,monospace'; c.textAlign='right';
+    c.strokeStyle=isDark?'rgba(139,0,0,0.1)':'rgba(120,0,0,0.08)'; c.lineWidth=1; c.stroke();
+    c.fillStyle=axisCol; c.font='7px DM Mono,monospace'; c.textAlign='right';
     c.fillText('$10^'+y,P.l-5,cyB(y)+3);
   }
   [-3000,-2000,-1000,0,500,1000,1500,1800,1950,2000].forEach(t=>{
     c.beginPath(); c.moveTo(cx(t),P.t); c.lineTo(cx(t),H-P.b);
-    c.strokeStyle='rgba(255,255,255,0.02)'; c.lineWidth=1; c.stroke();
-    c.fillStyle='#2e2848'; c.font='7px DM Mono,monospace'; c.textAlign='center';
+    c.strokeStyle=gridCol; c.lineWidth=1; c.stroke();
+    c.fillStyle=textCol; c.font='7px DM Mono,monospace'; c.textAlign='center';
     c.fillText(t<0?Math.abs(t)+'B':t+'CE',cx(t),H-P.b+11);
   });
 
   // Right axis: µL/$
   for(let y=Math.floor(yuLn); y<=Math.ceil(yuLx); y++){
-    c.fillStyle='#3a6040'; c.font='7px DM Mono,monospace'; c.textAlign='left';
+    c.fillStyle=isDark?'#3a6040':'#205030'; c.font='7px DM Mono,monospace'; c.textAlign='left';
     c.fillText('10^'+y+'µL/$',W-P.r+4,cyU(y)+3);
   }
 
   // Axis labels
-  c.fillStyle='#8b000066'; c.font='7px DM Mono,monospace';
+  c.fillStyle=isDark?'#8b000066':'#7a000055'; c.font='7px DM Mono,monospace';
   c.save(); c.translate(12,P.t+ph/2); c.rotate(-Math.PI/2); c.textAlign='center';
   c.fillText('$/BU (real)',0,0); c.restore();
-  c.fillStyle='#3a604066'; c.font='7px DM Mono,monospace';
+  c.fillStyle=isDark?'#3a604066':'#205030aa'; c.font='7px DM Mono,monospace';
   c.save(); c.translate(W-10,P.t+ph/2); c.rotate(Math.PI/2); c.textAlign='center';
   c.fillText('µL blood / $1',0,0); c.restore();
 
@@ -484,13 +502,17 @@ function drawC1() {
 
 // ── PURCHASING POWER CHART ────────────────────────────────────────
 function drawC2() {
+  const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+  const bgCol   = isDark ? '#060409' : '#faf8ff';
+  const textCol = isDark ? '#5a5480' : '#4a3a78';
+
   const cv = document.getElementById('c2');
   const W = cv.offsetWidth, H = 130;
   cv.width = W; cv.height = H;
   const c = cv.getContext('2d');
   const P = {t:16, r:20, b:28, l:180};
   const pw = W-P.l-P.r, ph = H-P.t-P.b;
-  c.clearRect(0,0,W,H);
+  c.fillStyle = bgCol; c.fillRect(0,0,W,H);
 
   const items = [
     {l:'$1',                    d:1},
@@ -514,8 +536,8 @@ function drawC2() {
   for(let v=Math.ceil(minL); v<=Math.floor(maxL)+1; v++){
     const x = P.l+(v-minL)/(maxL-minL)*pw;
     c.beginPath(); c.moveTo(x,P.t); c.lineTo(x,H-P.b);
-    c.strokeStyle='rgba(255,255,255,0.04)'; c.stroke();
-    c.fillStyle='#2e2848'; c.font='6.5px DM Mono,monospace'; c.textAlign='center';
+    c.strokeStyle=isDark?'rgba(255,255,255,0.04)':'rgba(0,0,0,0.07)'; c.stroke();
+    c.fillStyle=textCol; c.font='6.5px DM Mono,monospace'; c.textAlign='center';
     // label in meaningful units
     const val = Math.pow(10,v);
     let lbl;
@@ -548,7 +570,7 @@ function drawC2() {
     c.beginPath(); c.arc(bx,y,3,0,Math.PI*2);
     c.fillStyle=col; c.fill();
 
-    c.fillStyle='#4a4468'; c.font='7px DM Mono,monospace'; c.textAlign='right';
+    c.fillStyle=textCol; c.font='7px DM Mono,monospace'; c.textAlign='right';
     c.fillText(item.l, P.l-5, y+3);
 
     c.fillStyle=col+'cc'; c.textAlign='left';

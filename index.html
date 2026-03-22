@@ -375,9 +375,13 @@ nav {
 /* ── Hero ────────────────────────────────────── */
 .hero {
   border-bottom: 1px solid var(--rule);
-  padding-bottom: 52px;
+  padding-bottom: 64px;
   margin-bottom: 0;
   position: relative;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .hero::before {
@@ -390,8 +394,8 @@ nav {
   height: 300px;
   background: radial-gradient(
     ellipse 60% 100% at 50% 0%,
-    rgba(176, 40, 24, 0.07) 0%,
-    rgba(112, 80, 168, 0.04) 50%,
+    rgba(176, 40, 24, 0.10) 0%,
+    rgba(112, 80, 168, 0.05) 50%,
     transparent 100%
   );
   pointer-events: none;
@@ -402,18 +406,7 @@ nav {
   letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--dim);
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.hero-tag::before {
-  content: '';
-  display: inline-block;
-  width: 24px;
-  height: 1px;
-  background: var(--blood);
+  margin-bottom: 24px;
 }
 
 .hero-title {
@@ -422,35 +415,28 @@ nav {
   line-height: 0.84;
   letter-spacing: 0.02em;
   color: var(--white);
-  margin-bottom: 32px;
+  margin-bottom: 40px;
 }
 
 .hero-title .blood {
   color: var(--blood);
 }
 
-.hero-bottom {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 32px;
-  align-items: end;
-}
-
 .hero-desc {
   font-family: var(--serif);
-  font-size: 16px;
+  font-size: 17px;
   font-style: italic;
   color: var(--grey);
-  line-height: 1.65;
-  max-width: 580px;
+  line-height: 1.7;
+  max-width: 640px;
+  margin-bottom: 32px;
 }
 
 .hero-stats {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  align-items: flex-end;
-  padding-bottom: 2px;
+  align-items: center;
 }
 
 .hero-stat {
@@ -458,7 +444,6 @@ nav {
   letter-spacing: 0.15em;
   color: var(--dim);
   text-transform: uppercase;
-  white-space: nowrap;
 }
 
 .hero-stat strong {
@@ -497,6 +482,10 @@ nav {
 /* ══════════════════════════════════════════════
    DUO CARDS — 2 large archive cards
 ══════════════════════════════════════════════ */
+#archive {
+  padding-top: 72px;
+}
+
 .duo-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -628,9 +617,10 @@ nav {
 .duo-card:hover .duo-enter { color: var(--bone); }
 
 .archive-footnote {
-  margin-top: 20px;
+  margin-top: 24px;
   font-size: 9px;
   letter-spacing: 0.08em;
+  text-align: center;
   color: var(--dim);
   line-height: 2;
 }
@@ -734,7 +724,7 @@ footer {
   <nav id="navbar" aria-label="Site navigation">
     <a href="#" class="nav-brand">THE <span class="blood">PRICE</span> OF BLOOD</a>
     <div class="nav-links">
-      <a href="#archive" class="nav-link">The Archive</a>
+      <a href="#archive" class="nav-link">The Documents</a>
     </div>
     <div class="nav-right">
       <button class="nav-toggle" id="nav-theme-toggle" aria-label="Toggle theme" title="Switch to light mode">◑</button>
@@ -745,29 +735,25 @@ footer {
 
     <!-- HERO -->
     <header class="hero">
-      <div class="hero-tag">Mortality Economics Archive · 2026</div>
+      <div class="hero-tag">Mortality Economics · 2026</div>
       <h1 class="hero-title">
         THE <span class="blood">PRICE</span><br>
         OF BLOOD
       </h1>
-      <div class="hero-bottom">
-        <p class="hero-desc">
-          A quantitative archive examining the human cost of energy, economy, and empire — converting political violence into deaths per barrel, and civilizational patterns into feeding rates measured in liters of blood per era.
-        </p>
-        <div class="hero-stats">
-          <div class="hero-stat">Seven documents &nbsp;·&nbsp; <strong>All data cited</strong></div>
-          <div class="hero-stat">Post-9/11 deaths &nbsp;·&nbsp; <strong>940,000+</strong></div>
-          <div class="hero-stat" style="color:var(--energy)">Liters of blood priced: &nbsp;·&nbsp; <strong>1.19 billion (6 eras, all wars, direct deaths × 5L)</strong></div>
-        </div>
+      <p class="hero-desc">
+        A quantitative accounting of the human cost of energy, empire, and economy.
+        Six eras. 237 million deaths. 1.19 billion liters of blood.
+        All math cited.
+      </p>
+      <div class="hero-stats">
+        <div class="hero-stat"><strong>$2.2M</strong> &nbsp;extracted per liter of blood (modern)</div>
+        <div class="hero-stat"><strong>2,548×</strong> &nbsp;gap between real and market blood price</div>
+        <div class="hero-stat" style="color:var(--energy)"><strong>1.19B liters</strong> &nbsp;priced across 6 eras</div>
       </div>
     </header>
 
-    <!-- ══ THE ARCHIVE ════════════════════════════ -->
+    <!-- ══ THE DOCUMENTS ════════════════════════════ -->
     <section id="archive">
-      <div class="section-head">
-        <span class="section-title">The Archive</span>
-        <span class="section-tag">Open Ledger · All Calculations Cited</span>
-      </div>
 
       <div class="duo-grid">
         <a href="the_accounting.html" class="duo-card blood">
@@ -808,17 +794,17 @@ footer {
       </div>
 
       <div class="archive-footnote">
-        Five additional documents available in the full archive —
+        Five additional documents —
         <a href="blood_price_oil.html">Blood Price of Oil</a> ·
         <a href="energy_per_death.html">Energy Per Death</a> ·
         <a href="kronos_feed_rate.html">Kronos Feed Rate</a> ·
-        <a href="kronos_mythic_overlay.html">Mythic Overlay</a> ·
+        <a href="kronos_mythic_overlay.html">The Devourer</a> ·
         <a href="the_escaped.html">The Escaped</a>
       </div>
     </section>
 
     <footer>
-      <span>THE PRICE OF BLOOD &bull; 2026 &bull; MORTALITY ECONOMICS ARCHIVE</span>
+      <span>THE PRICE OF BLOOD &bull; 2026 &bull; MORTALITY ECONOMICS</span>
       <span>The numbers are exact. The sources are cited.</span>
     </footer>
 
@@ -867,12 +853,6 @@ footer {
   var enterBtn = document.getElementById('slide-enter-btn');
   var current  = 0;
 
-  // Check if user has already seen intro
-  if (sessionStorage.getItem('pob-intro-done')) {
-    dismiss();
-    return;
-  }
-
   function advance() {
     if (current >= slides.length - 1) return;
     slides[current].classList.remove('active');
@@ -889,7 +869,6 @@ footer {
       mainEl.classList.add('visible');
       overlay.style.display = 'none';
     }, 800);
-    sessionStorage.setItem('pob-intro-done', '1');
   }
 
   overlay.addEventListener('click', function (e) {
