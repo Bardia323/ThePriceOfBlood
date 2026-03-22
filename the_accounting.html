@@ -83,11 +83,8 @@ h1 span { color: var(--amber); }
 }
 .hdr-meta strong { color: var(--grey); }
 
-.layout {
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 28px;
-}
+/* Single-column layout — sidebar content moves below */
+.page { display: flex; flex-direction: column; gap: 0; }
 
 .sh {
   font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase;
@@ -134,7 +131,16 @@ h1 span { color: var(--amber); }
 .bt { flex: 1; height: 2px; background: var(--rule); position: relative; min-width: 28px; }
 .bf { position: absolute; left:0; top:0; height:100%; }
 
-canvas { display: block; }
+/* Canvas fills container */
+canvas { display: block; width: 100% !important; }
+
+/* Chart wrapper */
+.chart-wrap {
+  background: var(--deep);
+  border: 1px solid var(--rule);
+  padding: 20px;
+  margin-bottom: 2px;
+}
 
 .panel {
   border: 1px solid var(--rule); margin-bottom: 10px; background: var(--deep);
@@ -184,14 +190,20 @@ canvas { display: block; }
 }
 .note strong { color: var(--grey); }
 
+/* Bottom responsive grid */
+.bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 24px;
+}
+
 /* ── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 900px) {
-  body { padding: 24px 20px 60px; }
+  body { padding: 20px 16px 60px; }
 
   .hdr { grid-template-columns: 1fr; }
   .hdr-meta { text-align: left; margin-top: 8px; }
-
-  .layout { grid-template-columns: 1fr; }
 
   /* 8-column era grid → 4 col */
   .gc { grid-template-columns: repeat(4, 1fr) !important; }
@@ -199,18 +211,16 @@ canvas { display: block; }
   /* 3-col note grid → 1 col */
   .note { grid-template-columns: 1fr; gap: 12px; }
 
-  /* Sidebar tables overflow-x */
-  .sg { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .bottom-grid { grid-template-columns: 1fr; }
 
-  canvas { overflow-x: auto; }
+  .sg { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 }
 
 @media (max-width: 600px) {
   .gc { grid-template-columns: repeat(2, 1fr) !important; }
-
   .sg { grid-template-columns: 1fr; }
-
-  h1 { font-size: 28px; }
+  .note { grid-template-columns: 1fr; }
+  h1 { font-size: 26px; }
 }
 </style>
 </head>
@@ -219,7 +229,7 @@ canvas { display: block; }
 <div class="hdr">
   <div>
     <div style="font-size:8px;letter-spacing:0.2em;color:var(--dim);text-transform:uppercase;margin-bottom:10px;">
-      Shadow Accounting · Complete Record · Six Eras · All Variables
+      Shadow Accounting · Six Eras · All Variables · Blood Volume Denominated
     </div>
     <h1>The <span>Accounting</span></h1>
   </div>
@@ -227,48 +237,48 @@ canvas { display: block; }
     <strong>Energy method:</strong> population × GJ/cap/yr × duration (primary energy base)<br>
     <strong>Units:</strong> 1 GJ = 277.78 kWh · 1 EJ = 10⁹ GJ · 1 bbl = 6.1 GJ<br>
     <strong>Shadow $/GJ:</strong> $12.30 (Brent $75 ÷ 6.1 GJ/bbl)<br>
-    <strong>Blood price:</strong> value extracted per litre · medical market ref $880/L · 5L/person<br>
-    <strong>Deaths:</strong> war-attributable direct deaths only (see sources)
+    <strong>Blood price:</strong> value extracted per litre · medical market ref $880/L · (5 liters/person = 1.32 gal)<br>
+    <strong>War dead:</strong> direct conflict deaths only · mid-estimates · CI ranges shown
   </div>
 </div>
 
-<div class="layout">
-<div>
+<div class="page">
 
 <div class="sh"><span class="sh-t">Era Record</span>
-  <span>6 eras · 11 variables · war deaths vs total civilizational energy base</span>
+  <span>6 eras · 12 variables · war deaths × 5L/person vs total civilizational energy base</span>
 </div>
-<table class="tbl" id="tbl"></table>
+<div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
+  <table class="tbl" id="tbl"></table>
+</div>
 
 <div class="sh"><span class="sh-t">The Hunger Line</span>
-  <span>children/EJ ● · $/L extracted ◆ · substrate GJ/unit ✕ · god bands · OLS</span>
+  <span>liters blood/EJ ● · $/L extracted ◆ · substrate GJ/unit ✕ · god bands · OLS</span>
 </div>
-<canvas id="c1" height="300"></canvas>
+<div class="chart-wrap">
+  <canvas id="c1" height="300"></canvas>
+</div>
 
 <div class="sh"><span class="sh-t">Substrate Compression</span>
   <span>GJ per primary unit · log scale · multiplier vs grain baseline</span>
 </div>
-<canvas id="c2" height="100"></canvas>
+<div class="chart-wrap">
+  <canvas id="c2" height="100"></canvas>
+</div>
 
 <div class="gc" id="gc"></div>
 
 <div class="note">
-  <div><strong>Energy method.</strong> Total primary energy = pop × GJ/cap/yr × duration.
-    Bronze: 50M × 6 × 2800yr. Roman: 60M × 10 × 900. Feudal: 80M × 12 × 900.
-    Colonial: 80M × 15 × 350. Industrial: 400M × 25 × 200. Modern: 4B × 75 × 76.
-    Per-capita figures from IEA historical estimates and Smil (Energy in World History, 1994).</div>
-  <div><strong>Deaths.</strong> War-attributable direct deaths. Bronze: ancient Near East conflicts est.
-    Colonial: slave transit mortality (2M) + conquest. Industrial: WWI 20M + WWII 70–85M + colonial wars.
-    Modern: post-9/11 (Brown Univ. CoW) + Cold War proxy wars. All mid-estimates; CI ranges shown.</div>
-  <div><strong>Blood price.</strong> $/L extracted = value the system receives per litre of blood it costs
-    = (shadow_$/GJ × GJ/death) ÷ 5L. Not the cost paid — the value extracted.
-    Modern gap 2,548×: each litre of blood funds $2.2M in energy. The machine is most profitable
-    per kill in the modern era. Externality gap = extracted value ÷ medical price $880/L.</div>
+  <div><strong>Energy method.</strong> The math is simple. Population × energy per person per year × years. We ran the numbers across 6,000 years of civilization. The machine has always needed fuel. It has always found some. The substrate changed; the hunger equation did not. Grain, wood, coal, oil. Different names, same formula. The accountant remains unbothered.</div>
+  <div><strong>Blood volume.</strong> 5 liters per person. That's 1.32 gallons — roughly the size of a large gas station Slurpee. Your car's gas tank represents approximately 0.003 people. A barrel of oil: 158.99 liters of petroleum, or about 31.8 people's worth of blood. This is not a metaphor. This is a unit conversion.</div>
+  <div><strong>Blood price.</strong> The modern system extracts $2.2M in energy value per liter of blood spilled. The medical market charges $880 for the same liter. Externality gap: 2,548×. The machine is not cruel. It is simply the most profitable business in the history of civilization, and it uses a currency it never has to list on the balance sheet.</div>
 </div>
 
+<div class="bottom-grid" id="bottom-grid">
+  <div id="sb-panels"></div>
+  <div id="sb-sparklines"></div>
 </div>
-<div id="sb"></div>
-</div>
+
+</div><!-- .page -->
 
 <script>
 const SGJ  = 75/6.1;   // shadow $/GJ
@@ -301,14 +311,16 @@ D.forEach(e=>{
   e.tEJ  = e.tGJ/EJ;
   e.gpd  = e.tGJ/e.dM;
   e.kpd  = e.gpd*277.78;
-  e.cpej = e.dM/e.tEJ;
+  e.bpej = e.dM * 5 / e.tEJ;       // liters blood per EJ
+  e.bgpej = e.bpej / 3.785;         // gallons blood per EJ
   e.bext = SGJ*e.gpd/5;
   e.gap  = e.bext/MED;
   e.mult = e.gjU/14.4;
 });
-const maxC=Math.max(...D.map(d=>d.cpej));
-const bHI=D[0].cpej;
-D.forEach(e=>e.hi=e.cpej/bHI);
+
+const maxB = Math.max(...D.map(d=>d.bpej));
+const bHI  = D[0].bpej;
+D.forEach(e=>e.hi=e.bpej/bHI);
 
 // Input is GJ. 1 EJ = 1e9 GJ. 1 ZJ = 1e12 GJ.
 const fE=n=>n>=1e12?(n/1e12).toFixed(1)+'ZJ':n>=1e9?(n/1e9).toFixed(0)+'EJ':n>=1e6?(n/1e6).toFixed(0)+'PJ':n>=1e3?(n/1e3).toFixed(0)+'TJ':(n).toFixed(0)+'GJ';
@@ -322,14 +334,15 @@ tbl.innerHTML=`<thead><tr>
   <th style="text-align:left">Era</th>
   <th>Total EJ</th><th>Deaths</th><th>CI lo–hi</th>
   <th>GJ/death</th><th>kWh/death</th>
-  <th>Children/EJ</th><th>Hunger idx</th>
+  <th>L Blood/EJ</th><th>Gal Blood/EJ</th>
+  <th>Drain Rate</th>
   <th>$/L extracted</th><th>Gap vs $880</th>
-  <th style="min-width:80px">Hunger bar</th>
+  <th style="min-width:80px">Blood bar</th>
 </tr></thead><tbody>`;
 
 D.forEach(e=>{
   const hc=e.hi>1.5?'var(--blood)':e.hi<0.5?'var(--energy)':'var(--amber)';
-  const bw=Math.min(100,(e.cpej/maxC)*100);
+  const bw=Math.min(100,(e.bpej/maxB)*100);
   tbl.innerHTML+=`<tr>
     <td><div class="ec">
       <span class="en" style="color:${e.col}">${e.name}</span>
@@ -342,13 +355,14 @@ D.forEach(e=>{
     <td class="nm">${fD(e.dL)}–${fD(e.dH)}</td>
     <td class="n">${fG(e.gpd)}</td>
     <td class="n">${fD(e.kpd)} kWh</td>
-    <td class="n">${e.cpej.toFixed(1)}</td>
-    <td style="color:${hc}">${e.hi.toFixed(2)}×</td>
+    <td class="nd">${e.bpej>=1e6?(e.bpej/1e6).toFixed(1)+'M':e.bpej>=1e3?(e.bpej/1e3).toFixed(0)+'K':e.bpej.toFixed(0)}</td>
+    <td class="nw">${e.bgpej>=1e6?(e.bgpej/1e6).toFixed(1)+'M':e.bgpej>=1e3?(e.bgpej/1e3).toFixed(0)+'K':e.bgpej.toFixed(0)}</td>
+    <td class="nm">${(e.bpej/1e6).toFixed(1)}M L/EJ<br><span style="font-size:6.5px;color:var(--dim)">${(e.bgpej/1e6).toFixed(2)}M gal</span></td>
     <td class="ng">${fM(e.bext)}</td>
     <td class="nc">${e.gap.toFixed(0)}×</td>
     <td><div class="bw">
       <div class="bt"><div class="bf" style="width:${bw}%;background:${e.col}"></div></div>
-      <span class="nm" style="font-size:7px;min-width:24px;text-align:right">${e.cpej.toFixed(0)}</span>
+      <span class="nm" style="font-size:7px;min-width:24px;text-align:right">${e.bpej>=1e3?(e.bpej/1e3).toFixed(0)+'K':e.bpej.toFixed(0)}</span>
     </div></td>
   </tr>`;
 });
@@ -356,6 +370,11 @@ tbl.innerHTML+='</tbody>';
 
 // MAIN CHART
 function drawC1(){
+  const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+  const gridCol = isDark ? 'rgba(255,255,255,0.035)' : 'rgba(0,0,0,0.06)';
+  const textCol = isDark ? '#5a5480' : '#4a3a78';
+  const bgCol   = isDark ? '#07060e' : '#f5f3ff';
+
   const cv=document.getElementById('c1');
   const W=cv.offsetWidth,H=300;
   cv.width=W;cv.height=H;
@@ -364,7 +383,7 @@ function drawC1(){
   const pw=W-P.l-P.r,ph=H-P.t-P.b;
   const tMin=-4300,tMax=2100;
   const yr=[-2600,-100,900,1575,1850,1990];
-  const lC=D.map(d=>Math.log10(d.cpej));
+  const lC=D.map(d=>Math.log10(d.bpej));
   const lB=D.map(d=>Math.log10(d.bext));
   const lG=D.map(d=>Math.log10(d.gjU));
   const yCn=Math.min(...lC)-.6,yCx=Math.max(...lC)+.6;
@@ -374,7 +393,9 @@ function drawC1(){
   const cyC=y=>P.t+(1-(y-yCn)/(yCx-yCn))*ph;
   const cyB=y=>P.t+(1-(y-yBn)/(yBx-yBn))*ph;
   const cyG=y=>P.t+(1-(y-yGn)/(yGx-yGn))*ph;
-  c.clearRect(0,0,W,H);
+
+  // Background
+  c.fillStyle=bgCol;c.fillRect(0,0,W,H);
 
   // God bands
   [{t0:-4300,t1:-1000,lb:'APEP · TIAMAT',cl:'#1a6a40'},
@@ -393,14 +414,15 @@ function drawC1(){
   // Grid
   for(let y=Math.floor(yCn);y<=Math.ceil(yCx);y++){
     c.beginPath();c.moveTo(P.l,cyC(y));c.lineTo(W-P.r,cyC(y));
-    c.strokeStyle='rgba(255,255,255,0.035)';c.lineWidth=1;c.stroke();
-    c.fillStyle='#34305a';c.font='7px DM Mono,monospace';c.textAlign='right';
+    c.strokeStyle=gridCol;c.lineWidth=1;c.stroke();
+    c.fillStyle=textCol;c.font='7px DM Mono,monospace';c.textAlign='right';
     c.fillText('10^'+y,P.l-5,cyC(y)+3);
   }
+
   [-3000,-2000,-1000,0,500,1000,1500,1800,1900,1950,2000].forEach(t=>{
     c.beginPath();c.moveTo(cx(t),P.t);c.lineTo(cx(t),H-P.b);
-    c.strokeStyle='rgba(255,255,255,0.02)';c.lineWidth=1;c.stroke();
-    c.fillStyle='#34305a';c.font='7px DM Mono,monospace';c.textAlign='center';
+    c.strokeStyle=gridCol;c.lineWidth=1;c.stroke();
+    c.fillStyle=textCol;c.font='7px DM Mono,monospace';c.textAlign='center';
     c.fillText(t<0?Math.abs(t)+'B':t+'CE',cx(t),H-P.b+11);
   });
   for(let y=Math.floor(yBn);y<=Math.ceil(yBx);y++){
@@ -409,7 +431,7 @@ function drawC1(){
   }
   c.fillStyle='#b0281866';c.font='7px DM Mono,monospace';
   c.save();c.translate(11,P.t+ph/2);c.rotate(-Math.PI/2);c.textAlign='center';
-  c.fillText('CHILDREN / EJ',0,0);c.restore();
+  c.fillText('LITERS BLOOD / EJ',0,0);c.restore();
   c.fillStyle='#c8782066';c.font='7px DM Mono,monospace';
   c.save();c.translate(W-7,P.t+ph/2);c.rotate(Math.PI/2);c.textAlign='center';
   c.fillText('$/L EXTRACTED',0,0);c.restore();
@@ -436,7 +458,7 @@ function drawC1(){
   c.fillStyle='#b0281868';c.font='7px DM Mono,monospace';c.textAlign='left';
   c.fillText(`OLS β₁=${b1.toFixed(5)}  R²=${r2.toFixed(3)}`,P.l+6,P.t+22);
 
-  // Blood line
+  // Blood extracted line
   c.beginPath();
   yr.forEach((t,i)=>i===0?c.moveTo(cx(t),cyB(lB[i])):c.lineTo(cx(t),cyB(lB[i])));
   c.strokeStyle='#c8782055';c.lineWidth=1.5;c.setLineDash([3,3]);c.stroke();c.setLineDash([]);
@@ -452,12 +474,12 @@ function drawC1(){
     c.beginPath();c.moveTo(x-4,y);c.lineTo(x+4,y);c.moveTo(x,y-4);c.lineTo(x,y+4);c.stroke();
   });
 
-  // Hunger dots
+  // Blood volume dots
   yr.forEach((t,i)=>{
     const d=D[i],x=cx(t),y=cyC(lC[i]);
     c.beginPath();c.arc(x,y,6,0,Math.PI*2);
     c.fillStyle=d.col;c.fill();
-    c.strokeStyle='#07060e';c.lineWidth=1.5;c.stroke();
+    c.strokeStyle=bgCol;c.lineWidth=1.5;c.stroke();
     c.fillStyle=d.col+'dd';c.font='7px DM Mono,monospace';c.textAlign='center';
     c.fillText(d.god.split('/')[0].trim(),x,y-10);
   });
@@ -465,28 +487,35 @@ function drawC1(){
 
 // SUBSTRATE CHART
 function drawC2(){
+  const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+  const gridCol = isDark ? 'rgba(255,255,255,0.035)' : 'rgba(0,0,0,0.06)';
+  const textCol = isDark ? '#5a5480' : '#4a3a78';
+  const bgCol   = isDark ? '#07060e' : '#f5f3ff';
+
   const cv=document.getElementById('c2');
   const W=cv.offsetWidth,H=100;
   cv.width=W;cv.height=H;
   const c=cv.getContext('2d');
   const P={t:12,r:16,b:22,l:72};
   const pw=W-P.l-P.r,ph=H-P.t-P.b;
-  c.clearRect(0,0,W,H);
+
+  c.fillStyle=bgCol;c.fillRect(0,0,W,H);
+
   const lv=D.map(d=>Math.log10(d.gjU));
   const mn=Math.min(...lv)-.3,mx=Math.max(...lv)+.3;
   const rH=ph/D.length;
   for(let v=Math.ceil(mn);v<=Math.floor(mx)+1;v++){
     const x=P.l+(v-mn)/(mx-mn)*pw;
     c.beginPath();c.moveTo(x,P.t);c.lineTo(x,H-P.b);
-    c.strokeStyle='rgba(255,255,255,0.04)';c.stroke();
-    c.fillStyle='#34305a';c.font='6.5px DM Mono,monospace';c.textAlign='center';
+    c.strokeStyle=gridCol;c.stroke();
+    c.fillStyle=textCol;c.font='6.5px DM Mono,monospace';c.textAlign='center';
     c.fillText('10^'+v+' GJ',x,H-P.b+9);
   }
   D.forEach((d,i)=>{
     const y=P.t+rH*(i+.5),bx=P.l+(Math.log10(d.gjU)-mn)/(mx-mn)*pw;
     c.fillStyle=d.col+'25';c.fillRect(P.l,y-5,bx-P.l,10);
     c.beginPath();c.arc(bx,y,3.5,0,Math.PI*2);c.fillStyle=d.col;c.fill();
-    c.fillStyle='#544e78';c.font='7px DM Mono,monospace';c.textAlign='right';
+    c.fillStyle=textCol;c.font='7px DM Mono,monospace';c.textAlign='right';
     c.fillText(d.name,P.l-4,y+3);
     c.fillStyle=d.col+'cc';c.textAlign='left';
     c.fillText(d.gjU+' '+d.uL+'  ×'+d.mult.toFixed(2)+'  vs grain',bx+6,y+3);
@@ -497,18 +526,18 @@ function drawC2(){
 const totD=D.reduce((a,d)=>a+d.dM,0);
 const totE=D.reduce((a,d)=>a+d.tGJ,0);
 const totEJ=D.reduce((a,d)=>a+d.tEJ,0);
-const maxH=Math.max(...D.map(d=>d.cpej));
-const minH=Math.min(...D.map(d=>d.cpej));
+const maxH=Math.max(...D.map(d=>d.bpej));
+const minH=Math.min(...D.map(d=>d.bpej));
 const maxG=Math.max(...D.map(d=>d.gap));
-const peakN=D.find(d=>d.cpej===maxH).name;
-const minN=D.find(d=>d.cpej===minH).name;
+const peakN=D.find(d=>d.bpej===maxH).name;
+const minN=D.find(d=>d.bpej===minH).name;
 
 [
   {v:fD(totD),         l:'Total deaths\nall eras',              c:'var(--blood)'},
   {v:fE(totE),         l:'Total EJ extracted\nall eras',        c:'var(--energy)'},
   {v:fG(D.reduce((a,d)=>a+d.gpd,0)/D.length), l:'Mean GJ/death\nacross eras',  c:'var(--amber)'},
-  {v:maxH.toFixed(0),  l:`Peak children/EJ\n${peakN}`,          c:'var(--blood)'},
-  {v:minH.toFixed(1),  l:`Min children/EJ\n${minN}`,            c:'var(--energy)'},
+  {v:(Math.max(...D.map(d=>d.bpej))/1e6).toFixed(1)+'M',  l:'Peak L Blood/EJ\n('+peakN+')',   c:'var(--blood)'},
+  {v:(Math.min(...D.map(d=>d.bpej))/1e3).toFixed(0)+'K',  l:'Min L Blood/EJ\n('+minN+')',     c:'var(--energy)'},
   {v:(D[5].gjU/D[0].gjU).toFixed(2)+'×', l:'Oil vs grain\nGJ/unit ratio',  c:'var(--cold)'},
   {v:maxG.toFixed(0)+'×',  l:'Peak profit/L extracted\n(Modern)', c:'var(--gap)'},
   {v:'$'+SGJ.toFixed(2)+'/GJ', l:'Shadow energy price\n(Brent $75/bbl basis)', c:'var(--amber)'},
@@ -519,24 +548,24 @@ const minN=D.find(d=>d.cpej===minH).name;
   </div>`;
 });
 
-// SIDEBAR
-const sb=document.getElementById('sb');
+// SIDEBAR PANELS
+const sbPanels=document.getElementById('sb-panels');
 
 // Invariants
 [
   {name:'Feed Equation',tag:'INVARIANT',tc:'var(--cold)',
    rows:[
-     {l:'Formula',     v:'children/EJ = deaths ÷ (GJ_total/10⁹)'},
+     {l:'Formula',     v:'L blood/EJ = deaths×5 ÷ (GJ_total/10⁹)'},
      {l:'Structure',   v:'energy ÷ life → surplus (all eras)'},
      {l:'Substrate',   v:'interchangeable; function identical'},
      {l:'God-name',    v:'changes; equation does not'},
    ],
-   f:'E = pop × GJ/cap/yr × duration\nSubstrate changes; hunger equation invariant\nRecognition: same structure, different mask',
+   f:'E = pop × GJ/cap/yr × duration\nSubstrate changes; hunger equation invariant\nRecognition: same structure, different mask\nNote: substrate changes. The hunger does not. The accountant calls this "stable unit economics."',
   },
   {name:'OLS: Hunger',tag:'INVARIANT',tc:'var(--cold)',
    rows:(()=>{
      const xs=[-2600,-100,900,1575,1850,1990];
-     const ys=D.map(d=>Math.log10(d.cpej));
+     const ys=D.map(d=>Math.log10(d.bpej));
      const n=xs.length,xm=xs.reduce((a,b)=>a+b)/n,ym=ys.reduce((a,b)=>a+b)/n;
      let ssxy=0,ssxx=0,ssyy=0;
      xs.forEach((x,i)=>{ssxy+=(x-xm)*(ys[i]-ym);ssxx+=(x-xm)**2;ssyy+=(ys[i]-ym)**2;});
@@ -550,7 +579,7 @@ const sb=document.getElementById('sb');
        {l:'Interpretation', v:b1<0?'↓ more efficient/kill':'↑ hungrier/kill'},
      ];
    })(),
-   f:'log₁₀(children/EJ) ~ year\nNegative slope = more GJ per kill over time\nMachine efficiency increasing (not mercy)',
+   f:'log₁₀(L blood/EJ) ~ year\nNegative slope = more GJ per kill over time\nMachine efficiency increasing (not mercy)',
   },
   {name:'Blood Price',tag:'INVARIANT',tc:'var(--cold)',
    rows:[
@@ -561,10 +590,10 @@ const sb=document.getElementById('sb');
      {l:'Modern gap',  v:D[5].gap.toFixed(0)+'× above medical'},
      {l:'Peak gap era',v:D.find(d=>d.gap===maxG).name},
    ],
-   f:'NOT "how cheaply blood is bought"\nBUT "how much value per kill extracted"\nGap ↑ as machine scales = larger externality',
+   f:'NOT "how cheaply blood is bought"\nBUT "how much value per kill extracted"\nGap ↑ as machine scales = larger externality\nThe modern externality gap: your liter of blood is worth 2,548× what the hospital charges for it. Congratulations. You are undervalued.',
   },
 ].forEach(inv=>{
-  sb.innerHTML+=`<div class="panel" style="border-left:2px solid ${inv.tc}">
+  sbPanels.innerHTML+=`<div class="panel" style="border-left:2px solid ${inv.tc}">
     <div class="ph"><span class="pn">${inv.name}</span>
       <span class="pt" style="color:${inv.tc}">${inv.tag}</span></div>
     <div class="pb">
@@ -574,8 +603,8 @@ const sb=document.getElementById('sb');
     </div></div>`;
 });
 
-// Variants
-sb.innerHTML+=`<div class="vp"><div class="vt">Invariants of Variants</div>
+// Variants panel
+sbPanels.innerHTML+=`<div class="vp"><div class="vt">Invariants of Variants</div>
   ${[
     {l:'Substrate',    f:'Grain 14.4 GJ/t',  t:'Oil 6.1 GJ/bbl · 430× vol-density'},
     {l:'God-name',     f:'Apep',              t:'The Market'},
@@ -589,12 +618,13 @@ sb.innerHTML+=`<div class="vp"><div class="vt">Invariants of Variants</div>
 </div>`;
 
 // Sparklines
+const sbSpark=document.getElementById('sb-sparklines');
 const spDiv=document.createElement('div');spDiv.className='sg';
 [
-  {l:'GJ / death',     v:D.map(d=>Math.log10(d.gpd)),  c:'#d4a040'},
-  {l:'Children / EJ',  v:D.map(d=>Math.log10(d.cpej)), c:'#b02818'},
-  {l:'$/L extracted',  v:D.map(d=>Math.log10(d.bext)),  c:'#c87820'},
-  {l:'Substrate GJ/u', v:D.map(d=>Math.log10(d.gjU)),  c:'#38a870'},
+  {l:'GJ / death',          v:D.map(d=>Math.log10(d.gpd)),  c:'#d4a040'},
+  {l:'Liters Blood / EJ',   v:D.map(d=>Math.log10(d.bpej)), c:'#b02818'},
+  {l:'$/L extracted',       v:D.map(d=>Math.log10(d.bext)),  c:'#c87820'},
+  {l:'Substrate GJ/u',      v:D.map(d=>Math.log10(d.gjU)),  c:'#38a870'},
 ].forEach(sd=>{
   const bl=document.createElement('div');bl.className='sb';
   bl.innerHTML=`<div class="sl">${sd.l}</div>`;
@@ -607,18 +637,18 @@ const spDiv=document.createElement('div');spDiv.className='sg';
     const W=cv.offsetWidth||128;cv.width=W;
     const ctx=cv.getContext('2d');
     const cy=v=>2+(1-(v-mn)/(mx-mn))*30;
-    const cx=i=>i/(sd.v.length-1)*W;
-    ctx.beginPath();ctx.moveTo(cx(0),34);
-    sd.v.forEach((v,i)=>ctx.lineTo(cx(i),cy(v)));
-    ctx.lineTo(cx(sd.v.length-1),34);ctx.closePath();
+    const cxf=i=>i/(sd.v.length-1)*W;
+    ctx.beginPath();ctx.moveTo(cxf(0),34);
+    sd.v.forEach((v,i)=>ctx.lineTo(cxf(i),cy(v)));
+    ctx.lineTo(cxf(sd.v.length-1),34);ctx.closePath();
     ctx.fillStyle=sd.c+'18';ctx.fill();
     ctx.beginPath();
-    sd.v.forEach((v,i)=>i===0?ctx.moveTo(cx(i),cy(v)):ctx.lineTo(cx(i),cy(v)));
+    sd.v.forEach((v,i)=>i===0?ctx.moveTo(cxf(i),cy(v)):ctx.lineTo(cxf(i),cy(v)));
     ctx.strokeStyle=sd.c+'cc';ctx.lineWidth=1.5;ctx.stroke();
-    sd.v.forEach((v,i)=>{ctx.beginPath();ctx.arc(cx(i),cy(v),2,0,Math.PI*2);ctx.fillStyle=sd.c;ctx.fill();});
+    sd.v.forEach((v,i)=>{ctx.beginPath();ctx.arc(cxf(i),cy(v),2,0,Math.PI*2);ctx.fillStyle=sd.c;ctx.fill();});
   });
 });
-sb.appendChild(spDiv);
+sbSpark.appendChild(spDiv);
 
 function init(){drawC1();drawC2();}
 window.addEventListener('resize',init);
