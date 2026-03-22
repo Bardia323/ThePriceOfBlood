@@ -344,6 +344,17 @@ canvas { display: block; width: 100% !important; cursor: crosshair; }
 
 .footnote-block strong { color: var(--ash); }
 
+.footnote-sources {
+  margin-top: 24px;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+  font-family: var(--font-type);
+  font-size: 9px;
+  color: var(--dim);
+  line-height: 2.2;
+  grid-column: 1 / -1;
+}
+
 /* ── Responsive ──────────────────────────────── */
 @media (max-width: 900px) {
   body { padding: 28px 16px 60px; }
@@ -450,6 +461,14 @@ canvas { display: block; width: 100% !important; cursor: crosshair; }
     biological value. Real rate: $2.24M/L — set by energy extraction value.
     Gap: 2,548×. The dollar is overvalued vs blood by exactly this factor.
     Or: the market systematically underprices blood by 2,548×.</div>
+  <div class="footnote-sources">
+    [1] Medical blood price: Red Cross / hospital acquisition cost $440–880 USD/L &nbsp;
+    [2] Shadow $/GJ: Brent crude $75/bbl ÷ 6.1 GJ/bbl = $12.30/GJ (EIA 2025) &nbsp;
+    [3] Per-capita energy by era: IEA historical estimates; Smil, <em>Energy in World History</em> (1994) &nbsp;
+    [4] War deaths by era: Brown Univ. Costs of War Project 2023 (Modern); ICRC, Weinberg (Industrial); slave transit mortality est. (Colonial) &nbsp;
+    [5] Blood volume/person: 5L (clinical standard) &nbsp;
+    [6] BU price formula: (shadow_$/GJ × GJ/death) ÷ 5L. Not cost paid — value extracted.
+  </div>
 </div>
 
 </div>
