@@ -339,7 +339,8 @@ body { overflow-x:hidden; }
 
 .gauge-meta {
   display:flex; justify-content:space-between;
-  font-family:var(--font-type); font-size:8px; color:var(--smoke);
+  font-family:var(--font-type); font-size:12px; color:var(--ash);
+  margin-top:8px;
 }
 
 .gauge-meta .r { color:var(--red); }
@@ -642,6 +643,37 @@ body { overflow-x:hidden; }
 
 .foot::before { content:'†'; margin-right:8px; color:var(--red-dark); }
 
+/* ── BLOOD/EJ BAR CHART ──────────────────────── */
+.era-bars {
+  width: min(600px, 88vw);
+  margin-top: 28px;
+}
+.era-bar-row {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 12px;
+}
+.era-bar-name {
+  font-family: var(--font-book); font-style: italic;
+  font-size: 14px; color: var(--ash);
+  width: 110px; text-align: right; flex-shrink: 0;
+}
+.era-bar-track {
+  flex: 1; height: 18px;
+  background: var(--bg2); border: 1px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.era-bar-fill {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 0%;
+  transition: width 1s cubic-bezier(0.16,1,0.3,1);
+}
+.era-bar-val {
+  font-family: var(--font-type); font-size: 11px;
+  color: var(--smoke); width: 120px; flex-shrink: 0;
+  white-space: nowrap;
+}
+.era-bar-val em { color: var(--bone); font-style: normal; }
+
 /* ── RESPONSIVE ──────────────────────────────── */
 @media (max-width:768px) {
   .ledger { grid-template-columns:1fr; }
@@ -721,7 +753,7 @@ body { overflow-x:hidden; }
     <div id="continue-hint" style="display:none;">continue<span>↓</span></div>
 
     <!-- Below is hidden until all steps revealed -->
-    <div id="after-steps" style="display:none; max-width:1100px; margin:0 auto; padding:24px;">
+    <div id="after-steps" style="display:none; max-width:900px; margin:0 auto; padding:0 40px 60px;">
 
     <div style="text-align:center;padding:32px 0;font-size:14px;color:var(--red-dark);">†</div>
 
@@ -798,6 +830,18 @@ var salary=60000, activeEra=5;
 
 /* ═══════ BOOT ═══════ */
 (function(){
+  var saved=sessionStorage.getItem('pob-salary');
+  if(saved){
+    // Returning from a sub-page — skip boot and prompt entirely
+    salary=parseInt(saved)||60000;
+    document.getElementById('boot').style.display='none';
+    document.getElementById('app').style.display='block';
+    document.getElementById('prompt-phase').style.display='none';
+    document.getElementById('result-phase').style.display='block';
+    buildSteps();
+    buildEra();
+    return;
+  }
   var lines=document.querySelectorAll('.boot-line');
   lines.forEach(function(l){
     setTimeout(function(){l.style.opacity='1';l.style.transition='opacity 0.15s';},
@@ -847,6 +891,7 @@ document.getElementById('skip-btn').addEventListener('click',function(){inp.valu
 function go(){
   salary=parseInt(inp.value.replace(/[^0-9]/g,''))||60000;
   if(salary<1)salary=60000;
+  sessionStorage.setItem('pob-salary',salary);
   document.getElementById('prompt-phase').style.display='none';
   document.getElementById('result-phase').style.display='block';
   buildSteps();
@@ -884,8 +929,8 @@ function buildSteps(){
     },
     {
       label:'AND HERE\'S WHERE IT GETS WEIRD',
-      num:'~const', cls:'red', big:true,
-      interp:'Do that same calculation for the Bronze Age. Then Rome. Then the Feudal era, the Colonial, the Industrial. Six fuels, six gods, six completely different political arrangements. The blood price per unit of energy? <em>Barely moves.</em> For 6,000 years. That\'s either a coincidence or a law. We\'re not saying which.'
+      bars:true,
+      interp:'Do that same calculation for every era. The numbers change — extraction got more efficient over time, each death buying more energy. But the practice? Never stopped. Different fuel, different god, same transaction. The currency was always blood.'
     },
     {
       label:'SO WHAT\'S THE DOLLAR, THEN',
@@ -910,22 +955,42 @@ function buildSteps(){
   var hint=document.getElementById('continue-hint');
   hint.style.display='none';
 
+  var maxBpej=Math.max.apply(null,ERAS.map(function(e){return e.bpej;}));
+
   steps.forEach(function(s,i){
     var div=document.createElement('div');
     div.className='step'+(s.big?' verdict':'');
     var html='<div class="step-label">'+s.label+'</div>';
-    if(s.gauge){
+
+    if(s.bars){
+      html+='<div class="era-bars" id="bars-'+i+'">';
+      ERAS.forEach(function(e,j){
+        var logW=(Math.log10(e.bpej)-Math.log10(Math.min.apply(null,ERAS.map(function(x){return x.bpej;}))))
+                /(Math.log10(maxBpej)-Math.log10(Math.min.apply(null,ERAS.map(function(x){return x.bpej;}))));
+        var wPct=(logW*100).toFixed(1);
+        var val=fN(Math.round(e.bpej))+' L/EJ';
+        html+='<div class="era-bar-row">';
+        html+='<span class="era-bar-name">'+e.name+'</span>';
+        html+='<div class="era-bar-track"><div class="era-bar-fill" id="ef-'+i+'-'+j+'" style="width:0%;background:'+e.col+'" data-w="'+wPct+'"></div></div>';
+        html+='<span class="era-bar-val"><em>'+val+'</em></span>';
+        html+='</div>';
+      });
+      html+='</div>';
+      div.dataset.hasBars='1';
+      div.dataset.barGroup=i;
+    } else if(s.gauge){
       var mp=Math.max(0.4,s.pct);
       html+='<div class="gauge-track" style="position:relative;height:24px;background:var(--bg2);border:1px solid var(--border);">';
       html+='<div class="gauge-fill-blood" style="position:absolute;left:0;top:0;bottom:0;width:100%;background:var(--red-deep);z-index:1;"></div>';
       html+='<div class="gauge-fill-you" id="gauge-you-'+i+'" style="position:absolute;left:0;top:0;bottom:0;width:0%;background:var(--teal);z-index:2;transition:width 1.5s cubic-bezier(0.16,1,0.3,1);"></div>';
       html+='</div>';
-      html+='<div class="gauge-meta"><span>$'+fN(salary)+' ('+s.pct.toFixed(2)+'%)</span><span class="r">$'+fN(Math.round(bloodVal))+' (blood value)</span></div>';
+      html+='<div class="gauge-meta"><span style="color:var(--teal)">your salary — $'+fN(salary)+'</span><span style="color:var(--red)">era blood value — $'+fN(Math.round(bloodVal))+'</span></div>';
       div.dataset.gaugeFill=mp;
       div.dataset.gaugeId='gauge-you-'+i;
     } else {
       html+='<div class="step-num '+s.cls+'">'+s.num+'</div>';
     }
+
     html+='<div class="step-interp">'+s.interp+'</div>';
     if(s.note) html+='<div class="margin-note">'+s.note+'</div>';
     div.innerHTML=html;
@@ -937,11 +1002,19 @@ function buildSteps(){
   allSteps.forEach(function(el,i){
     el.style.transitionDelay=(i*60)+'ms';
     setTimeout(function(){ el.classList.add('vis'); },30);
+    var delay=400+i*120;
     if(el.dataset.gaugeFill){
       setTimeout(function(){
         var g=document.getElementById(el.dataset.gaugeId);
         if(g) g.style.width=el.dataset.gaugeFill+'%';
-      }, 400 + i*60);
+      }, delay);
+    }
+    if(el.dataset.hasBars){
+      setTimeout(function(){
+        el.querySelectorAll('.era-bar-fill').forEach(function(bar){
+          bar.style.width=bar.getAttribute('data-w')+'%';
+        });
+      }, delay);
     }
   });
 
