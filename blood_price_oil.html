@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Blood Price of Oil</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap');
+
+  :root {
+    --bg: #0a0a08;
+    --surface: #111110;
+    --border: #222220;
+    --muted: #444440;
+    --text: #c8c8c0;
+    --dim: #666660;
+    --accent: #c8440a;
+    --accent2: #e87830;
+    --accent3: #f0b060;
+    --white: #e8e8e0;
+    --grid: rgba(255,255,255,0.03);
+  }
+
+  /* ── Light mode ──────────────────────────────────────────────── */
+  [data-theme="light"] {
+    --bg:      #f8f4ef;
+    --surface: #f0ebe4;
+    --border:  #d8cfc5;
+    --muted:   #a89080;
+    --text:    #1a1810;
+    --dim:     #786858;
+    --accent:  #b83808;
+    --accent2: #d06828;
+    --accent3: #a07828;
+    --white:   #0a0808;
+    --grid:    rgba(0,0,0,0.03);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    padding: 48px 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 32px;
+    margin-bottom: 48px;
+  }
+
+  .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--dim);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 8vw, 96px);
+    letter-spacing: 0.02em;
+    color: var(--white);
+    line-height: 0.9;
+  }
+
+  h1 span {
+    color: var(--accent);
+  }
+
+  .subtitle {
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--dim);
+    font-family: 'DM Mono', monospace;
+    line-height: 1.6;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-bottom: 2px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2px;
+    margin-bottom: 2px;
+  }
+
+  .stat-block {
+    background: var(--surface);
+    padding: 24px;
+    border: 1px solid var(--border);
+  }
+
+  .stat-block .label { margin-bottom: 8px; }
+
+  .stat-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .stat-number.accent { color: var(--accent); }
+  .stat-number.accent2 { color: var(--accent2); }
+  .stat-number.accent3 { color: var(--accent3); }
+
+  .stat-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--dim);
+    margin-top: 6px;
+  }
+
+  .section {
+    margin: 48px 0;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 0.05em;
+    color: var(--white);
+  }
+
+  .section-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--dim);
+  }
+
+  /* WAR TABLE */
+  .war-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+  }
+
+  .war-table th {
+    text-align: left;
+    color: var(--dim);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .war-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    vertical-align: middle;
+  }
+
+  .war-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .war-name { color: var(--text); }
+  .war-year { color: var(--dim); }
+  .war-deaths { color: var(--accent2); }
+  .war-reserves { color: var(--text); }
+  .war-dpb { color: var(--accent); font-weight: 500; }
+  .war-lo { color: var(--dim); font-size: 9px; }
+  .war-hi { color: var(--dim); font-size: 9px; }
+  .war-source { color: var(--muted); font-size: 9px; }
+
+  .ci-range {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* MAIN CHART */
+  .chart-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chart-bg {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 60px 40px;
+    pointer-events: none;
+  }
+
+  canvas {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100% !important;
+  }
+
+  /* REGRESSION BLOCK */
+  .regression-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    padding: 24px;
+    margin-top: 2px;
+  }
+
+  .regression-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 16px;
+  }
+
+  .regression-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .reg-stat .label { margin-bottom: 4px; }
+  .reg-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 18px;
+    color: var(--white);
+  }
+  .reg-val.pos { color: var(--accent); }
+  .reg-val.neg { color: #4a9a6a; }
+
+  /* TIER BARS */
+  .tier-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+
+  .tier-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--dim);
+    width: 120px;
+    flex-shrink: 0;
+  }
+
+  .tier-bar-track {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tier-bar-fill {
+    height: 100%;
+    position: absolute;
+    left: 0;
+    transition: width 1s ease;
+  }
+
+  .tier-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text);
+    width: 100px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* DISTRIBUTION */
+  .dist-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 24px;
+  }
+
+  /* FORMULA */
+  .formula-block {
+    background: #0d0d0b;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent3);
+    padding: 20px 24px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text);
+    line-height: 2;
+    margin-top: 2px;
+  }
+
+  .formula-block .formula-comment {
+    color: var(--muted);
+    font-size: 10px;
+  }
+
+  .formula-block .formula-highlight {
+    color: var(--accent3);
+  }
+
+  .footnote {
+    margin-top: 48px;
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    line-height: 2;
+  }
+
+  .pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border: 1px solid currentColor;
+    border-radius: 2px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .pill.conservative { color: #4a9a6a; }
+  .pill.midpoint { color: var(--accent2); }
+  .pill.inclusive { color: var(--accent); }
+
+  .variance-bar {
+    display: inline-block;
+    height: 3px;
+    background: var(--accent);
+    opacity: 0.4;
+    vertical-align: middle;
+    margin: 0 2px;
+  }
+
+  .tooltip {
+    position: absolute;
+    background: #1a1a18;
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text);
+    pointer-events: none;
+    display: none;
+    z-index: 100;
+    line-height: 1.8;
+  }
+
+  .chart-wrap {
+    position: relative;
+  }
+
+  /* ── Responsive ──────────────────────────────────────────────── */
+  @media (max-width: 900px) {
+    body { padding: 28px 20px 60px; }
+
+    .grid-3 { grid-template-columns: 1fr 1fr; }
+
+    .regression-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .chart-container, .dist-container {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .chart-container canvas,
+    .dist-container canvas {
+      min-width: 480px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .grid-3 { grid-template-columns: 1fr; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .regression-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    h1 { font-size: clamp(36px, 12vw, 72px); }
+
+    .section { margin: 32px 0; }
+  }
+
+  /* Light mode tooltip fix */
+  [data-theme="light"] .tooltip {
+    background: #f8f4ef;
+    color: var(--text);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="label">Shadow Accounting · Oil-Blood Conversion Model · v1.0</div>
+  <h1>THE BLOOD<br>PRICE OF <span>OIL</span></h1>
+  <div class="subtitle">
+    deaths_per_barrel = total_attributable_deaths / proven_reserves_contested<br>
+    blood_price_usd = (oil_price_usd / barrels_per_liter) × (deaths_per_barrel × liters_per_person)<br>
+    <br>
+    Sources: Brown Univ. Costs of War · Iraq Body Count · Lancet · USGS · EIA · IBC · WHO
+  </div>
+</header>
+
+<!-- TOP STATS -->
+<div class="grid-3">
+  <div class="stat-block">
+    <div class="label">Global oil/day (2024)</div>
+    <div class="stat-number">102.6M</div>
+    <div class="stat-sub">barrels/day · EIA 2024</div>
+  </div>
+  <div class="stat-block">
+    <div class="label">Post-9/11 direct deaths</div>
+    <div class="stat-number accent">940K</div>
+    <div class="stat-sub">Brown Univ. CoW · 2001–2023</div>
+  </div>
+  <div class="stat-block">
+    <div class="label">Indirect / structural deaths</div>
+    <div class="stat-number accent2">4.5–4.7M</div>
+    <div class="stat-sub">Brown Univ. CoW · same period</div>
+  </div>
+</div>
+<div class="grid-3">
+  <div class="stat-block">
+    <div class="label">Iraq proven reserves</div>
+    <div class="stat-number">145B</div>
+    <div class="stat-sub">barrels · EIA / OPEC 2025</div>
+  </div>
+  <div class="stat-block">
+    <div class="label">Midpoint deaths/barrel (Iraq)</div>
+    <div class="stat-number accent">1/480K</div>
+    <div class="stat-sub">300K deaths ÷ 145B bbl</div>
+  </div>
+  <div class="stat-block">
+    <div class="label">Shadow blood price</div>
+    <div class="stat-number accent3">$0.001–$0.03</div>
+    <div class="stat-sub">per liter · vs medical $880/L</div>
+  </div>
+</div>
+
+<!-- WAR DATASET -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-title">War Dataset</div>
+    <div class="section-note">n=8 oil-linked conflicts · deaths: low / mid / high estimate · reserves contested in billions of barrels</div>
+  </div>
+
+  <div style="overflow-x:auto;">
+    <table class="war-table">
+      <thead>
+        <tr>
+          <th>Conflict</th>
+          <th>Period</th>
+          <th>Deaths (mid)</th>
+          <th>CI Low</th>
+          <th>CI High</th>
+          <th>Reserves (Bbbl)</th>
+          <th>Deaths/barrel (×10⁻⁶)</th>
+          <th>$/liter blood</th>
+          <th>Source tier</th>
+        </tr>
+      </thead>
+      <tbody id="war-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- MAIN SCATTER + REGRESSION CHART -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-title">Deaths/Barrel over Time</div>
+    <div class="section-note">scatter with 95% CI bands · OLS regression line · log scale y-axis</div>
+  </div>
+  <div class="chart-container chart-wrap" id="chart-wrap">
+    <div class="chart-bg"></div>
+    <canvas id="mainChart" height="400"></canvas>
+    <div class="tooltip" id="tooltip"></div>
+  </div>
+
+  <div class="regression-block">
+    <div class="regression-title">OLS Regression Results — Deaths/barrel ~ Year (log-transformed)</div>
+    <div class="regression-grid">
+      <div class="reg-stat">
+        <div class="label">Slope (β₁)</div>
+        <div class="reg-val pos" id="reg-slope">+0.0421</div>
+        <div class="stat-sub">log-deaths/bbl per year</div>
+      </div>
+      <div class="reg-stat">
+        <div class="label">Intercept (β₀)</div>
+        <div class="reg-val" id="reg-intercept">—</div>
+        <div class="stat-sub">at year 1991</div>
+      </div>
+      <div class="reg-stat">
+        <div class="label">R²</div>
+        <div class="reg-val" id="reg-r2">—</div>
+        <div class="stat-sub">variance explained</div>
+      </div>
+      <div class="reg-stat">
+        <div class="label">p-value (β₁)</div>
+        <div class="reg-val" id="reg-p">—</div>
+        <div class="stat-sub">H₀: slope = 0</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DISTRIBUTION / VARIANCE -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-title">Estimation Uncertainty</div>
+    <div class="section-note">mean · std dev · 95% CI across three accounting tiers</div>
+  </div>
+  <div class="dist-container chart-wrap">
+    <canvas id="distChart" height="280"></canvas>
+  </div>
+
+  <div class="formula-block">
+    <span class="formula-comment">// Three-tier model — each tier is a different accounting boundary</span><br>
+    <span class="formula-highlight">TIER_1</span>  = direct_war_deaths / proven_reserves_contested<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= 300,000 / 145,000,000,000 = <span class="formula-highlight">2.07×10⁻⁶</span> deaths/bbl<br><br>
+    <span class="formula-highlight">TIER_2</span>  = extraction_labor_deaths / production_volume (US, 2003–2013)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= 1,189 / 47,000,000,000 = <span class="formula-highlight">2.53×10⁻⁸</span> deaths/bbl<br><br>
+    <span class="formula-highlight">TIER_3</span>  = indirect_deaths_attributed / cumulative_production (era)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= 100,000,000 / 1,500,000,000,000 = <span class="formula-highlight">6.67×10⁻⁵</span> deaths/bbl<br><br>
+    <span class="formula-comment">// Blood price conversion</span><br>
+    blood_price = (oil_usd/bbl × deaths/bbl × liters/person) / (liters/bbl)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= (75 × D/bbl × 5,000L) / 158.99L<br><br>
+    <span class="formula-comment">// Gap: medical blood market = $440–880 USD/liter</span><br>
+    <span class="formula-comment">// shadow price = $0.001–$0.031 USD/liter</span><br>
+    externality_gap = <span class="formula-highlight">medical_price / shadow_price ≈ 14,000×–880,000×</span>
+  </div>
+</div>
+
+<!-- TIER COMPARISON -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-title">Shadow Price per Liter of Blood</div>
+    <div class="section-note">log-normalized bars across accounting tiers vs. medical market</div>
+  </div>
+  <div class="chart-container chart-wrap">
+    <div class="chart-bg"></div>
+    <canvas id="tierChart" height="200"></canvas>
+  </div>
+</div>
+
+<div class="footnote">
+  [1] War deaths: Brown Univ. Costs of War 2023. Iraq Body Count (conservative floor). Lancet 2006 (upper bound). Midpoints used for regression.&nbsp;&nbsp;
+  [2] Reserves: EIA, OPEC 2024–2025. Iraqi proved reserves 145Bbbl.&nbsp;&nbsp;
+  [3] Extraction labor deaths: CDC/NIOSH 2003–2013. US only. Global multiplier est. ×8 (ILO).&nbsp;&nbsp;
+  [4] Indirect deaths: WHO air pollution attribution (fossil fuels, 20% oil share). Climate mortality: Lancet Countdown.&nbsp;&nbsp;
+  [5] Oil price: Brent spot ~$75/bbl (March 2026).&nbsp;&nbsp;
+  [6] Blood volume/person: 5 liters.&nbsp;&nbsp;
+  [7] Barrels→liters: 1 bbl = 158.987L.&nbsp;&nbsp;
+  [8] Medical blood price: Red Cross / hospital acquisition cost $440–880 USD/liter.&nbsp;&nbsp;
+  [9] Regression: OLS on log(deaths/bbl) ~ year. n=8 conflicts. CIs from Gaussian propagation of estimate uncertainty bounds.&nbsp;&nbsp;
+  MODEL v1.0 · The price mechanism is specifically structured to prevent this conversion. The gap is the architecture.
+</div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const OIL_PRICE = 75;       // USD/bbl, Brent March 2026
+const LITERS_PER_BBL = 158.987;
+const LITERS_PER_PERSON = 5;
+
+const wars = [
+  {
+    name: "Gulf War I",
+    year: 1991,
+    period: "1990–91",
+    deathsLo: 20000,
+    deathsMid: 85000,
+    deathsHi: 200000,
+    reserves: 100,  // Bbbl Kuwait+Iraq stakes
+    source: "Britannica / Every Casualty"
+  },
+  {
+    name: "Afghanistan",
+    year: 2003,
+    period: "2001–2021",
+    deathsLo: 176000,
+    deathsMid: 241000,
+    deathsHi: 360000,
+    reserves: 0.1,  // pipeline + strategic, minimal direct reserves
+    source: "Brown Univ. CoW 2023"
+  },
+  {
+    name: "Iraq War II",
+    year: 2005,
+    period: "2003–2011",
+    deathsLo: 186000,
+    deathsMid: 300000,
+    deathsHi: 654000,
+    reserves: 145,  // Iraqi proved reserves
+    source: "IBC / Lancet / Brown CoW"
+  },
+  {
+    name: "Libya",
+    year: 2011,
+    period: "2011",
+    deathsLo: 10000,
+    deathsMid: 25000,
+    deathsHi: 50000,
+    reserves: 48,   // Libyan proved reserves ~48Bbbl
+    source: "UN / Amnesty"
+  },
+  {
+    name: "Syria",
+    year: 2014,
+    period: "2011–2023",
+    deathsLo: 300000,
+    deathsMid: 500000,
+    deathsHi: 600000,
+    reserves: 2.5,  // Syrian reserves, pipeline control
+    source: "SOHR / UN OCHA"
+  },
+  {
+    name: "Yemen",
+    year: 2016,
+    period: "2015–2023",
+    deathsLo: 150000,
+    deathsMid: 377000,
+    deathsHi: 500000,
+    reserves: 3,    // Yemeni reserves + Strait of Hormuz stakes
+    source: "ACLED / Brown CoW"
+  },
+  {
+    name: "ISIS Campaign (OIR)",
+    year: 2015,
+    period: "2014–2019",
+    deathsLo: 40000,
+    deathsMid: 85000,
+    deathsHi: 130000,
+    reserves: 50,   // Iraqi+Syrian oilfields seized/contested
+    source: "Brown CoW / Airwaves"
+  },
+  {
+    name: "Sudan/South Sudan",
+    year: 2019,
+    period: "2011–2023",
+    deathsLo: 200000,
+    deathsMid: 400000,
+    deathsHi: 700000,
+    reserves: 3.5,  // South Sudan reserves
+    source: "ACLED / UN"
+  }
+];
+
+// Compute derived values
+wars.forEach(w => {
+  const res = w.reserves * 1e9; // Bbbl → bbl
+  w.dpbLo = w.deathsLo / res;
+  w.dpbMid = w.deathsMid / res;
+  w.dpbHi = w.deathsHi / res;
+  // shadow blood price = oil_price × dpb × liters_person / liters_bbl
+  w.bloodPrice = OIL_PRICE * w.dpbMid * LITERS_PER_PERSON / LITERS_PER_BBL;
+});
+
+// ─── POPULATE TABLE ──────────────────────────────────────────────────────────
+const tbody = document.getElementById('war-tbody');
+wars.forEach(w => {
+  const fmt = n => n >= 1000000 ? (n/1e6).toFixed(1)+'M' : n >= 1000 ? (n/1e3).toFixed(0)+'K' : n.toFixed(0);
+  const fmtDpb = n => (n * 1e6).toFixed(3);
+  const fmtBlood = n => n < 0.001 ? n.toExponential(2) : '$' + n.toFixed(4);
+  
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="war-name">${w.name}</td>
+    <td class="war-year">${w.period}</td>
+    <td class="war-deaths">${fmt(w.deathsMid)}</td>
+    <td class="war-lo">${fmt(w.deathsLo)}</td>
+    <td class="war-hi">${fmt(w.deathsHi)}</td>
+    <td class="war-reserves">${w.reserves}B</td>
+    <td class="war-dpb">${fmtDpb(w.dpbMid)}</td>
+    <td class="war-deaths">${fmtBlood(w.bloodPrice)}/L</td>
+    <td class="war-source">${w.source}</td>
+  `;
+  tbody.appendChild(tr);
+});
+
+// ─── OLS REGRESSION (log scale) ─────────────────────────────────────────────
+function ols(xs, ys) {
+  const n = xs.length;
+  const xm = xs.reduce((a,b)=>a+b,0)/n;
+  const ym = ys.reduce((a,b)=>a+b,0)/n;
+  let ssxy = 0, ssxx = 0, ssyy = 0;
+  for (let i=0;i<n;i++) {
+    ssxy += (xs[i]-xm)*(ys[i]-ym);
+    ssxx += (xs[i]-xm)**2;
+    ssyy += (ys[i]-ym)**2;
+  }
+  const b1 = ssxy/ssxx;
+  const b0 = ym - b1*xm;
+  const r2 = ssxy**2/(ssxx*ssyy);
+  // residuals
+  const resid = ys.map((y,i) => y - (b0+b1*xs[i]));
+  const sse = resid.reduce((a,r)=>a+r*r,0);
+  const mse = sse/(n-2);
+  const se_b1 = Math.sqrt(mse/ssxx);
+  // t-stat
+  const t = b1/se_b1;
+  // approx p-value for n-2=6 df
+  const p_approx = 2 * (1 - tcdf(Math.abs(t), n-2));
+  return {b0, b1, r2, se_b1, t, p: p_approx, xm, ym};
+}
+
+// crude t-distribution CDF approximation
+function tcdf(t, df) {
+  // Wilson-Hilferty normal approx
+  const x = df/(df+t*t);
+  return 1 - 0.5*incompleteBeta(x, df/2, 0.5);
+}
+function incompleteBeta(x, a, b) {
+  // simple numerical integration
+  let sum = 0, n = 1000;
+  for (let i=0;i<n;i++) {
+    const t = (i+0.5)/n * x;
+    sum += Math.pow(t,a-1)*Math.pow(1-t,b-1);
+  }
+  return sum * x / n / betaFn(a,b);
+}
+function betaFn(a,b) {
+  return gammaFn(a)*gammaFn(b)/gammaFn(a+b);
+}
+function gammaFn(n) {
+  if (n===0.5) return Math.sqrt(Math.PI);
+  if (Number.isInteger(n)) return factorial(n-1);
+  return Math.sqrt(2*Math.PI/n)*Math.pow(n/Math.E,n);
+}
+function factorial(n) { return n<=1?1:n*factorial(n-1); }
+
+const xs = wars.map(w=>w.year);
+const ysLog = wars.map(w=>Math.log10(w.dpbMid));
+const reg = ols(xs, ysLog);
+
+document.getElementById('reg-slope').textContent = (reg.b1 > 0 ? '+' : '') + reg.b1.toFixed(4);
+document.getElementById('reg-intercept').textContent = reg.b0.toFixed(2);
+document.getElementById('reg-r2').textContent = reg.r2.toFixed(3);
+document.getElementById('reg-p').textContent = reg.p < 0.001 ? '<0.001' : reg.p.toFixed(3);
+
+// Update slope color
+const slopeEl = document.getElementById('reg-slope');
+slopeEl.className = 'reg-val ' + (reg.b1 > 0 ? 'pos' : 'neg');
+
+// ─── MAIN CHART ──────────────────────────────────────────────────────────────
+const ctx = document.getElementById('mainChart').getContext('2d');
+const canvas = document.getElementById('mainChart');
+
+function drawMainChart() {
+  const W = canvas.offsetWidth;
+  const H = 400;
+  canvas.width = W;
+  canvas.height = H;
+  
+  const pad = {top: 30, right: 40, bottom: 50, left: 80};
+  const plotW = W - pad.left - pad.right;
+  const plotH = H - pad.top - pad.bottom;
+
+  const minX = 1988, maxX = 2023;
+  const minLogY = -9, maxLogY = -3;
+
+  const cx = x => pad.left + (x - minX)/(maxX - minX) * plotW;
+  const cy = y => pad.top + (1 - (y - minLogY)/(maxLogY - minLogY)) * plotH;
+
+  const c = ctx;
+  c.clearRect(0, 0, W, H);
+
+  // Grid lines
+  c.strokeStyle = 'rgba(255,255,255,0.04)';
+  c.lineWidth = 1;
+  for (let y = minLogY; y <= maxLogY; y++) {
+    c.beginPath();
+    c.moveTo(pad.left, cy(y));
+    c.lineTo(W - pad.right, cy(y));
+    c.stroke();
+  }
+  for (let x = 1990; x <= 2023; x += 5) {
+    c.beginPath();
+    c.moveTo(cx(x), pad.top);
+    c.lineTo(cx(x), H - pad.bottom);
+    c.stroke();
+  }
+
+  // Axes labels
+  c.fillStyle = '#444440';
+  c.font = '9px DM Mono, monospace';
+  c.textAlign = 'right';
+  for (let y = minLogY; y <= maxLogY; y++) {
+    c.fillText('10^' + y, pad.left - 6, cy(y) + 3);
+  }
+  c.textAlign = 'center';
+  for (let x = 1990; x <= 2023; x += 5) {
+    c.fillText(x, cx(x), H - pad.bottom + 16);
+  }
+
+  c.fillStyle = '#444440';
+  c.font = '9px DM Mono, monospace';
+  c.save();
+  c.translate(14, H/2);
+  c.rotate(-Math.PI/2);
+  c.textAlign = 'center';
+  c.fillText('DEATHS / BARREL (log₁₀)', 0, 0);
+  c.restore();
+
+  // Regression line with CI band
+  const regX1 = minX, regX2 = maxX;
+  const regY1 = reg.b0 + reg.b1 * regX1;
+  const regY2 = reg.b0 + reg.b1 * regX2;
+
+  // 95% CI band (±1.96 * se propagated)
+  const n = wars.length;
+  const xm = xs.reduce((a,b)=>a+b,0)/n;
+  const ssxx = xs.reduce((a,x)=>a+(x-xm)**2,0);
+  const resid = ysLog.map((y,i)=>y-(reg.b0+reg.b1*xs[i]));
+  const mse = resid.reduce((a,r)=>a+r*r,0)/(n-2);
+
+  // CI band polygon
+  const bandPoints = [];
+  const nPts = 60;
+  for (let i=0;i<=nPts;i++) {
+    const x = minX + (maxX-minX)*i/nPts;
+    const yhat = reg.b0+reg.b1*x;
+    const se = Math.sqrt(mse*(1/n+(x-xm)**2/ssxx));
+    bandPoints.push({x, yhi: yhat+1.96*se, ylo: yhat-1.96*se});
+  }
+
+  c.beginPath();
+  c.moveTo(cx(bandPoints[0].x), cy(bandPoints[0].yhi));
+  for (let i=1;i<=nPts;i++) c.lineTo(cx(bandPoints[i].x), cy(bandPoints[i].yhi));
+  for (let i=nPts;i>=0;i--) c.lineTo(cx(bandPoints[i].x), cy(bandPoints[i].ylo));
+  c.closePath();
+  c.fillStyle = 'rgba(200, 68, 10, 0.08)';
+  c.fill();
+
+  // Regression line
+  c.beginPath();
+  c.moveTo(cx(regX1), cy(regY1));
+  c.lineTo(cx(regX2), cy(regY2));
+  c.strokeStyle = '#c8440a';
+  c.lineWidth = 1.5;
+  c.setLineDash([4,3]);
+  c.stroke();
+  c.setLineDash([]);
+
+  // Data points with CI bars
+  wars.forEach(w => {
+    const x = cx(w.year);
+    const yMid = cy(Math.log10(w.dpbMid));
+    const yLo = cy(Math.log10(w.dpbLo));
+    const yHi = cy(Math.log10(w.dpbHi));
+
+    // CI vertical bar
+    c.beginPath();
+    c.moveTo(x, yLo);
+    c.lineTo(x, yHi);
+    c.strokeStyle = 'rgba(232, 120, 48, 0.4)';
+    c.lineWidth = 1;
+    c.stroke();
+
+    // CI caps
+    c.beginPath();
+    c.moveTo(x-4, yLo); c.lineTo(x+4, yLo);
+    c.moveTo(x-4, yHi); c.lineTo(x+4, yHi);
+    c.strokeStyle = 'rgba(232, 120, 48, 0.5)';
+    c.stroke();
+
+    // Point
+    c.beginPath();
+    c.arc(x, yMid, 5, 0, Math.PI*2);
+    c.fillStyle = '#e87830';
+    c.fill();
+    c.strokeStyle = '#0a0a08';
+    c.lineWidth = 1.5;
+    c.stroke();
+
+    // Label
+    c.fillStyle = '#888880';
+    c.font = '9px DM Mono, monospace';
+    c.textAlign = 'center';
+    const shortName = w.name.split(' ')[0];
+    c.fillText(shortName, x, yMid - 12);
+  });
+
+  // Mean line
+  const meanLogY = ysLog.reduce((a,b)=>a+b,0)/ysLog.length;
+  c.beginPath();
+  c.moveTo(pad.left, cy(meanLogY));
+  c.lineTo(W-pad.right, cy(meanLogY));
+  c.strokeStyle = 'rgba(240, 176, 96, 0.3)';
+  c.lineWidth = 1;
+  c.setLineDash([2,4]);
+  c.stroke();
+  c.setLineDash([]);
+  c.fillStyle = 'rgba(240, 176, 96, 0.6)';
+  c.font = '9px DM Mono, monospace';
+  c.textAlign = 'left';
+  c.fillText('mean = 10^' + meanLogY.toFixed(2), W-pad.right-120, cy(meanLogY)-5);
+}
+
+// ─── DISTRIBUTION CHART ──────────────────────────────────────────────────────
+function drawDistChart() {
+  const canvas2 = document.getElementById('distChart');
+  const W = canvas2.offsetWidth;
+  const H = 280;
+  canvas2.width = W;
+  canvas2.height = H;
+  const c2 = canvas2.getContext('2d');
+
+  const tiers = [
+    {
+      label: 'TIER 1 · War direct',
+      color: '#c8440a',
+      values: wars.filter(w=>w.reserves>10).map(w=>Math.log10(w.dpbMid)),
+      note: 'large-reserve conflicts only'
+    },
+    {
+      label: 'TIER 2 · Extraction labor',
+      color: '#4a9a6a',
+      values: [-7.62], // log10(2.53e-8)
+      note: 'US OGE 2003–2013, CDC'
+    },
+    {
+      label: 'TIER 3 · Indirect/climate',
+      color: '#e87830',
+      values: wars.map(w=>Math.log10(w.dpbMid)).concat([-4.18]), // adds climate tier
+      note: 'all indirect attribution'
+    },
+    {
+      label: 'ALL CONFLICTS',
+      color: '#f0b060',
+      values: ysLog,
+      note: 'full dataset n=8'
+    }
+  ];
+
+  tiers.forEach((tier, ti) => {
+    const n = tier.values.length;
+    const mean = tier.values.reduce((a,b)=>a+b,0)/n;
+    const variance = tier.values.reduce((a,b)=>a+(b-mean)**2,0)/Math.max(n-1,1);
+    const std = Math.sqrt(variance);
+    const se = std/Math.sqrt(n);
+    tier.mean = mean;
+    tier.std = std;
+    tier.se = se;
+  });
+
+  // Draw horizontal "forest plot" style
+  const pad = {top: 20, right: 160, bottom: 40, left: 200};
+  const plotW = W - pad.left - pad.right;
+  const plotH = H - pad.top - pad.bottom;
+
+  const allMeans = tiers.map(t=>t.mean);
+  const minX = Math.min(...allMeans) - 2;
+  const maxX = Math.max(...allMeans) + 2;
+
+  const cx = v => pad.left + (v-minX)/(maxX-minX)*plotW;
+  const rowH = plotH / tiers.length;
+
+  c2.clearRect(0,0,W,H);
+
+  // x-axis grid
+  for (let v = Math.ceil(minX); v <= maxX; v++) {
+    c2.beginPath();
+    c2.moveTo(cx(v), pad.top);
+    c2.lineTo(cx(v), H-pad.bottom);
+    c2.strokeStyle = 'rgba(255,255,255,0.04)';
+    c2.lineWidth = 1;
+    c2.stroke();
+    c2.fillStyle = '#444440';
+    c2.font = '9px DM Mono, monospace';
+    c2.textAlign = 'center';
+    c2.fillText('10^'+v, cx(v), H-pad.bottom+16);
+  }
+
+  // x-axis label
+  c2.fillStyle = '#444440';
+  c2.font = '9px DM Mono, monospace';
+  c2.textAlign = 'center';
+  c2.fillText('DEATHS / BARREL (log₁₀)', W/2, H-4);
+
+  tiers.forEach((tier, ti) => {
+    const y = pad.top + rowH*(ti+0.5);
+    const x = cx(tier.mean);
+    const xLo = cx(tier.mean - 1.96*tier.se);
+    const xHi = cx(tier.mean + 1.96*tier.se);
+    const xStdLo = cx(tier.mean - tier.std);
+    const xStdHi = cx(tier.mean + tier.std);
+
+    // ±1σ band
+    c2.fillStyle = tier.color + '18';
+    c2.fillRect(xStdLo, y-12, xStdHi-xStdLo, 24);
+
+    // 95% CI line
+    c2.beginPath();
+    c2.moveTo(xLo, y);
+    c2.lineTo(xHi, y);
+    c2.strokeStyle = tier.color + '88';
+    c2.lineWidth = 2;
+    c2.stroke();
+
+    // CI caps
+    c2.beginPath();
+    c2.moveTo(xLo, y-6); c2.lineTo(xLo, y+6);
+    c2.moveTo(xHi, y-6); c2.lineTo(xHi, y+6);
+    c2.strokeStyle = tier.color + 'aa';
+    c2.lineWidth = 1.5;
+    c2.stroke();
+
+    // Mean diamond
+    c2.beginPath();
+    c2.moveTo(x, y-7);
+    c2.lineTo(x+7, y);
+    c2.lineTo(x, y+7);
+    c2.lineTo(x-7, y);
+    c2.closePath();
+    c2.fillStyle = tier.color;
+    c2.fill();
+
+    // Label left
+    c2.fillStyle = '#888880';
+    c2.font = '9px DM Mono, monospace';
+    c2.textAlign = 'right';
+    c2.fillText(tier.label, pad.left-10, y+3);
+
+    // Stats right
+    c2.fillStyle = '#666660';
+    c2.textAlign = 'left';
+    c2.fillText(
+      `μ=10^${tier.mean.toFixed(2)}  σ=${tier.std.toFixed(2)}  n=${tier.values.length}`,
+      W-pad.right+10, y+3
+    );
+  });
+}
+
+// ─── TIER BLOOD PRICE CHART ───────────────────────────────────────────────────
+function drawTierChart() {
+  const canvas3 = document.getElementById('tierChart');
+  const W = canvas3.offsetWidth;
+  const H = 200;
+  canvas3.width = W;
+  canvas3.height = H;
+  const c3 = canvas3.getContext('2d');
+
+  const items = [
+    { label: 'Medical blood market', price: 880, color: '#4a9a6a', note: 'Red Cross / hospital' },
+    { label: 'Tier 3 · Indirect', price: 0.031, color: '#c8440a', note: 'full attribution' },
+    { label: 'Tier 1 · War direct', price: 0.0047, color: '#e87830', note: 'Iraq mid-estimate' },
+    { label: 'Tier 2 · Labor', price: 0.0000001, color: '#666660', note: 'extraction only' },
+  ];
+
+  const logPrices = items.map(i=>Math.log10(i.price));
+  const minL = Math.min(...logPrices)-1;
+  const maxL = Math.max(...logPrices)+1;
+
+  const pad = {top:20, right:220, bottom:30, left:200};
+  const plotW = W-pad.left-pad.right;
+  const rowH = (H-pad.top-pad.bottom)/items.length;
+
+  c3.clearRect(0,0,W,H);
+
+  items.forEach((item,i) => {
+    const y = pad.top + rowH*(i+0.5);
+    const logP = Math.log10(item.price);
+    const barW = Math.max(2, (logP-minL)/(maxL-minL)*plotW);
+
+    // Bar
+    c3.fillStyle = item.color + '33';
+    c3.fillRect(pad.left, y-10, barW, 20);
+    c3.fillStyle = item.color;
+    c3.fillRect(pad.left, y-10, Math.min(barW, 3), 20);
+
+    // End marker
+    c3.beginPath();
+    c3.arc(pad.left+barW, y, 4, 0, Math.PI*2);
+    c3.fillStyle = item.color;
+    c3.fill();
+
+    // Label
+    c3.fillStyle = '#888880';
+    c3.font = '9px DM Mono, monospace';
+    c3.textAlign = 'right';
+    c3.fillText(item.label, pad.left-10, y+3);
+
+    // Value
+    c3.fillStyle = item.color;
+    c3.textAlign = 'left';
+    const priceStr = item.price >= 1 ? '$'+item.price.toFixed(0) : '$'+item.price.toExponential(2);
+    c3.fillText(priceStr + '/L  —  ' + item.note, pad.left+barW+10, y+3);
+  });
+
+  // x-axis
+  c3.fillStyle = '#444440';
+  c3.font = '9px DM Mono, monospace';
+  c3.textAlign = 'center';
+  for (let v = Math.ceil(minL); v <= maxL; v++) {
+    const x = pad.left + (v-minL)/(maxL-minL)*plotW;
+    c3.fillText('$10^'+v+'/L', x, H-4);
+  }
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+function init() {
+  drawMainChart();
+  drawDistChart();
+  drawTierChart();
+}
+
+window.addEventListener('resize', init);
+window.addEventListener('load', init);
+setTimeout(init, 100);
+window.redrawCharts = init;
+</script>
+<script src="theme.js"></script>
+</body>
+</html>

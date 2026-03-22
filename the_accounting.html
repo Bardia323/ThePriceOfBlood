@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Accounting</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+:root {
+  --ink:   #07060e;
+  --deep:  #0b0a18;
+  --plate: #100f1e;
+  --rule:  #1a1830;
+  --dim:   #34305a;
+  --grey:  #544e78;
+  --text:  #9890b8;
+  --bone:  #dcd4f0;
+  --white: #f0ecff;
+
+  --amber:  #d4a040;
+  --cold:   #3a8ab8;
+  --warm:   #b85830;
+  --blood:  #b02818;
+  --energy: #38a870;
+  --god:    #7050a8;
+  --gap:    #c87820;
+
+  --mono:  'DM Mono', monospace;
+  --serif: 'Playfair Display', serif;
+}
+
+/* ── Light mode ──────────────────────────────────────────────── */
+[data-theme="light"] {
+  --ink:   #f5f3ff;
+  --deep:  #edeaf8;
+  --plate: #e5e2f2;
+  --rule:  #cfc9e8;
+  --dim:   #8070a8;
+  --grey:  #9088b0;
+  --text:  #2a2040;
+  --bone:  #140c28;
+  --white: #08041a;
+  --amber: #a07018;
+  --cold:  #205a88;
+  --warm:  #883818;
+  --blood: #901808;
+  --energy:#207050;
+  --god:   #503890;
+  --gap:   #906010;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--mono);
+  font-weight: 300;
+  font-size: 11px;
+  padding: 36px 40px 60px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.hdr {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: end;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 18px;
+  margin-bottom: 28px;
+}
+h1 {
+  font-family: var(--serif);
+  font-size: 38px; font-weight: 400; font-style: italic;
+  color: var(--white); letter-spacing: -0.01em; line-height: 1;
+}
+h1 span { color: var(--amber); }
+.hdr-meta {
+  text-align: right; font-size: 8px; color: var(--dim);
+  letter-spacing: 0.1em; line-height: 2;
+}
+.hdr-meta strong { color: var(--grey); }
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 28px;
+}
+
+.sh {
+  font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--dim); border-bottom: 1px solid var(--rule);
+  padding-bottom: 7px; margin-bottom: 14px; margin-top: 26px;
+  display: flex; gap: 14px; align-items: baseline;
+}
+.sh:first-child { margin-top: 0; }
+.sh-t {
+  font-family: var(--serif); font-style: italic;
+  font-size: 15px; color: var(--bone); font-weight: 400;
+  letter-spacing: 0; text-transform: none;
+}
+
+.tbl { width: 100%; border-collapse: collapse; }
+.tbl th {
+  font-size: 7.5px; letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--dim); text-align: right; padding: 5px 8px;
+  border-bottom: 1px solid var(--rule); font-weight: 400; white-space: nowrap;
+}
+.tbl th:first-child { text-align: left; }
+.tbl td {
+  padding: 9px 8px; border-bottom: 1px solid rgba(255,255,255,0.025);
+  text-align: right; vertical-align: middle; white-space: nowrap;
+}
+.tbl td:first-child { text-align: left; }
+.tbl tr:hover td { background: rgba(255,255,255,0.012); }
+
+.ec { display: flex; flex-direction: column; gap: 1px; }
+.en { font-family: var(--serif); font-style: italic; font-size: 15px; font-weight: 400; color: var(--white); line-height: 1.1; }
+.ep { font-size: 7px; color: var(--dim); }
+.eg { font-size: 7.5px; letter-spacing: 0.04em; color: var(--god); }
+.es { font-size: 7px; color: var(--grey); font-style: italic; }
+
+.n  { color: var(--amber); }
+.nd { color: var(--blood); }
+.ne { color: var(--energy); }
+.nc { color: var(--cold); }
+.nw { color: var(--warm); }
+.ng { color: var(--gap); }
+.nm { color: var(--grey); }
+
+.bw { display: flex; align-items: center; gap: 5px; }
+.bt { flex: 1; height: 2px; background: var(--rule); position: relative; min-width: 28px; }
+.bf { position: absolute; left:0; top:0; height:100%; }
+
+canvas { display: block; }
+
+.panel {
+  border: 1px solid var(--rule); margin-bottom: 10px; background: var(--deep);
+}
+.ph {
+  padding: 9px 12px 7px; border-bottom: 1px solid var(--rule);
+  display: flex; align-items: baseline; gap: 8px;
+}
+.pn { font-family: var(--serif); font-style: italic; font-size: 13px; color: var(--bone); font-weight: 400; }
+.pt { font-size: 7px; letter-spacing: 0.15em; }
+.pb { padding: 8px 12px 10px; }
+.pr { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
+.pl { font-size: 7.5px; color: var(--dim); }
+.pv { font-size: 9px; }
+.pf {
+  font-size: 7.5px; color: var(--dim); border-top: 1px solid var(--rule);
+  padding-top: 7px; margin-top: 3px; line-height: 1.9;
+}
+
+.vp {
+  border: 1px solid var(--rule); border-left: 2px solid var(--warm);
+  background: var(--deep); padding: 10px 12px; margin-bottom: 10px;
+}
+.vt { font-size: 7px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--warm); margin-bottom: 8px; }
+.vr { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; gap: 4px; }
+.vrl { font-size: 7.5px; color: var(--dim); flex-shrink: 0; width: 68px; }
+.vrf { font-size: 7px; color: var(--grey); }
+.vra { font-size: 7px; color: var(--dim); }
+.vrv { font-size: 7px; color: var(--warm); text-align: right; }
+
+.sg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.sb { border: 1px solid var(--rule); background: var(--deep); padding: 8px 10px; }
+.sl { font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); margin-bottom: 5px; }
+.sr { display: flex; justify-content: space-between; font-size: 6.5px; color: var(--dim); margin-top: 3px; }
+
+.gc {
+  display: grid; grid-template-columns: repeat(8,1fr); gap: 2px; margin-top: 22px;
+}
+.gcell { background: var(--deep); border: 1px solid var(--rule); padding: 12px 10px 10px; }
+.gv { font-family: var(--serif); font-style: italic; font-size: 20px; line-height: 1; margin-bottom: 4px; }
+.gl { font-size: 6.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); line-height: 1.6; }
+
+.note {
+  margin-top: 20px; border-top: 1px solid var(--rule); padding-top: 12px;
+  font-size: 7.5px; color: var(--dim); line-height: 2;
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 24px;
+}
+.note strong { color: var(--grey); }
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  body { padding: 24px 20px 60px; }
+
+  .hdr { grid-template-columns: 1fr; }
+  .hdr-meta { text-align: left; margin-top: 8px; }
+
+  .layout { grid-template-columns: 1fr; }
+
+  /* 8-column era grid → 4 col */
+  .gc { grid-template-columns: repeat(4, 1fr) !important; }
+
+  /* 3-col note grid → 1 col */
+  .note { grid-template-columns: 1fr; gap: 12px; }
+
+  /* Sidebar tables overflow-x */
+  .sg { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+  canvas { overflow-x: auto; }
+}
+
+@media (max-width: 600px) {
+  .gc { grid-template-columns: repeat(2, 1fr) !important; }
+
+  .sg { grid-template-columns: 1fr; }
+
+  h1 { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div>
+    <div style="font-size:8px;letter-spacing:0.2em;color:var(--dim);text-transform:uppercase;margin-bottom:10px;">
+      Shadow Accounting · Complete Record · Six Eras · All Variables
+    </div>
+    <h1>The <span>Accounting</span></h1>
+  </div>
+  <div class="hdr-meta">
+    <strong>Energy method:</strong> population × GJ/cap/yr × duration (primary energy base)<br>
+    <strong>Units:</strong> 1 GJ = 277.78 kWh · 1 EJ = 10⁹ GJ · 1 bbl = 6.1 GJ<br>
+    <strong>Shadow $/GJ:</strong> $12.30 (Brent $75 ÷ 6.1 GJ/bbl)<br>
+    <strong>Blood price:</strong> value extracted per litre · medical market ref $880/L · 5L/person<br>
+    <strong>Deaths:</strong> war-attributable direct deaths only (see sources)
+  </div>
+</div>
+
+<div class="layout">
+<div>
+
+<div class="sh"><span class="sh-t">Era Record</span>
+  <span>6 eras · 11 variables · war deaths vs total civilizational energy base</span>
+</div>
+<table class="tbl" id="tbl"></table>
+
+<div class="sh"><span class="sh-t">The Hunger Line</span>
+  <span>children/EJ ● · $/L extracted ◆ · substrate GJ/unit ✕ · god bands · OLS</span>
+</div>
+<canvas id="c1" height="300"></canvas>
+
+<div class="sh"><span class="sh-t">Substrate Compression</span>
+  <span>GJ per primary unit · log scale · multiplier vs grain baseline</span>
+</div>
+<canvas id="c2" height="100"></canvas>
+
+<div class="gc" id="gc"></div>
+
+<div class="note">
+  <div><strong>Energy method.</strong> Total primary energy = pop × GJ/cap/yr × duration.
+    Bronze: 50M × 6 × 2800yr. Roman: 60M × 10 × 900. Feudal: 80M × 12 × 900.
+    Colonial: 80M × 15 × 350. Industrial: 400M × 25 × 200. Modern: 4B × 75 × 76.
+    Per-capita figures from IEA historical estimates and Smil (Energy in World History, 1994).</div>
+  <div><strong>Deaths.</strong> War-attributable direct deaths. Bronze: ancient Near East conflicts est.
+    Colonial: slave transit mortality (2M) + conquest. Industrial: WWI 20M + WWII 70–85M + colonial wars.
+    Modern: post-9/11 (Brown Univ. CoW) + Cold War proxy wars. All mid-estimates; CI ranges shown.</div>
+  <div><strong>Blood price.</strong> $/L extracted = value the system receives per litre of blood it costs
+    = (shadow_$/GJ × GJ/death) ÷ 5L. Not the cost paid — the value extracted.
+    Modern gap 2,548×: each litre of blood funds $2.2M in energy. The machine is most profitable
+    per kill in the modern era. Externality gap = extracted value ÷ medical price $880/L.</div>
+</div>
+
+</div>
+<div id="sb"></div>
+</div>
+
+<script>
+const SGJ  = 75/6.1;   // shadow $/GJ
+const MED  = 880;      // medical blood $/L
+const EJ   = 1e9;      // GJ per EJ
+
+const D = [
+  {name:'Bronze Age', period:'4000–1200 BCE', god:'Apep / Tiamat',
+   sub:'Grain', gjU:14.4, uL:'GJ/tonne', pop:50e6, gpc:6,  yrs:2800,
+   dM:20e6, dL:10e6, dH:40e6, col:'#c87820'},
+  {name:'Roman',      period:'500 BCE–476 CE', god:'Kronos / Saturn',
+   sub:'Grain', gjU:14.4, uL:'GJ/tonne', pop:60e6, gpc:10, yrs:900,
+   dM:15e6, dL:8e6,  dH:25e6, col:'#c83030'},
+  {name:'Feudal',     period:'476–1400 CE',  god:'Christus Rex',
+   sub:'Wood',  gjU:18.0, uL:'GJ/cord',  pop:80e6, gpc:12, yrs:900,
+   dM:50e6, dL:30e6, dH:80e6, col:'#5a8a3a'},
+  {name:'Colonial',   period:'1400–1750 CE', god:'Crown / El',
+   sub:'Biomass',gjU:17.0,uL:'GJ/tonne', pop:80e6, gpc:15, yrs:350,
+   dM:12e6, dL:8e6,  dH:20e6, col:'#8050c0'},
+  {name:'Industrial', period:'1750–1950 CE', god:'The Nation-State',
+   sub:'Coal',  gjU:27.0, uL:'GJ/tonne', pop:400e6,gpc:25, yrs:200,
+   dM:120e6,dL:80e6, dH:180e6,col:'#607090'},
+  {name:'Modern',     period:'1950–2026 CE', god:'The Market',
+   sub:'Oil',   gjU:6.1,  uL:'GJ/bbl',  pop:4e9,  gpc:75, yrs:76,
+   dM:25e6, dL:15e6, dH:40e6, col:'#30a0b0'},
+];
+
+D.forEach(e=>{
+  e.tGJ  = e.pop*e.gpc*e.yrs;
+  e.tEJ  = e.tGJ/EJ;
+  e.gpd  = e.tGJ/e.dM;
+  e.kpd  = e.gpd*277.78;
+  e.cpej = e.dM/e.tEJ;
+  e.bext = SGJ*e.gpd/5;
+  e.gap  = e.bext/MED;
+  e.mult = e.gjU/14.4;
+});
+const maxC=Math.max(...D.map(d=>d.cpej));
+const bHI=D[0].cpej;
+D.forEach(e=>e.hi=e.cpej/bHI);
+
+// Input is GJ. 1 EJ = 1e9 GJ. 1 ZJ = 1e12 GJ.
+const fE=n=>n>=1e12?(n/1e12).toFixed(1)+'ZJ':n>=1e9?(n/1e9).toFixed(0)+'EJ':n>=1e6?(n/1e6).toFixed(0)+'PJ':n>=1e3?(n/1e3).toFixed(0)+'TJ':(n).toFixed(0)+'GJ';
+const fD=n=>n>=1e9?(n/1e9).toFixed(1)+'B':n>=1e6?(n/1e6).toFixed(0)+'M':n>=1e3?(n/1e3).toFixed(0)+'K':n.toFixed(0);
+const fG=n=>n>=1e9?(n/1e9).toFixed(1)+'B GJ':n>=1e6?(n/1e6).toFixed(0)+'M GJ':n>=1e3?(n/1e3).toFixed(0)+'K GJ':n.toFixed(0)+' GJ';
+const fM=n=>n>=1e6?'$'+(n/1e6).toFixed(1)+'M/L':n>=1e3?'$'+(n/1e3).toFixed(0)+'K/L':'$'+n.toFixed(0)+'/L';
+
+// TABLE
+const tbl=document.getElementById('tbl');
+tbl.innerHTML=`<thead><tr>
+  <th style="text-align:left">Era</th>
+  <th>Total EJ</th><th>Deaths</th><th>CI lo–hi</th>
+  <th>GJ/death</th><th>kWh/death</th>
+  <th>Children/EJ</th><th>Hunger idx</th>
+  <th>$/L extracted</th><th>Gap vs $880</th>
+  <th style="min-width:80px">Hunger bar</th>
+</tr></thead><tbody>`;
+
+D.forEach(e=>{
+  const hc=e.hi>1.5?'var(--blood)':e.hi<0.5?'var(--energy)':'var(--amber)';
+  const bw=Math.min(100,(e.cpej/maxC)*100);
+  tbl.innerHTML+=`<tr>
+    <td><div class="ec">
+      <span class="en" style="color:${e.col}">${e.name}</span>
+      <span class="ep">${e.period}</span>
+      <span class="eg">${e.god}</span>
+      <span class="es">${e.sub} · ${e.gjU} ${e.uL}</span>
+    </div></td>
+    <td class="ne">${fE(e.tGJ)}</td>
+    <td class="nd">${fD(e.dM)}</td>
+    <td class="nm">${fD(e.dL)}–${fD(e.dH)}</td>
+    <td class="n">${fG(e.gpd)}</td>
+    <td class="n">${fD(e.kpd)} kWh</td>
+    <td class="n">${e.cpej.toFixed(1)}</td>
+    <td style="color:${hc}">${e.hi.toFixed(2)}×</td>
+    <td class="ng">${fM(e.bext)}</td>
+    <td class="nc">${e.gap.toFixed(0)}×</td>
+    <td><div class="bw">
+      <div class="bt"><div class="bf" style="width:${bw}%;background:${e.col}"></div></div>
+      <span class="nm" style="font-size:7px;min-width:24px;text-align:right">${e.cpej.toFixed(0)}</span>
+    </div></td>
+  </tr>`;
+});
+tbl.innerHTML+='</tbody>';
+
+// MAIN CHART
+function drawC1(){
+  const cv=document.getElementById('c1');
+  const W=cv.offsetWidth,H=300;
+  cv.width=W;cv.height=H;
+  const c=cv.getContext('2d');
+  const P={t:28,r:82,b:36,l:72};
+  const pw=W-P.l-P.r,ph=H-P.t-P.b;
+  const tMin=-4300,tMax=2100;
+  const yr=[-2600,-100,900,1575,1850,1990];
+  const lC=D.map(d=>Math.log10(d.cpej));
+  const lB=D.map(d=>Math.log10(d.bext));
+  const lG=D.map(d=>Math.log10(d.gjU));
+  const yCn=Math.min(...lC)-.6,yCx=Math.max(...lC)+.6;
+  const yBn=Math.min(...lB)-.5,yBx=Math.max(...lB)+.5;
+  const yGn=Math.min(...lG)-.2,yGx=Math.max(...lG)+.2;
+  const cx=t=>P.l+(t-tMin)/(tMax-tMin)*pw;
+  const cyC=y=>P.t+(1-(y-yCn)/(yCx-yCn))*ph;
+  const cyB=y=>P.t+(1-(y-yBn)/(yBx-yBn))*ph;
+  const cyG=y=>P.t+(1-(y-yGn)/(yGx-yGn))*ph;
+  c.clearRect(0,0,W,H);
+
+  // God bands
+  [{t0:-4300,t1:-1000,lb:'APEP · TIAMAT',cl:'#1a6a40'},
+   {t0:-1000,t1:-100, lb:'MOLOCH · BAAL', cl:'#6a1808'},
+   {t0:-100, t1:500,  lb:'KRONOS · SAT',  cl:'#502880'},
+   {t0:500,  t1:1500, lb:'CHRISTUS REX',  cl:'#3a3010'},
+   {t0:1500, t1:1900, lb:'CROWN · STATE', cl:'#1a3050'},
+   {t0:1900, t1:2100, lb:'THE MARKET',    cl:'#5a3880'}
+  ].forEach(b=>{
+    const x0=cx(b.t0),x1=cx(b.t1);
+    c.fillStyle=b.cl+'28';c.fillRect(x0,0,x1-x0,H);
+    c.fillStyle=b.cl+'cc';c.font='7px DM Mono,monospace';c.textAlign='center';
+    if(x1-x0>22)c.fillText(b.lb,(x0+x1)/2,12);
+  });
+
+  // Grid
+  for(let y=Math.floor(yCn);y<=Math.ceil(yCx);y++){
+    c.beginPath();c.moveTo(P.l,cyC(y));c.lineTo(W-P.r,cyC(y));
+    c.strokeStyle='rgba(255,255,255,0.035)';c.lineWidth=1;c.stroke();
+    c.fillStyle='#34305a';c.font='7px DM Mono,monospace';c.textAlign='right';
+    c.fillText('10^'+y,P.l-5,cyC(y)+3);
+  }
+  [-3000,-2000,-1000,0,500,1000,1500,1800,1900,1950,2000].forEach(t=>{
+    c.beginPath();c.moveTo(cx(t),P.t);c.lineTo(cx(t),H-P.b);
+    c.strokeStyle='rgba(255,255,255,0.02)';c.lineWidth=1;c.stroke();
+    c.fillStyle='#34305a';c.font='7px DM Mono,monospace';c.textAlign='center';
+    c.fillText(t<0?Math.abs(t)+'B':t+'CE',cx(t),H-P.b+11);
+  });
+  for(let y=Math.floor(yBn);y<=Math.ceil(yBx);y++){
+    c.fillStyle='#c87820';c.font='7px DM Mono,monospace';c.textAlign='left';
+    c.fillText('$10^'+y,W-P.r+4,cyB(y)+3);
+  }
+  c.fillStyle='#b0281866';c.font='7px DM Mono,monospace';
+  c.save();c.translate(11,P.t+ph/2);c.rotate(-Math.PI/2);c.textAlign='center';
+  c.fillText('CHILDREN / EJ',0,0);c.restore();
+  c.fillStyle='#c8782066';c.font='7px DM Mono,monospace';
+  c.save();c.translate(W-7,P.t+ph/2);c.rotate(Math.PI/2);c.textAlign='center';
+  c.fillText('$/L EXTRACTED',0,0);c.restore();
+
+  // Medical ref
+  const ml=Math.log10(MED);
+  if(ml>=yBn&&ml<=yBx){
+    const ym=cyB(ml);
+    c.beginPath();c.moveTo(P.l,ym);c.lineTo(W-P.r,ym);
+    c.strokeStyle='#c8782035';c.lineWidth=1;c.setLineDash([2,5]);c.stroke();c.setLineDash([]);
+    c.fillStyle='#c8782068';c.font='7px DM Mono,monospace';c.textAlign='left';
+    c.fillText('medical $880/L',P.l+4,ym-3);
+  }
+
+  // OLS
+  const xs=yr,ys=lC;
+  const n=xs.length,xm=xs.reduce((a,b)=>a+b)/n,ym2=ys.reduce((a,b)=>a+b)/n;
+  let ssxy=0,ssxx=0,ssyy=0;
+  xs.forEach((x,i)=>{ssxy+=(x-xm)*(ys[i]-ym2);ssxx+=(x-xm)**2;ssyy+=(ys[i]-ym2)**2;});
+  const b1=ssxy/ssxx,b0=ym2-b1*xm,r2=ssxy**2/(ssxx*ssyy);
+  c.beginPath();
+  c.moveTo(cx(tMin),cyC(b0+b1*tMin));c.lineTo(cx(tMax),cyC(b0+b1*tMax));
+  c.strokeStyle='#b0281830';c.lineWidth=1.5;c.setLineDash([8,5]);c.stroke();c.setLineDash([]);
+  c.fillStyle='#b0281868';c.font='7px DM Mono,monospace';c.textAlign='left';
+  c.fillText(`OLS β₁=${b1.toFixed(5)}  R²=${r2.toFixed(3)}`,P.l+6,P.t+22);
+
+  // Blood line
+  c.beginPath();
+  yr.forEach((t,i)=>i===0?c.moveTo(cx(t),cyB(lB[i])):c.lineTo(cx(t),cyB(lB[i])));
+  c.strokeStyle='#c8782055';c.lineWidth=1.5;c.setLineDash([3,3]);c.stroke();c.setLineDash([]);
+  yr.forEach((t,i)=>{c.beginPath();c.arc(cx(t),cyB(lB[i]),3,0,Math.PI*2);c.fillStyle='#c87820';c.fill();});
+
+  // Substrate crosses
+  c.beginPath();
+  yr.forEach((t,i)=>i===0?c.moveTo(cx(t),cyG(lG[i])):c.lineTo(cx(t),cyG(lG[i])));
+  c.strokeStyle='#38a87055';c.lineWidth=1.5;c.stroke();
+  yr.forEach((t,i)=>{
+    const x=cx(t),y=cyG(lG[i]);
+    c.strokeStyle='#38a870';c.lineWidth=1.5;
+    c.beginPath();c.moveTo(x-4,y);c.lineTo(x+4,y);c.moveTo(x,y-4);c.lineTo(x,y+4);c.stroke();
+  });
+
+  // Hunger dots
+  yr.forEach((t,i)=>{
+    const d=D[i],x=cx(t),y=cyC(lC[i]);
+    c.beginPath();c.arc(x,y,6,0,Math.PI*2);
+    c.fillStyle=d.col;c.fill();
+    c.strokeStyle='#07060e';c.lineWidth=1.5;c.stroke();
+    c.fillStyle=d.col+'dd';c.font='7px DM Mono,monospace';c.textAlign='center';
+    c.fillText(d.god.split('/')[0].trim(),x,y-10);
+  });
+}
+
+// SUBSTRATE CHART
+function drawC2(){
+  const cv=document.getElementById('c2');
+  const W=cv.offsetWidth,H=100;
+  cv.width=W;cv.height=H;
+  const c=cv.getContext('2d');
+  const P={t:12,r:16,b:22,l:72};
+  const pw=W-P.l-P.r,ph=H-P.t-P.b;
+  c.clearRect(0,0,W,H);
+  const lv=D.map(d=>Math.log10(d.gjU));
+  const mn=Math.min(...lv)-.3,mx=Math.max(...lv)+.3;
+  const rH=ph/D.length;
+  for(let v=Math.ceil(mn);v<=Math.floor(mx)+1;v++){
+    const x=P.l+(v-mn)/(mx-mn)*pw;
+    c.beginPath();c.moveTo(x,P.t);c.lineTo(x,H-P.b);
+    c.strokeStyle='rgba(255,255,255,0.04)';c.stroke();
+    c.fillStyle='#34305a';c.font='6.5px DM Mono,monospace';c.textAlign='center';
+    c.fillText('10^'+v+' GJ',x,H-P.b+9);
+  }
+  D.forEach((d,i)=>{
+    const y=P.t+rH*(i+.5),bx=P.l+(Math.log10(d.gjU)-mn)/(mx-mn)*pw;
+    c.fillStyle=d.col+'25';c.fillRect(P.l,y-5,bx-P.l,10);
+    c.beginPath();c.arc(bx,y,3.5,0,Math.PI*2);c.fillStyle=d.col;c.fill();
+    c.fillStyle='#544e78';c.font='7px DM Mono,monospace';c.textAlign='right';
+    c.fillText(d.name,P.l-4,y+3);
+    c.fillStyle=d.col+'cc';c.textAlign='left';
+    c.fillText(d.gjU+' '+d.uL+'  ×'+d.mult.toFixed(2)+'  vs grain',bx+6,y+3);
+  });
+}
+
+// GLOBAL CELLS
+const totD=D.reduce((a,d)=>a+d.dM,0);
+const totE=D.reduce((a,d)=>a+d.tGJ,0);
+const totEJ=D.reduce((a,d)=>a+d.tEJ,0);
+const maxH=Math.max(...D.map(d=>d.cpej));
+const minH=Math.min(...D.map(d=>d.cpej));
+const maxG=Math.max(...D.map(d=>d.gap));
+const peakN=D.find(d=>d.cpej===maxH).name;
+const minN=D.find(d=>d.cpej===minH).name;
+
+[
+  {v:fD(totD),         l:'Total deaths\nall eras',              c:'var(--blood)'},
+  {v:fE(totE),         l:'Total EJ extracted\nall eras',        c:'var(--energy)'},
+  {v:fG(D.reduce((a,d)=>a+d.gpd,0)/D.length), l:'Mean GJ/death\nacross eras',  c:'var(--amber)'},
+  {v:maxH.toFixed(0),  l:`Peak children/EJ\n${peakN}`,          c:'var(--blood)'},
+  {v:minH.toFixed(1),  l:`Min children/EJ\n${minN}`,            c:'var(--energy)'},
+  {v:(D[5].gjU/D[0].gjU).toFixed(2)+'×', l:'Oil vs grain\nGJ/unit ratio',  c:'var(--cold)'},
+  {v:maxG.toFixed(0)+'×',  l:'Peak profit/L extracted\n(Modern)', c:'var(--gap)'},
+  {v:'$'+SGJ.toFixed(2)+'/GJ', l:'Shadow energy price\n(Brent $75/bbl basis)', c:'var(--amber)'},
+].forEach(g=>{
+  document.getElementById('gc').innerHTML+=`<div class="gcell">
+    <div class="gv" style="color:${g.c}">${g.v}</div>
+    <div class="gl">${g.l.replace('\n','<br>')}</div>
+  </div>`;
+});
+
+// SIDEBAR
+const sb=document.getElementById('sb');
+
+// Invariants
+[
+  {name:'Feed Equation',tag:'INVARIANT',tc:'var(--cold)',
+   rows:[
+     {l:'Formula',     v:'children/EJ = deaths ÷ (GJ_total/10⁹)'},
+     {l:'Structure',   v:'energy ÷ life → surplus (all eras)'},
+     {l:'Substrate',   v:'interchangeable; function identical'},
+     {l:'God-name',    v:'changes; equation does not'},
+   ],
+   f:'E = pop × GJ/cap/yr × duration\nSubstrate changes; hunger equation invariant\nRecognition: same structure, different mask',
+  },
+  {name:'OLS: Hunger',tag:'INVARIANT',tc:'var(--cold)',
+   rows:(()=>{
+     const xs=[-2600,-100,900,1575,1850,1990];
+     const ys=D.map(d=>Math.log10(d.cpej));
+     const n=xs.length,xm=xs.reduce((a,b)=>a+b)/n,ym=ys.reduce((a,b)=>a+b)/n;
+     let ssxy=0,ssxx=0,ssyy=0;
+     xs.forEach((x,i)=>{ssxy+=(x-xm)*(ys[i]-ym);ssxx+=(x-xm)**2;ssyy+=(ys[i]-ym)**2;});
+     const b1=ssxy/ssxx,b0=ym-b1*xm,r2=ssxy**2/(ssxx*ssyy);
+     const mse=ys.map((y,i)=>y-(b0+b1*xs[i])).reduce((a,r)=>a+r*r,0)/(n-2);
+     return[
+       {l:'β₁ (slope)',  v:(b1>0?'+':'')+b1.toFixed(5)+' log/yr'},
+       {l:'β₀',          v:b0.toFixed(3)},
+       {l:'R²',           v:r2.toFixed(3)},
+       {l:'MSE',          v:mse.toFixed(4)},
+       {l:'Interpretation', v:b1<0?'↓ more efficient/kill':'↑ hungrier/kill'},
+     ];
+   })(),
+   f:'log₁₀(children/EJ) ~ year\nNegative slope = more GJ per kill over time\nMachine efficiency increasing (not mercy)',
+  },
+  {name:'Blood Price',tag:'INVARIANT',tc:'var(--cold)',
+   rows:[
+     {l:'Formula',     v:'($/GJ × GJ/death) ÷ 5L'},
+     {l:'Meaning',     v:'value extracted per litre blood'},
+     {l:'Medical ref', v:'$880/L'},
+     {l:'Modern val',  v:fM(D[5].bext)},
+     {l:'Modern gap',  v:D[5].gap.toFixed(0)+'× above medical'},
+     {l:'Peak gap era',v:D.find(d=>d.gap===maxG).name},
+   ],
+   f:'NOT "how cheaply blood is bought"\nBUT "how much value per kill extracted"\nGap ↑ as machine scales = larger externality',
+  },
+].forEach(inv=>{
+  sb.innerHTML+=`<div class="panel" style="border-left:2px solid ${inv.tc}">
+    <div class="ph"><span class="pn">${inv.name}</span>
+      <span class="pt" style="color:${inv.tc}">${inv.tag}</span></div>
+    <div class="pb">
+      ${inv.rows.map(r=>`<div class="pr"><span class="pl">${r.l}</span>
+        <span class="pv nc">${r.v}</span></div>`).join('')}
+      <div class="pf">${inv.f.replace(/\n/g,'<br>')}</div>
+    </div></div>`;
+});
+
+// Variants
+sb.innerHTML+=`<div class="vp"><div class="vt">Invariants of Variants</div>
+  ${[
+    {l:'Substrate',    f:'Grain 14.4 GJ/t',  t:'Oil 6.1 GJ/bbl · 430× vol-density'},
+    {l:'God-name',     f:'Apep',              t:'The Market'},
+    {l:'Ritual',       f:'Tophet / altar',    t:'Quarterly earnings call'},
+    {l:'Accounting',   f:'Public sacrifice',  t:'Classified externality'},
+    {l:'Visibility',   f:'Named, performed',  t:'Unnamed, algorithmic'},
+    {l:'Legitimation', f:'Divine mandate',    t:'Fiduciary duty'},
+  ].map(r=>`<div class="vr"><span class="vrl">${r.l}</span>
+    <span class="vrf">${r.f}</span><span class="vra">→</span>
+    <span class="vrv">${r.t}</span></div>`).join('')}
+</div>`;
+
+// Sparklines
+const spDiv=document.createElement('div');spDiv.className='sg';
+[
+  {l:'GJ / death',     v:D.map(d=>Math.log10(d.gpd)),  c:'#d4a040'},
+  {l:'Children / EJ',  v:D.map(d=>Math.log10(d.cpej)), c:'#b02818'},
+  {l:'$/L extracted',  v:D.map(d=>Math.log10(d.bext)),  c:'#c87820'},
+  {l:'Substrate GJ/u', v:D.map(d=>Math.log10(d.gjU)),  c:'#38a870'},
+].forEach(sd=>{
+  const bl=document.createElement('div');bl.className='sb';
+  bl.innerHTML=`<div class="sl">${sd.l}</div>`;
+  const cv=document.createElement('canvas');cv.height=34;bl.appendChild(cv);
+  const rng=document.createElement('div');rng.className='sr';
+  const mn=Math.min(...sd.v),mx=Math.max(...sd.v);
+  rng.innerHTML=`<span>${(10**mn).toExponential(1)}</span><span>${(10**mx).toExponential(1)}</span>`;
+  bl.appendChild(rng);spDiv.appendChild(bl);
+  requestAnimationFrame(()=>{
+    const W=cv.offsetWidth||128;cv.width=W;
+    const ctx=cv.getContext('2d');
+    const cy=v=>2+(1-(v-mn)/(mx-mn))*30;
+    const cx=i=>i/(sd.v.length-1)*W;
+    ctx.beginPath();ctx.moveTo(cx(0),34);
+    sd.v.forEach((v,i)=>ctx.lineTo(cx(i),cy(v)));
+    ctx.lineTo(cx(sd.v.length-1),34);ctx.closePath();
+    ctx.fillStyle=sd.c+'18';ctx.fill();
+    ctx.beginPath();
+    sd.v.forEach((v,i)=>i===0?ctx.moveTo(cx(i),cy(v)):ctx.lineTo(cx(i),cy(v)));
+    ctx.strokeStyle=sd.c+'cc';ctx.lineWidth=1.5;ctx.stroke();
+    sd.v.forEach((v,i)=>{ctx.beginPath();ctx.arc(cx(i),cy(v),2,0,Math.PI*2);ctx.fillStyle=sd.c;ctx.fill();});
+  });
+});
+sb.appendChild(spDiv);
+
+function init(){drawC1();drawC2();}
+window.addEventListener('resize',init);
+window.addEventListener('load',init);
+setTimeout(init,80);
+window.redrawCharts = init;
+</script>
+<script src="theme.js"></script>
+</body>
+</html>

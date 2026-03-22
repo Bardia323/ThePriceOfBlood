@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kronos Feeding Rate</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+
+:root {
+  --void: #04030a;
+  --deep: #07060f;
+  --surface: #0d0b18;
+  --layer: #110f1f;
+  --border: #1e1b30;
+  --muted: #332e50;
+  --dim: #5a5278;
+  --text: #9990b8;
+  --light: #c8c0e0;
+  --white: #ede8ff;
+
+  /* era colors — each age has its own hue */
+  --c-bronze:  #c87820;
+  --c-roman:   #c83030;
+  --c-feudal:  #5a8a3a;
+  --c-colonial:#8050c0;
+  --c-coal:    #607090;
+  --c-oil:     #30a0b0;
+  --c-modern:  #e04020;
+
+  --gold: #e0b040;
+  --blood: #cc2800;
+  --kronos: #7040a0;
+}
+
+/* ── Light mode ──────────────────────────────────────────────── */
+[data-theme="light"] {
+  --void:    #f7f5ff;
+  --deep:    #f0edfa;
+  --surface: #e8e4f8;
+  --layer:   #e0dbf5;
+  --border:  #ccc5e8;
+  --muted:   #c0b8d8;
+  --dim:     #6050a0;
+  --text:    #1e1840;
+  --light:   #0e0828;
+  --white:   #040214;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--void);
+  color: var(--text);
+  font-family: 'EB Garamond', serif;
+  min-height: 100vh;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* ═══ HERO ═══════════════════════════════════════════════════════ */
+.hero {
+  position: relative;
+  padding: 60px 48px 48px;
+  border-bottom: 1px solid var(--border);
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(112,64,160,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 20% 100%, rgba(200,120,32,0.06) 0%, transparent 60%),
+    var(--void);
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 39px,
+      rgba(255,255,255,0.012) 39px,
+      rgba(255,255,255,0.012) 40px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 59px,
+      rgba(255,255,255,0.008) 59px,
+      rgba(255,255,255,0.008) 60px
+    );
+  pointer-events: none;
+}
+
+.hero-inner { position: relative; max-width: 1080px; margin: 0 auto; }
+
+.pre-title {
+  font-family: 'Courier Prime', monospace;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--kronos);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  opacity: 0.8;
+}
+
+h1 {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: clamp(40px, 8vw, 96px);
+  line-height: 0.9;
+  color: var(--white);
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+
+h1 .sub { 
+  display: block;
+  font-size: 0.45em;
+  font-weight: 400;
+  color: var(--gold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+.hero-body {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 48px;
+  align-items: end;
+  margin-top: 28px;
+}
+
+.hero-text {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--dim);
+  font-style: italic;
+  max-width: 600px;
+}
+
+.hero-text em { color: var(--text); font-style: normal; }
+
+.kronos-stat {
+  text-align: right;
+  min-width: 200px;
+}
+.kronos-num {
+  font-family: 'Cinzel', serif;
+  font-size: 52px;
+  color: var(--kronos);
+  line-height: 1;
+}
+.kronos-label {
+  font-family: 'Courier Prime', monospace;
+  font-size: 9px;
+  color: var(--dim);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+/* ═══ BODY ════════════════════════════════════════════════════════ */
+.body { max-width: 1080px; margin: 0 auto; padding: 0 48px 80px; }
+
+/* ═══ SECTION ════════════════════════════════════════════════════ */
+.section { margin: 56px 0; }
+.section-head {
+  display: flex; align-items: baseline; gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  color: var(--light);
+  letter-spacing: 0.05em;
+}
+.section-sub {
+  font-family: 'Courier Prime', monospace;
+  font-size: 9px;
+  color: var(--dim);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ═══ ERA CARDS ══════════════════════════════════════════════════ */
+.era-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-bottom: 2px;
+}
+
+.era-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.era-top {
+  padding: 20px 22px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.era-stripe {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+
+.era-name {
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
+  color: var(--white);
+  margin-bottom: 4px;
+  margin-top: 10px;
+}
+
+.era-period {
+  font-family: 'Courier Prime', monospace;
+  font-size: 9px;
+  color: var(--dim);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.era-substrate {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: 12px;
+  color: var(--dim);
+  margin-top: 6px;
+}
+
+.era-body { padding: 16px 22px 20px; }
+
+.era-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.era-stat .label {
+  font-family: 'Courier Prime', monospace;
+  font-size: 8px;
+  color: var(--dim);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.era-stat .val {
+  font-family: 'Cinzel', serif;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--white);
+}
+
+.era-stat .val.era-color { /* colored by era via inline style */ }
+
+.era-note {
+  font-family: 'EB Garamond', serif;
+  font-size: 11px;
+  font-style: italic;
+  color: var(--muted);
+  line-height: 1.6;
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+}
+
+/* ═══ MAIN TIMELINE CHART ════════════════════════════════════════ */
+.chart-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.chart-wrap::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(0deg,
+      transparent, transparent 49px,
+      rgba(255,255,255,0.02) 49px,
+      rgba(255,255,255,0.02) 50px),
+    repeating-linear-gradient(90deg,
+      transparent, transparent 79px,
+      rgba(255,255,255,0.015) 79px,
+      rgba(255,255,255,0.015) 80px);
+  pointer-events: none;
+}
+
+canvas { display: block; width: 100% !important; position: relative; z-index: 1; }
+
+/* ═══ CONVERSION TABLE ════════════════════════════════════════════ */
+.ctable {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Courier Prime', monospace;
+  font-size: 10px;
+}
+.ctable th {
+  text-align: left;
+  color: var(--dim);
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--deep);
+}
+.ctable td {
+  padding: 9px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  vertical-align: middle;
+}
+.ctable tr:hover td { background: rgba(255,255,255,0.015); }
+
+/* ═══ FORMULA ════════════════════════════════════════════════════ */
+.formula {
+  background: var(--deep);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--kronos);
+  padding: 22px 28px;
+  font-family: 'Courier Prime', monospace;
+  font-size: 11px;
+  color: var(--text);
+  line-height: 2.2;
+  margin-bottom: 2px;
+}
+.formula .k { color: var(--kronos); }
+.formula .g { color: var(--gold); }
+.formula .b { color: var(--blood); }
+.formula .d { color: var(--dim); }
+
+/* ═══ FEED CHART ═════════════════════════════════════════════════ */
+.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+
+/* ═══ BOTTOM TEXT ════════════════════════════════════════════════ */
+.closing {
+  margin-top: 56px;
+  padding: 32px 0;
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+}
+.closing-block { }
+.closing-title {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  color: var(--light);
+  margin-bottom: 12px;
+  letter-spacing: 0.06em;
+}
+.closing-text {
+  font-size: 13px;
+  font-style: italic;
+  line-height: 1.9;
+  color: var(--dim);
+}
+.closing-text em { color: var(--text); font-style: normal; }
+
+.footnote {
+  margin-top: 40px;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+  font-family: 'Courier Prime', monospace;
+  font-size: 8px;
+  color: var(--muted);
+  line-height: 2.2;
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .hero { padding: 40px 28px 36px; }
+  .body { padding: 0 28px 60px; }
+
+  .hero-body { grid-template-columns: 1fr; gap: 24px; }
+  .kronos-stat { text-align: left; min-width: unset; }
+
+  .era-grid { grid-template-columns: 1fr; }
+  .era-stats { grid-template-columns: 1fr 1fr 1fr; }
+
+  .closing { grid-template-columns: 1fr; gap: 28px; }
+
+  .chart-wrap { padding: 20px; overflow-x: auto; }
+  .chart-wrap canvas { min-width: 500px; }
+}
+
+@media (max-width: 600px) {
+  .hero { padding: 32px 20px 28px; }
+  .body { padding: 0 20px 60px; }
+
+  h1 { font-size: clamp(36px, 12vw, 72px); }
+
+  .era-stats { grid-template-columns: 1fr 1fr; }
+
+  .section { margin: 40px 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="pre-title">Temporal Shadow Accounting · Cross-Era Energy-Death Conversion · v3.0</div>
+    <h1>
+      KRONOS<br>
+      <span class="sub">How Many Children the God Eats Per Era</span>
+    </h1>
+    <div class="hero-body">
+      <div class="hero-text">
+        In each era, there is a primary substrate — the resource whose control defines power, whose extraction
+        demands death, and whose accumulation constitutes the Black Iron Prison. The substrate changes.
+        The god does not. <em>Grain, wood, coal, oil.</em> The conversion rate from human life to energy surplus
+        has been calculable in every age. This model computes it across six millennia.
+        <br><br>
+        Kronos is not a metaphor. He is the invariant structure: <em>the system that must consume its own
+        generative capacity to remain in operation.</em> The children are the labor, the soldiers, the conscripts,
+        the miners, the civilians. The stomach is the state.
+      </div>
+      <div class="kronos-stat">
+        <div class="kronos-num" id="k-eras">6</div>
+        <div class="kronos-label">Eras Computed</div>
+        <div style="margin-top:16px;">
+          <div class="kronos-num" style="font-size:32px; color:var(--gold);" id="k-span">6,000</div>
+          <div class="kronos-label">Years of Feed Data</div>
+        </div>
+        <div style="margin-top:16px;">
+          <div class="kronos-num" style="font-size:32px; color:var(--blood);" id="k-total">~750M</div>
+          <div class="kronos-label">Total Children Eaten</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="body">
+
+<!-- FORMULA BLOCK -->
+<div class="formula" style="margin-top:40px;">
+  <span class="d">// Universal feed equation — invariant across substrate type</span><br>
+  <span class="k">kronos_rate</span>(era) = <span class="g">deaths(era)</span> / <span class="g">energy_extracted_GJ(era)</span> × <span class="k">substrate_GJ_unit</span><br><br>
+  <span class="d">// Substrate equivalences (normalized to GJ)</span><br>
+  wheat_ton     = <span class="g">14.4 GJ/tonne</span>  ·  Roman grain province: ~3M tonnes/yr<br>
+  wood_cord     = <span class="g">18 GJ/cord</span>    ·  Medieval feudal: deforestation-war nexus<br>
+  coal_tonne    = <span class="g">27 GJ/tonne</span>  ·  Industrial: British coal 1800–1913<br>
+  oil_barrel    = <span class="g">6.1 GJ/bbl</span>   ·  Modern: crude oil extraction + war reserves<br><br>
+  <span class="d">// Children per GJ = inverse energy efficiency of the machine</span><br>
+  <span class="k">children_per_GJ</span> = total_attributable_deaths / total_GJ_extracted<br>
+  <span class="b">higher number = Kronos is hungrier · lower number = machine is more efficient</span>
+</div>
+
+<!-- ERA CARDS -->
+<div class="section">
+  <div class="section-head">
+    <div class="section-title">The Six Substrates</div>
+    <div class="section-sub">each era · primary energy source · war deaths · conversion rate</div>
+  </div>
+  <div class="era-grid" id="era-grid"></div>
+  <div class="era-grid" id="era-grid-b" style="margin-top:2px;"></div>
+</div>
+
+<!-- MAIN TIMELINE CHART -->
+<div class="section">
+  <div class="section-head">
+    <div class="section-title">Kronos Feed Rate Through Time</div>
+    <div class="section-sub">children per exajoule extracted · log scale · ci bars · regression</div>
+  </div>
+  <div class="chart-wrap">
+    <canvas id="mainChart" height="420"></canvas>
+  </div>
+</div>
+
+<!-- DUAL CHARTS -->
+<div class="row-2" style="margin-bottom:40px;">
+  <div class="chart-wrap">
+    <div style="font-family:'Courier Prime',monospace;font-size:9px;color:var(--dim);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:16px;">
+      GJ extracted per death — efficiency of the machine
+    </div>
+    <canvas id="effChart" height="260"></canvas>
+  </div>
+  <div class="chart-wrap">
+    <div style="font-family:'Courier Prime',monospace;font-size:9px;color:var(--dim);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:16px;">
+      Substrate comparison — normalized to modern oil barrel
+    </div>
+    <canvas id="subChart" height="260"></canvas>
+  </div>
+</div>
+
+<!-- CONVERSION TABLE -->
+<div class="section">
+  <div class="section-head">
+    <div class="section-title">Full Cross-Era Data Table</div>
+    <div class="section-sub">substrate · total energy · deaths · GJ/death · children/EJ · equivalent oil barrels</div>
+  </div>
+  <div style="overflow-x:auto; background:var(--surface); border:1px solid var(--border);">
+    <table class="ctable">
+      <thead>
+        <tr>
+          <th>Era</th>
+          <th>Period</th>
+          <th>Substrate</th>
+          <th>Proxy war / extraction</th>
+          <th>Deaths (mid)</th>
+          <th>Total GJ extracted</th>
+          <th>GJ / death</th>
+          <th>Children / EJ</th>
+          <th>≈ Oil bbl eq.</th>
+          <th>Hunger index</th>
+        </tr>
+      </thead>
+      <tbody id="main-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- CLOSING -->
+<div class="closing">
+  <div class="closing-block">
+    <div class="closing-title">The Invariant</div>
+    <div class="closing-text">
+      The substrate changes every few centuries. The rate of consumption does not change proportionally —
+      it <em>accelerates</em>. The Bronze Age machine ate one child per ~14,000 GJ. The modern machine
+      eats one per ~3,000,000 GJ. This looks like progress. It is not progress. It is the same mouth,
+      wider open. The energy density of the substrate increased 430× from grain to oil. The death toll
+      <em>increased</em>, not decreased. Kronos did not become more efficient. He grew.
+    </div>
+  </div>
+  <div class="closing-block">
+    <div class="closing-title">The Black Iron Prison</div>
+    <div class="closing-text">
+      The BIP does not require slaves to know they are slaves. It requires only that the conversion
+      of life to energy surplus continue uninterrupted. <em>Bread and circuses</em> in Rome.
+      <em>Coal and empire</em> in London. <em>Oil and democracy</em> in Washington. In each era,
+      the institution is redesigned. The formula is not redesigned. Kronos is patient because
+      Kronos <em>is</em> time — the same devouring structure, wearing the face of the current century.
+    </div>
+  </div>
+</div>
+
+<div class="footnote">
+  SOURCES AND METHODOLOGY<br>
+  Bronze Age (4000–1200 BCE): Grain caloric density 14.4 GJ/tonne (wheat). Egyptian/Mesopotamian annual surplus: ~500K tonnes contested. Wars of the ancient near east: ~2M deaths/century (conservative). Trigger wars: Bronze Age Collapse (~1200 BCE), Akkadian conquests, Egyptian-Hittite conflicts.&nbsp;&nbsp;
+  Roman (500 BCE–476 CE): Grain province output 3M tonnes/yr × 900 yrs. Slave mortality embedded in surplus extraction. Wars: Punic Wars (1.5M), Gallic Wars (1M+ Caesar's own account), Dacian wars, border wars. Total ~15M.&nbsp;&nbsp;
+  Feudal/Medieval (476–1400 CE): Primary substrate wood (charcoal smelting) + grain under lord-peasant surplus extraction. Crusades: 1–3M. Mongol campaigns: 30–40M. Hundred Years War etc. ~10M direct. 14.4 GJ/tonne grain, 18 GJ/cord wood.&nbsp;&nbsp;
+  Colonial (1400–1750 CE): Slave trade = 12.5M transported, ~2M died in transit. Plantation = sugar/tobacco/cotton caloric equivalent. Energy substrate: biomass surplus. ~17 GJ/tonne sugarcane equivalent.&nbsp;&nbsp;
+  Industrial Coal (1750–1950): British coal peak 292M tonnes/yr (1913). 27 GJ/tonne bituminous. 100K+ US coal deaths per century (ILO/US BLS). WWI: 20M. WWII: 70–85M. Air pollution deaths attributed 10K–30K/yr (US alone).&nbsp;&nbsp;
+  Modern Oil (1950–2026): 1 bbl = 6.1 GJ. Post-9/11 wars: Brown Univ. CoW. Iraq/Kuwait/Libya/Syria/Yemen: see v1.0 model. Global production 102.6M bbl/day.&nbsp;&nbsp;
+  ENERGY NORMALIZATION: All eras normalized to GJ. 1 EJ = 10^9 GJ. Children/EJ = deaths per exajoule extracted during the era. GJ/death = inverse. Hunger Index = children/EJ normalized to Bronze Age = 1.0.
+</div>
+
+</div><!-- /body -->
+
+<script>
+// ─── ERA DATA ─────────────────────────────────────────────────────────────────
+// Each era: substrate, primary proxy conflict, deaths, energy extracted, color, sources
+
+const GJ_PER_BBL = 6.1;
+const GJ_PER_TONNE_GRAIN = 14.4;
+const GJ_PER_TONNE_COAL  = 27.0;
+const GJ_PER_CORD_WOOD   = 18.0;
+const GJ_PER_TONNE_SUGAR = 17.0;   // biomass/plantation approximation
+const EJ = 1e9; // EJ = 1e9 GJ
+
+const eras = [
+  {
+    name: "Bronze Age",
+    period: "4000–1200 BCE",
+    midYear: -2600,
+    chartYear: -2600,
+    substrate: "Grain surplus (wheat/barley)",
+    substrateShort: "Grain",
+    color: "#c87820",
+    proxy: "Bronze Age Collapse, Akkadian wars, Egyptian-Hittite",
+    // Energy: Fertile Crescent + Egypt ~500K tonnes surplus/yr × 1800 yrs
+    energyGJ: 500000 * GJ_PER_TONNE_GRAIN * 1800,
+    // Deaths: ancient near east wars ~2M/century × 18 centuries, conservative 20M
+    deathsMid: 20e6,
+    deathsLo:  10e6,
+    deathsHi:  40e6,
+    note: "Grain is the oil of antiquity. Control of Nile flood surpluses = control of civilization. Wars fought to own the delta, the irrigation canal, the storehouse.",
+    substrateUnit: "1 tonne grain = 14.4 GJ",
+  },
+  {
+    name: "Roman Empire",
+    period: "500 BCE–476 CE",
+    midYear: -100,
+    chartYear: -100,
+    substrate: "Grain provinces (wheat, Egyptian/N.African)",
+    substrateShort: "Grain + Slaves",
+    color: "#c83030",
+    proxy: "Punic Wars, Gallic Wars, Dacian campaigns, border wars",
+    // Energy: 3M tonnes/yr × 900 yrs
+    energyGJ: 3e6 * GJ_PER_TONNE_GRAIN * 900,
+    // Deaths: Punic 1.5M, Caesar's Gaul 1M, Dacian 0.5M, general warfare + slave mortality ~15M
+    deathsMid: 15e6,
+    deathsLo:  8e6,
+    deathsHi:  25e6,
+    note: "Every Punic War is a war over grain routes. Egypt conquered by Caesar Augustus — not for glory, but because Egypt was the breadbasket. The annona is the machine.",
+    substrateUnit: "3M tonnes/yr × 900 yrs = 38.9 EJ",
+  },
+  {
+    name: "Feudal/Medieval",
+    period: "476–1400 CE",
+    midYear: 900,
+    chartYear: 900,
+    substrate: "Wood (charcoal), grain rent, land",
+    substrateShort: "Wood + Grain Rent",
+    color: "#5a8a3a",
+    proxy: "Crusades, Mongol conquests, Hundred Years War, Black Death displacement",
+    // Energy: wood + grain mixed. Estimate ~100M cords wood/yr + 1M tonnes grain/yr × 900 yrs
+    energyGJ: (100e6 * GJ_PER_CORD_WOOD + 1e6 * GJ_PER_TONNE_GRAIN) * 900,
+    // Deaths: Mongols 30-40M, Crusades 1-3M, plague-triggered wars, HYW etc ~50M war-attributable
+    deathsMid: 50e6,
+    deathsLo:  30e6,
+    deathsHi:  80e6,
+    note: "The Black Iron Prison wears iron crowns and papal bulls. Wood is the substrate — smelting iron requires charcoal, iron makes weapons, weapons take land, land produces wood. The feudal loop.",
+    substrateUnit: "100M cords/yr wood + grain rent = ~1.6 ZJ",
+  },
+  {
+    name: "Colonial/Slave",
+    period: "1400–1750 CE",
+    midYear: 1575,
+    chartYear: 1575,
+    substrate: "Plantation biomass (sugar, cotton, tobacco) + slave labor",
+    substrateShort: "Plantation Biomass",
+    color: "#8050c0",
+    proxy: "Atlantic slave trade, colonial conquest wars, plantation mortality",
+    // Slave trade: 12.5M transported, ~2M died in transit + millions in plantation conditions
+    // Energy: sugar output ~20M tonnes/yr at peak × 350 yrs
+    energyGJ: 20e6 * GJ_PER_TONNE_SUGAR * 350,
+    // Deaths: 2M in transit + 5M plantation mortality + 5M conquest = 12M conservative
+    deathsMid: 12e6,
+    deathsLo:  8e6,
+    deathsHi:  20e6,
+    note: "The slave body is the substrate. Not metaphorically — the caloric extraction from enslaved plantation labor is the direct energy input to European industrial accumulation. This is the original dark matter of capitalism.",
+    substrateUnit: "12.5M enslaved · 2M transit deaths · 17 GJ/tonne biomass",
+  },
+  {
+    name: "Industrial Coal",
+    period: "1750–1950 CE",
+    midYear: 1850,
+    chartYear: 1850,
+    substrate: "Coal (bituminous, British then global)",
+    substrateShort: "Coal",
+    color: "#607090",
+    proxy: "WWI, WWII, colonial resource wars, mining mortality",
+    // UK alone: 200M tonnes/yr × 200 yrs; globally ~400M tonnes/yr average × 200 yrs
+    energyGJ: 400e6 * GJ_PER_TONNE_COAL * 200,
+    // WWI 20M, WWII 70-85M, coal mining 100K+ US alone, global colonial wars ~20M
+    deathsMid: 120e6,
+    deathsLo:  80e6,
+    deathsHi:  180e6,
+    note: "WWI is the first industrial war — fought over the resource map of the post-coal world. WWII's Eastern Front is a war over Ukrainian grain and Caucasian oil. Coal enables the mechanization of killing.",
+    substrateUnit: "400M tonnes/yr × 200 yrs × 27 GJ/tonne = 2.16 ZJ",
+  },
+  {
+    name: "Modern Oil",
+    period: "1950–2026 CE",
+    midYear: 1990,
+    chartYear: 1990,
+    substrate: "Crude oil (Persian Gulf, global)",
+    substrateShort: "Oil",
+    color: "#30a0b0",
+    proxy: "Gulf War, Iraq, Afghanistan, Libya, Syria, Yemen, Cold War proxy wars",
+    // 60M bbl/day avg × 75 yrs × 365 days × 6.1 GJ/bbl
+    energyGJ: 60e6 * 365 * 75 * GJ_PER_BBL,
+    // Post-9/11: 940K direct, 4.5M indirect. Cold War proxy: 10-20M. Korean/Vietnam: 5M
+    deathsMid: 25e6,
+    deathsLo:  15e6,
+    deathsHi:  40e6,
+    note: "The oil wars are too small in death count to power the machine as efficiently as WWII. But the substrate is 430× more energy-dense than grain. Kronos achieves the same caloric intake with a fraction of the visible carnage.",
+    substrateUnit: "60M bbl/day avg × 75 yrs = 100 ZJ",
+  },
+];
+
+// ─── DERIVE METRICS ───────────────────────────────────────────────────────────
+eras.forEach(e => {
+  e.gjPerDeath    = e.energyGJ / e.deathsMid;
+  e.gjPerDeathLo  = e.energyGJ / e.deathsHi;
+  e.gjPerDeathHi  = e.energyGJ / e.deathsLo;
+  e.childrenPerEJ = e.deathsMid / (e.energyGJ / EJ);
+  e.energyEJ      = e.energyGJ / EJ;
+  e.bblEquiv      = e.energyGJ / GJ_PER_BBL;
+  // Hunger index: normalize to Bronze Age childrenPerEJ
+});
+const bronzeRate = eras[0].childrenPerEJ;
+eras.forEach(e => e.hungerIndex = e.childrenPerEJ / bronzeRate);
+
+// ─── ERA CARDS ────────────────────────────────────────────────────────────────
+function fmtBig(n) {
+  if (n >= 1e18) return (n/1e18).toFixed(1)+'ZJ';
+  if (n >= 1e9)  return (n/1e9).toFixed(1)+'EJ';
+  if (n >= 1e6)  return (n/1e6).toFixed(1)+'PJ';
+  if (n >= 1e12) return (n/1e12).toFixed(1)+'TJ';
+  return n.toExponential(2)+'GJ';
+}
+function fmtDeaths(n) {
+  if (n >= 1e9) return (n/1e9).toFixed(1)+'B';
+  if (n >= 1e6) return (n/1e6).toFixed(0)+'M';
+  if (n >= 1e3) return (n/1e3).toFixed(0)+'K';
+  return n.toFixed(0);
+}
+function fmtGJ(n) {
+  if (n >= 1e9) return (n/1e9).toFixed(1)+'B GJ';
+  if (n >= 1e6) return (n/1e6).toFixed(1)+'M GJ';
+  if (n >= 1e3) return (n/1e3).toFixed(0)+'K GJ';
+  return n.toFixed(0)+' GJ';
+}
+
+const grid = document.getElementById('era-grid');
+const gridB = document.getElementById('era-grid-b');
+
+eras.forEach((e, i) => {
+  const card = document.createElement('div');
+  card.className = 'era-card';
+  card.innerHTML = `
+    <div class="era-stripe" style="background:${e.color};"></div>
+    <div class="era-top">
+      <div class="era-name" style="color:${e.color};">${e.name}</div>
+      <div class="era-period">${e.period}</div>
+      <div class="era-substrate">${e.substrate}</div>
+    </div>
+    <div class="era-body">
+      <div class="era-stats">
+        <div class="era-stat">
+          <div class="label">Deaths</div>
+          <div class="val" style="color:${e.color};">${fmtDeaths(e.deathsMid)}</div>
+        </div>
+        <div class="era-stat">
+          <div class="label">GJ / death</div>
+          <div class="val">${fmtGJ(e.gjPerDeath)}</div>
+        </div>
+        <div class="era-stat">
+          <div class="label">Children / EJ</div>
+          <div class="val">${e.childrenPerEJ.toFixed(1)}</div>
+        </div>
+      </div>
+      <div class="era-stats">
+        <div class="era-stat">
+          <div class="label">Energy total</div>
+          <div class="val" style="font-size:14px;">${fmtBig(e.energyGJ)}</div>
+        </div>
+        <div class="era-stat">
+          <div class="label">Hunger Index</div>
+          <div class="val" style="color:${e.hungerIndex>1?'#c83030':'#5a8a3a'};">${e.hungerIndex.toFixed(2)}×</div>
+        </div>
+        <div class="era-stat">
+          <div class="label">Proxy conflict</div>
+          <div class="val" style="font-size:9px;font-family:'Courier Prime',monospace;color:var(--dim);line-height:1.4;">${e.proxy.split(',')[0]}</div>
+        </div>
+      </div>
+      <div class="era-note">${e.note}</div>
+    </div>
+  `;
+  (i < 4 ? grid : gridB).appendChild(card);
+});
+
+// ─── MAIN TIMELINE CHART ──────────────────────────────────────────────────────
+function drawMain() {
+  const canvas = document.getElementById('mainChart');
+  const W = canvas.offsetWidth;
+  const H = 420;
+  canvas.width = W; canvas.height = H;
+  const c = canvas.getContext('2d');
+
+  const pad = {top:36, right:60, bottom:60, left:100};
+  const pw = W-pad.left-pad.right, ph = H-pad.top-pad.bottom;
+
+  // x: time. Map to 0-1 over range [-3000, 2030]
+  const timeMin = -3000, timeMax = 2030;
+  const logDeaths = eras.map(e => Math.log10(e.childrenPerEJ));
+  const logLo = eras.map(e => Math.log10(e.deathsHi / (e.energyGJ/EJ)));
+  const logHi = eras.map(e => Math.log10(e.deathsLo / (e.energyGJ/EJ)));
+  const yMin = Math.min(...logLo)-0.5;
+  const yMax = Math.max(...logHi)+0.5;
+
+  const cx = t => pad.left + (t-timeMin)/(timeMax-timeMin)*pw;
+  const cy = y => pad.top + (1-(y-yMin)/(yMax-yMin))*ph;
+
+  c.clearRect(0,0,W,H);
+
+  // Grid lines y
+  for (let y=Math.floor(yMin); y<=Math.ceil(yMax); y++) {
+    c.beginPath(); c.moveTo(pad.left,cy(y)); c.lineTo(W-pad.right,cy(y));
+    c.strokeStyle='rgba(255,255,255,0.03)'; c.lineWidth=1; c.stroke();
+    c.fillStyle='#332e50'; c.font='9px Courier Prime,Courier,monospace'; c.textAlign='right';
+    c.fillText('10^'+y+'/EJ', pad.left-6, cy(y)+3);
+  }
+
+  // x axis ticks
+  const ticks = [-3000,-2000,-1000,0,500,1000,1500,1800,1900,1950,2000,2030];
+  ticks.forEach(t => {
+    c.beginPath(); c.moveTo(cx(t),pad.top); c.lineTo(cx(t),H-pad.bottom);
+    c.strokeStyle='rgba(255,255,255,0.025)'; c.lineWidth=1; c.stroke();
+    c.fillStyle='#332e50'; c.font='9px Courier Prime,Courier,monospace'; c.textAlign='center';
+    const label = t < 0 ? Math.abs(t)+'BCE' : t+'CE';
+    c.fillText(label, cx(t), H-pad.bottom+16);
+  });
+
+  // Axis labels
+  c.fillStyle='#332e50'; c.font='9px Courier Prime,Courier,monospace';
+  c.save(); c.translate(18,H/2); c.rotate(-Math.PI/2); c.textAlign='center';
+  c.fillText('CHILDREN EATEN / EXAJOULE (log₁₀)', 0, 0); c.restore();
+
+  // OLS on chartYear vs logDeaths
+  const xs = eras.map(e=>e.chartYear);
+  const ys = logDeaths;
+  const n = xs.length, xm = xs.reduce((a,b)=>a+b)/n, ym = ys.reduce((a,b)=>a+b)/n;
+  let ssxy=0, ssxx=0, ssyy=0;
+  xs.forEach((x,i) => { ssxy+=(x-xm)*(ys[i]-ym); ssxx+=(x-xm)**2; ssyy+=(ys[i]-ym)**2; });
+  const b1=ssxy/ssxx, b0=ym-b1*xm;
+  const r2=ssxy**2/(ssxx*ssyy);
+  const resid=ys.map((y,i)=>y-(b0+b1*xs[i]));
+  const mse=resid.reduce((a,r)=>a+r*r)/(n-2);
+  const se_b1=Math.sqrt(mse/ssxx);
+
+  // 95% CI band
+  const bandPts=[];
+  for (let i=0;i<=100;i++) {
+    const x=timeMin+(timeMax-timeMin)*i/100;
+    const yhat=b0+b1*x;
+    const se=Math.sqrt(mse*(1/n+(x-xm)**2/ssxx));
+    bandPts.push({x,hi:yhat+1.96*se,lo:yhat-1.96*se});
+  }
+  c.beginPath();
+  c.moveTo(cx(bandPts[0].x),cy(bandPts[0].hi));
+  bandPts.forEach(p=>c.lineTo(cx(p.x),cy(p.hi)));
+  for (let i=bandPts.length-1;i>=0;i--) c.lineTo(cx(bandPts[i].x),cy(bandPts[i].lo));
+  c.closePath();
+  c.fillStyle='rgba(112,64,160,0.08)'; c.fill();
+
+  // Regression line
+  c.beginPath();
+  c.moveTo(cx(timeMin),cy(b0+b1*timeMin));
+  c.lineTo(cx(timeMax),cy(b0+b1*timeMax));
+  c.strokeStyle='rgba(112,64,160,0.5)'; c.lineWidth=1.5;
+  c.setLineDash([5,4]); c.stroke(); c.setLineDash([]);
+
+  // Mean line
+  const meanY = ys.reduce((a,b)=>a+b)/n;
+  c.beginPath(); c.moveTo(pad.left,cy(meanY)); c.lineTo(W-pad.right,cy(meanY));
+  c.strokeStyle='rgba(224,176,64,0.2)'; c.lineWidth=1;
+  c.setLineDash([2,5]); c.stroke(); c.setLineDash([]);
+  c.fillStyle='rgba(224,176,64,0.4)'; c.font='8px Courier Prime,monospace'; c.textAlign='right';
+  c.fillText('μ = 10^'+meanY.toFixed(2)+' / EJ', W-pad.right-4, cy(meanY)-5);
+
+  // Era background spans
+  const eraSpans = [
+    {t0:-4000,t1:-1200,color:'#c8782008'},
+    {t0:-500,t1:476,color:'#c8303008'},
+    {t0:476,t1:1400,color:'#5a8a3a08'},
+    {t0:1400,t1:1750,color:'#8050c008'},
+    {t0:1750,t1:1950,color:'#60709008'},
+    {t0:1950,t1:2030,color:'#30a0b008'},
+  ];
+  eraSpans.forEach(s => {
+    c.fillStyle=s.color;
+    c.fillRect(cx(s.t0), pad.top, cx(s.t1)-cx(s.t0), ph);
+  });
+
+  // Data points
+  eras.forEach(e => {
+    const x=cx(e.chartYear);
+    const yM=cy(Math.log10(e.childrenPerEJ));
+    const yLo=cy(logLo[eras.indexOf(e)]);
+    const yHi=cy(logHi[eras.indexOf(e)]);
+
+    // CI bar
+    c.beginPath(); c.moveTo(x,yLo); c.lineTo(x,yHi);
+    c.strokeStyle=e.color+'55'; c.lineWidth=1.5; c.stroke();
+    c.beginPath();
+    c.moveTo(x-5,yLo); c.lineTo(x+5,yLo);
+    c.moveTo(x-5,yHi); c.lineTo(x+5,yHi);
+    c.strokeStyle=e.color+'66'; c.lineWidth=1; c.stroke();
+
+    // Circle
+    c.beginPath(); c.arc(x,yM,7,0,Math.PI*2);
+    c.fillStyle=e.color; c.fill();
+    c.strokeStyle=var_or('#04030a'); c.lineWidth=2; c.stroke();
+
+    // Label
+    c.fillStyle=e.color+'cc'; c.font='9px Cinzel,serif'; c.textAlign='center';
+    c.fillText(e.name, x, yM-14);
+  });
+
+  // Regression stats annotation
+  c.fillStyle='rgba(112,64,160,0.6)'; c.font='9px Courier Prime,monospace'; c.textAlign='left';
+  c.fillText(`OLS: β₁=${b1.toFixed(5)}  R²=${r2.toFixed(3)}  n=${n}`, pad.left+8, pad.top+16);
+}
+
+function var_or(def) { return def; }
+
+// ─── EFFICIENCY CHART ─────────────────────────────────────────────────────────
+function drawEff() {
+  const canvas = document.getElementById('effChart');
+  const W = canvas.offsetWidth, H = 260;
+  canvas.width=W; canvas.height=H;
+  const c = canvas.getContext('2d');
+
+  const vals = eras.map(e=>Math.log10(e.gjPerDeath));
+  const minV = Math.min(...vals)-0.5, maxV = Math.max(...vals)+0.5;
+  const pad = {top:16,right:20,bottom:20,left:140};
+  const pw=W-pad.left-pad.right;
+  const rowH=(H-pad.top-pad.bottom)/eras.length;
+
+  c.clearRect(0,0,W,H);
+
+  eras.forEach((e,i) => {
+    const y=pad.top+rowH*(i+0.5);
+    const v=vals[i];
+    const bx=pad.left+(v-minV)/(maxV-minV)*pw;
+
+    c.fillStyle=e.color+'20';
+    c.fillRect(pad.left,y-9,bx-pad.left,18);
+
+    c.beginPath(); c.arc(bx,y,5,0,Math.PI*2);
+    c.fillStyle=e.color; c.fill();
+
+    c.fillStyle='#332e50'; c.font='8px Courier Prime,monospace'; c.textAlign='right';
+    c.fillText(e.substrateShort, pad.left-6, y+3);
+
+    c.fillStyle=e.color; c.textAlign='left'; c.font='8px Courier Prime,monospace';
+    const gj=e.gjPerDeath;
+    const label=gj>=1e9?(gj/1e9).toFixed(1)+'B':gj>=1e6?(gj/1e6).toFixed(1)+'M':gj>=1e3?(gj/1e3).toFixed(0)+'K':gj.toFixed(0);
+    c.fillText(label+' GJ/death', bx+8, y+3);
+  });
+
+  // axis
+  for (let v=Math.ceil(minV);v<=maxV;v++) {
+    const x=pad.left+(v-minV)/(maxV-minV)*pw;
+    c.beginPath(); c.moveTo(x,pad.top); c.lineTo(x,H-pad.bottom);
+    c.strokeStyle='rgba(255,255,255,0.04)'; c.stroke();
+    c.fillStyle='#332e50'; c.font='7px Courier Prime,monospace'; c.textAlign='center';
+    c.fillText('10^'+v, x, H-4);
+  }
+}
+
+// ─── SUBSTRATE CHART ─────────────────────────────────────────────────────────
+function drawSub() {
+  const canvas = document.getElementById('subChart');
+  const W = canvas.offsetWidth, H = 260;
+  canvas.width=W; canvas.height=H;
+  const c = canvas.getContext('2d');
+
+  // Show: children/EJ bar chart
+  const vals = eras.map(e=>e.childrenPerEJ);
+  const maxV = Math.max(...vals);
+  const pad={top:16,right:120,bottom:20,left:140};
+  const pw=W-pad.left-pad.right;
+  const rowH=(H-pad.top-pad.bottom)/eras.length;
+
+  c.clearRect(0,0,W,H);
+
+  eras.forEach((e,i) => {
+    const y=pad.top+rowH*(i+0.5);
+    const bx=pad.left+(e.childrenPerEJ/maxV)*pw;
+
+    // background
+    c.fillStyle=e.color+'15';
+    c.fillRect(pad.left,y-9,pw,18);
+
+    // bar
+    c.fillStyle=e.color+'40';
+    c.fillRect(pad.left,y-9,bx-pad.left,18);
+
+    // accent
+    c.fillStyle=e.color;
+    c.fillRect(pad.left,y-9,Math.min(bx-pad.left,3),18);
+
+    // dot
+    c.beginPath(); c.arc(bx,y,4,0,Math.PI*2);
+    c.fillStyle=e.color; c.fill();
+
+    c.fillStyle='#332e50'; c.font='8px Courier Prime,monospace'; c.textAlign='right';
+    c.fillText(e.substrateShort, pad.left-6, y+3);
+
+    c.fillStyle=e.color; c.textAlign='left';
+    c.fillText(e.childrenPerEJ.toFixed(2)+' /EJ', bx+8, y+3);
+  });
+
+  c.fillStyle='#332e50'; c.font='7px Courier Prime,monospace'; c.textAlign='center';
+  c.fillText('← fewer children per EJ          more children per EJ →', W/2, H-3);
+}
+
+// ─── TABLE ────────────────────────────────────────────────────────────────────
+const tbody = document.getElementById('main-tbody');
+eras.forEach(e => {
+  const bbl = (e.energyGJ / GJ_PER_BBL / 1e9).toFixed(1)+'B bbl';
+  const hungerColor = e.hungerIndex > 1 ? '#c83030' : '#5a8a3a';
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td style="color:${e.color};font-family:'Cinzel',serif;">${e.name}</td>
+    <td style="color:#332e50;">${e.period}</td>
+    <td style="color:#5a5278;font-style:italic;">${e.substrateShort}</td>
+    <td style="color:#332e50;font-size:9px;">${e.proxy.split(',').slice(0,2).join(',')}</td>
+    <td style="color:#c87820;">${fmtDeaths(e.deathsMid)}</td>
+    <td style="color:#5a5278;">${fmtBig(e.energyGJ)}</td>
+    <td style="color:${e.color};">${fmtGJ(e.gjPerDeath)}</td>
+    <td style="color:#9990b8;">${e.childrenPerEJ.toFixed(2)}</td>
+    <td style="color:#5a5278;">${bbl}</td>
+    <td style="color:${hungerColor};font-family:'Cinzel',serif;">${e.hungerIndex.toFixed(2)}×</td>
+  `;
+  tbody.appendChild(tr);
+});
+
+function init() { drawMain(); drawEff(); drawSub(); }
+window.addEventListener('resize', init);
+window.addEventListener('load', init);
+setTimeout(init, 100);
+window.redrawCharts = init;
+</script>
+<script src="theme.js"></script>
+</body>
+</html>

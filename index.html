@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Price of Blood</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&display=swap');
+
+/* ── Dark mode variables (default) ─────────────────────────── */
+:root {
+  --ink:    #07060e;
+  --deep:   #0b0a18;
+  --plate:  #100f1e;
+  --rule:   #1a1830;
+  --dim:    #34305a;
+  --grey:   #544e78;
+  --text:   #9890b8;
+  --bone:   #dcd4f0;
+  --white:  #f0ecff;
+  --amber:  #d4a040;
+  --cold:   #3a8ab8;
+  --warm:   #b85830;
+  --blood:  #b02818;
+  --energy: #38a870;
+  --god:    #7050a8;
+  --gap:    #c87820;
+  --mono:   'DM Mono', monospace;
+  --serif:  'Playfair Display', serif;
+  --display:'Bebas Neue', sans-serif;
+}
+
+/* ── Light mode overrides ────────────────────────────────────── */
+[data-theme="light"] {
+  --ink:   #f5f3ff;
+  --deep:  #edeaf8;
+  --plate: #e5e2f2;
+  --rule:  #cfc9e8;
+  --dim:   #8070a8;
+  --grey:  #9088b0;
+  --text:  #2a2040;
+  --bone:  #140c28;
+  --white: #08041a;
+  --amber: #a87820;
+  --blood: #a02010;
+  --energy:#207850;
+  --god:   #5838a0;
+  --gap:   #a06010;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--mono);
+  font-weight: 300;
+  font-size: 11px;
+  min-height: 100vh;
+  padding: 36px 40px 80px;
+  max-width: 1440px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Subtle radial glow behind hero */
+body::before {
+  content: '';
+  position: fixed;
+  top: -10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80vw;
+  height: 60vh;
+  background: radial-gradient(
+    ellipse 60% 50% at 50% 0%,
+    rgba(176, 40, 24, 0.07) 0%,
+    rgba(112, 80, 168, 0.04) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+[data-theme="light"] body::before {
+  background: radial-gradient(
+    ellipse 60% 50% at 50% 0%,
+    rgba(160, 32, 16, 0.06) 0%,
+    rgba(88, 56, 160, 0.04) 50%,
+    transparent 100%
+  );
+}
+
+/* ── Hero ─────────────────────────────────────────────────────── */
+.hero {
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 52px;
+  margin-bottom: 56px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-eyebrow {
+  font-size: 8px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 20px;
+  opacity: 0.8;
+}
+
+.hero-title {
+  font-family: var(--display);
+  font-size: clamp(64px, 10vw, 136px);
+  line-height: 0.84;
+  letter-spacing: 0.02em;
+  color: var(--white);
+  margin-bottom: 28px;
+}
+
+.hero-title .blood {
+  color: var(--blood);
+  position: relative;
+}
+
+/* Subtle underline glow on PRICE */
+.hero-title .blood::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--blood), transparent);
+  opacity: 0.5;
+}
+
+[data-theme="light"] .hero-title .blood::after {
+  opacity: 0.35;
+}
+
+.hero-subtitle {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-style: italic;
+  color: var(--grey);
+  line-height: 1.6;
+  max-width: 680px;
+  margin-bottom: 22px;
+}
+
+.hero-meta {
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--dim);
+  line-height: 2.2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 6px;
+}
+
+.hero-meta-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--dim);
+}
+
+.hero-meta-sep {
+  color: var(--rule);
+}
+
+/* ── Intro ────────────────────────────────────────────────────── */
+.intro {
+  margin-bottom: 56px;
+  padding: 22px 0 22px 24px;
+  border-left: 2px solid var(--blood);
+  max-width: 840px;
+  position: relative;
+  z-index: 1;
+}
+
+[data-theme="light"] .intro {
+  border-left-color: var(--blood);
+}
+
+.intro p {
+  font-size: 12px;
+  line-height: 1.95;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+
+.intro p:last-child { margin-bottom: 0; }
+
+.intro strong {
+  color: var(--bone);
+  font-weight: 500;
+}
+
+/* ── Section header ───────────────────────────────────────────── */
+.sh {
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 10px;
+  margin-bottom: 24px;
+  margin-top: 48px;
+  display: flex;
+  gap: 14px;
+  align-items: baseline;
+  position: relative;
+  z-index: 1;
+}
+
+.sh-t {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 16px;
+  color: var(--bone);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* ── Documents grid ───────────────────────────────────────────── */
+.documents {
+  display: grid;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Staggered entrance animation */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.doc {
+  background: var(--deep);
+  border: 1px solid var(--rule);
+  padding: 24px 28px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 20px;
+  align-items: center;
+  transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+  animation: fadeUp 0.5s ease both;
+  text-decoration: none;
+  color: inherit;
+}
+
+.doc:nth-child(1) { animation-delay: 0.05s; }
+.doc:nth-child(2) { animation-delay: 0.10s; }
+.doc:nth-child(3) { animation-delay: 0.15s; }
+.doc:nth-child(4) { animation-delay: 0.20s; }
+.doc:nth-child(5) { animation-delay: 0.25s; }
+.doc:nth-child(6) { animation-delay: 0.30s; }
+.doc:nth-child(7) { animation-delay: 0.35s; }
+
+/* Colored left accent */
+.doc::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--amber);
+  transform: scaleY(0);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: bottom;
+}
+
+.doc:hover {
+  border-color: var(--dim);
+  background: var(--plate);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25), inset 0 0 60px rgba(255,255,255,0.01);
+  transform: translateY(-1px);
+}
+
+[data-theme="light"] .doc:hover {
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+.doc:hover::before {
+  transform: scaleY(1);
+  transform-origin: top;
+}
+
+/* Doc index number */
+.doc-index {
+  font-family: var(--display);
+  font-size: 28px;
+  color: var(--rule);
+  line-height: 1;
+  width: 36px;
+  text-align: center;
+  transition: color 0.25s ease;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+[data-theme="light"] .doc-index {
+  color: var(--rule);
+}
+
+.doc:hover .doc-index {
+  color: var(--dim);
+}
+
+.doc-content {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.doc-title {
+  font-family: var(--serif);
+  font-size: 19px;
+  font-style: italic;
+  color: var(--white);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.doc-meta {
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.doc-desc {
+  font-size: 11px;
+  line-height: 1.75;
+  color: var(--grey);
+  margin-top: 2px;
+}
+
+.doc-link {
+  padding: 9px 20px;
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--amber);
+  text-decoration: none;
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+  font-weight: 400;
+  font-family: var(--mono);
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.doc-link:hover {
+  background: var(--amber);
+  color: var(--ink);
+  border-color: var(--amber);
+  box-shadow: 0 0 20px rgba(212, 160, 64, 0.2);
+}
+
+/* Accent colors per doc type */
+.doc.blood::before  { background: var(--blood); }
+.doc.energy::before { background: var(--energy); }
+.doc.god::before    { background: var(--god); }
+.doc.warm::before   { background: var(--warm); }
+.doc.gap::before    { background: var(--gap); }
+
+.doc.blood .doc-link  { color: var(--blood); }
+.doc.energy .doc-link { color: var(--energy); }
+.doc.god .doc-link    { color: var(--god); }
+.doc.warm .doc-link   { color: var(--warm); }
+.doc.gap .doc-link    { color: var(--gap); }
+
+.doc.blood .doc-link:hover  { background: var(--blood);  border-color: var(--blood);  color: var(--ink); box-shadow: 0 0 20px rgba(176,40,24,0.25); }
+.doc.energy .doc-link:hover { background: var(--energy); border-color: var(--energy); color: var(--ink); box-shadow: 0 0 20px rgba(56,168,112,0.25); }
+.doc.god .doc-link:hover    { background: var(--god);    border-color: var(--god);    color: var(--ink); box-shadow: 0 0 20px rgba(112,80,168,0.25); }
+.doc.warm .doc-link:hover   { background: var(--warm);   border-color: var(--warm);   color: var(--ink); box-shadow: 0 0 20px rgba(184,88,48,0.25); }
+.doc.gap .doc-link:hover    { background: var(--gap);    border-color: var(--gap);    color: var(--ink); box-shadow: 0 0 20px rgba(200,120,32,0.25); }
+
+/* ── Stats strip ──────────────────────────────────────────────── */
+.stats-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  margin-bottom: 56px;
+  position: relative;
+  z-index: 1;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+}
+
+.stat-cell {
+  background: var(--deep);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stat-cell-label {
+  font-size: 7.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.stat-cell-value {
+  font-family: var(--display);
+  font-size: 28px;
+  line-height: 1;
+  color: var(--white);
+}
+
+.stat-cell-value.blood  { color: var(--blood); }
+.stat-cell-value.energy { color: var(--energy); }
+.stat-cell-value.god    { color: var(--god); }
+.stat-cell-value.gap    { color: var(--gap); }
+
+.stat-cell-sub {
+  font-size: 8px;
+  color: var(--dim);
+  line-height: 1.5;
+}
+
+/* ── Footer ───────────────────────────────────────────────────── */
+footer {
+  margin-top: 80px;
+  padding-top: 28px;
+  border-top: 1px solid var(--rule);
+  text-align: center;
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  color: var(--dim);
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 960px) {
+  .stats-strip {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 24px 20px 60px;
+  }
+
+  .hero-title {
+    font-size: clamp(52px, 14vw, 96px);
+  }
+
+  .doc {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 20px;
+  }
+
+  .doc-index {
+    display: none;
+  }
+
+  .doc-link {
+    align-self: flex-start;
+  }
+
+  .stats-strip {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 52px;
+  }
+
+  .stats-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-meta {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .hero-meta-sep {
+    display: none;
+  }
+}
+</style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="hero-eyebrow">Mortality Economics Archive · Seven Documents · 2026</div>
+    <h1 class="hero-title">
+      THE <span class="blood">PRICE</span><br>
+      OF BLOOD
+    </h1>
+    <p class="hero-subtitle">
+      A quantitative archive examining the human cost of energy, economy, and empire through the lens of mortality economics.
+    </p>
+    <div class="hero-meta">
+      <span class="hero-meta-tag">Seven analytical documents</span>
+      <span class="hero-meta-sep">·</span>
+      <span class="hero-meta-tag">Deaths per barrel</span>
+      <span class="hero-meta-sep">·</span>
+      <span class="hero-meta-tag">Blood as currency</span>
+      <span class="hero-meta-sep">·</span>
+      <span class="hero-meta-tag">The children Kronos devours</span>
+    </div>
+  </div>
+
+  <!-- Key metrics strip -->
+  <div class="stats-strip">
+    <div class="stat-cell">
+      <div class="stat-cell-label">Post-9/11 direct deaths</div>
+      <div class="stat-cell-value blood">940K</div>
+      <div class="stat-cell-sub">Brown Univ. Costs of War · 2001–2023</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-cell-label">Child mortality · last century</div>
+      <div class="stat-cell-value god">2.1B</div>
+      <div class="stat-cell-sub">Under-5 deaths · Kronos feed rate</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-cell-label">Shadow blood price per liter</div>
+      <div class="stat-cell-value gap">$0.001</div>
+      <div class="stat-cell-sub">vs. medical market $440–880/L</div>
+    </div>
+  </div>
+
+  <div class="intro">
+    <p>
+      Every barrel of oil extracted from contested regions carries a calculable death toll. Every joule of energy produced demands sacrifice. Every economic system operates on a <strong>hidden ledger denominated in human lives.</strong>
+    </p>
+    <p>
+      These documents present the mathematics of mortality — converting political violence into deaths per barrel, energy consumption into lives per terawatt-hour, and historical patterns into feeding rates measured in children per era.
+    </p>
+    <p>
+      The numbers are exact. The sources are cited. The accounting is complete.
+    </p>
+  </div>
+
+  <div class="sh">
+    <span class="sh-t">The Archive</span>
+    <span>Seven Documents</span>
+  </div>
+
+  <div class="documents">
+
+    <div class="doc blood">
+      <div class="doc-index">I</div>
+      <div class="doc-content">
+        <div class="doc-title">The Blood Price of Oil</div>
+        <div class="doc-meta">Deaths per Barrel &bull; War Economics &bull; OLS Regression</div>
+        <div class="doc-desc">
+          <code>deaths_per_barrel = total_attributable_deaths / proven_reserves_contested</code> —
+          Calculating human mortality per unit of petroleum extracted from regions at war. Iraq, Libya, Syria, Yemen. The formula is simple. The answer is horrifying.
+        </div>
+      </div>
+      <a href="blood_price_oil.html" class="doc-link">Read →</a>
+    </div>
+
+    <div class="doc energy">
+      <div class="doc-index">II</div>
+      <div class="doc-content">
+        <div class="doc-title">Energy Per Death</div>
+        <div class="doc-meta">Mortality Economics &bull; Energy Sources &bull; Feed Rate</div>
+        <div class="doc-desc">
+          Inverting the equation: How many terawatt-hours does humanity generate per life lost to energy production? Coal, nuclear, hydro, oil, gas, solar, wind. A comparative analysis of mortality rates across energy regimes.
+        </div>
+      </div>
+      <a href="energy_per_death.html" class="doc-link">Read →</a>
+    </div>
+
+    <div class="doc gap">
+      <div class="doc-index">III</div>
+      <div class="doc-content">
+        <div class="doc-title">Kronos Feed Rate</div>
+        <div class="doc-meta">Historical Analysis &bull; Mythic Framework &bull; Child Mortality</div>
+        <div class="doc-desc">
+          How many children does the god eat per era? Applying the Kronos myth to historical patterns of child mortality through war, famine, and disease across civilizations. Bronze Age to present. The cycle persists.
+        </div>
+      </div>
+      <a href="kronos_feed_rate.html" class="doc-link">Read →</a>
+    </div>
+
+    <div class="doc god">
+      <div class="doc-index">IV</div>
+      <div class="doc-content">
+        <div class="doc-title">The Devourer — Kronos Mythic Overlay</div>
+        <div class="doc-meta">Comparative Mythology &bull; Systems Analysis &bull; 6,000 years</div>
+        <div class="doc-desc">
+          One god, six faces, six thousand years of eating. Tracing the archetype of the child-devouring deity across cultures: Kronos, Moloch, Baal, Saturn. The same pattern. The same hunger. Different names for the same mechanism.
+        </div>
+      </div>
+      <a href="kronos_mythic_overlay.html" class="doc-link">Read →</a>
+    </div>
+
+    <div class="doc warm">
+      <div class="doc-index">V</div>
+      <div class="doc-content">
+        <div class="doc-title">The Escaped</div>
+        <div class="doc-meta">Case Study &bull; Departure Analysis &bull; Survival Bias</div>
+        <div class="doc-desc">
+          Who gets out? Survival bias and escape velocity calculations for those who evade systemic consumption. Examining the statistical outliers who avoid becoming fuel for the machine.
+        </div>
+      </div>
+      <a href="the_escaped.html" class="doc-link">Read →</a>
+    </div>
+
+    <div class="doc god">
+      <div class="doc-index">VI</div>
+      <div class="doc-content">
+        <div class="doc-title">The Accounting</div>
+        <div class="doc-meta">Financial Ledger &bull; Resource Allocation &bull; Blood Units</div>
+        <div class="doc-desc">
+          A comprehensive accounting framework examining the economic ledger of civilizational metabolism. Resources in, humans out. The balance sheet is precise. The currency is blood.
+        </div>
+      </div>
+      <a href="the_accounting.html" class="doc-link">Read →</a>
+    </div>
+
+    <div class="doc blood">
+      <div class="doc-index">VII</div>
+      <div class="doc-content">
+        <div class="doc-title">BU — The Blood Standard</div>
+        <div class="doc-meta">Economic Theory &bull; Currency Systems &bull; BU Exchange Rates</div>
+        <div class="doc-desc">
+          What if currency was explicitly backed by human lives instead of gold or petroleum? Modeling an economic system where value is denominated in Blood Units (BU). Making the implicit explicit.
+        </div>
+      </div>
+      <a href="blood_standard.html" class="doc-link">Read →</a>
+    </div>
+
+  </div>
+
+  <footer>
+    THE PRICE OF BLOOD &bull; 2026 &bull; A MORTALITY ECONOMICS ARCHIVE
+  </footer>
+
+<script src="theme.js"></script>
+</body>
+</html>

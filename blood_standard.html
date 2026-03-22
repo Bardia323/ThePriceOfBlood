@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BU — Blood Standard</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap');
+
+:root {
+  --ink:    #060409;
+  --deep:   #0a0710;
+  --sfc:    #0e0b18;
+  --rule:   #1c1830;
+  --dim:    #2e2848;
+  --grey:   #4a4468;
+  --text:   #8880a8;
+  --light:  #c0b8d8;
+  --white:  #ece8f8;
+
+  --blood:  #8b0000;
+  --blood2: #cc1a00;
+  --blood3: #e84020;
+  --scarlet:#ff3820;
+  --plasma: #e8c080;
+  --dollar: #407850;
+  --dollar2:#60a870;
+  --cold:   #3070a0;
+
+  --mono:   'DM Mono', monospace;
+  --serif:  'Cormorant Garamond', serif;
+}
+
+/* ── Light mode ──────────────────────────────────────────────── */
+[data-theme="light"] {
+  --ink:    #faf8ff;
+  --deep:   #f2eff8;
+  --sfc:    #eae7f5;
+  --rule:   #d0caeb;
+  --dim:    #806888;
+  --grey:   #a090b8;
+  --text:   #201830;
+  --light:  #100820;
+  --white:  #040210;
+  --blood:  #7a0000;
+  --blood2: #aa1400;
+  --blood3: #c83010;
+  --scarlet:#e02808;
+  --plasma: #906020;
+  --dollar: #306040;
+  --dollar2:#408858;
+  --cold:   #205080;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 300;
+  padding: 44px 48px 72px;
+  max-width: 1380px;
+  margin: 0 auto;
+}
+
+/* ── HEADER ─────────────────────────────────── */
+header {
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 22px;
+  margin-bottom: 36px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+}
+
+.title-stack .eyebrow {
+  font-size: 8px; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 10px;
+}
+
+h1 {
+  font-family: var(--serif);
+  font-size: 52px; font-weight: 300; font-style: italic;
+  color: var(--white); line-height: 0.95; letter-spacing: -0.02em;
+}
+h1 .bu { color: var(--blood3); font-weight: 600; font-style: normal; }
+h1 .em { color: var(--plasma); }
+
+.header-rates {
+  text-align: right;
+  font-size: 8px; color: var(--dim); line-height: 2.2;
+}
+.header-rates .hl  { color: var(--blood3); }
+.header-rates .hl2 { color: var(--plasma); }
+.header-rates .hl3 { color: var(--dollar2); }
+
+/* ── LAYOUT ─────────────────────────────────── */
+.body {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 32px;
+}
+
+/* section heads */
+.sh {
+  display: flex; align-items: baseline; gap: 14px;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 8px; margin-bottom: 16px; margin-top: 32px;
+  font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim);
+}
+.sh:first-child { margin-top: 0; }
+.sh-t {
+  font-family: var(--serif); font-style: italic; font-size: 16px;
+  color: var(--light); font-weight: 400; letter-spacing: 0; text-transform: none;
+}
+
+/* ── EXCHANGE RATE TABLE ─────────────────────── */
+.xt { width: 100%; border-collapse: collapse; margin-bottom: 0; }
+.xt th {
+  font-size: 7.5px; letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--dim); text-align: right; padding: 5px 10px;
+  border-bottom: 1px solid var(--rule); font-weight: 400; white-space: nowrap;
+}
+.xt th:first-child { text-align: left; }
+.xt td {
+  padding: 10px 10px; border-bottom: 1px solid rgba(255,255,255,0.022);
+  text-align: right; vertical-align: middle; white-space: nowrap;
+}
+.xt td:first-child { text-align: left; }
+.xt tr:hover td { background: rgba(255,255,255,0.01); }
+
+.era-cell { display: flex; flex-direction: column; gap: 1px; }
+.era-n { font-family: var(--serif); font-style: italic; font-size: 16px;
+         font-weight: 400; color: var(--white); line-height: 1.1; }
+.era-p { font-size: 7px; color: var(--dim); }
+.era-g { font-size: 7.5px; color: var(--grey); }
+
+.rb  { color: var(--blood3); }
+.rp  { color: var(--plasma); }
+.rd  { color: var(--dollar2); }
+.rg  { color: var(--grey); }
+.rc  { color: var(--cold); }
+
+/* inline blood bar */
+.bb { display: flex; align-items: center; gap: 6px; }
+.bt { flex:1; height:2px; background: var(--rule); position:relative; min-width:30px; }
+.bf { position:absolute; left:0; top:0; height:100%; }
+
+/* ── CANVASES ────────────────────────────────── */
+canvas { display: block; }
+
+/* ── PRICE LADDER ────────────────────────────── */
+/* right column */
+.sidebar {}
+
+.bl-panel {
+  border: 1px solid var(--rule);
+  background: var(--deep);
+  margin-bottom: 10px;
+}
+.bl-head {
+  padding: 9px 14px 7px;
+  border-bottom: 1px solid var(--rule);
+  display: flex; align-items: baseline; gap: 8px;
+}
+.bl-title {
+  font-family: var(--serif); font-style: italic; font-size: 14px;
+  color: var(--light); font-weight: 400;
+}
+.bl-tag { font-size: 7px; letter-spacing: 0.15em; color: var(--dim); }
+.bl-body { padding: 10px 14px 12px; }
+.bl-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 7px; gap: 6px;
+}
+.bl-l { font-size: 7.5px; color: var(--dim); flex-shrink:0; max-width:120px; }
+.bl-v { font-size: 9px; font-weight: 400; text-align: right; }
+
+.footnote {
+  margin-top: 32px; border-top: 1px solid var(--rule); padding-top: 14px;
+  font-size: 7.5px; color: var(--dim); line-height: 2;
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px;
+}
+.footnote strong { color: var(--grey); }
+
+/* ── BOTTOM CELLS ────────────────────────────── */
+.cells {
+  display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; margin-top: 22px;
+}
+.cell { background: var(--deep); border: 1px solid var(--rule); padding: 12px 10px 10px; }
+.cv { font-family: var(--serif); font-style: italic; font-size: 20px;
+      line-height:1; margin-bottom:4px; }
+.cl { font-size: 6.5px; letter-spacing:0.1em; text-transform:uppercase;
+      color: var(--dim); line-height:1.6; }
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  body { padding: 28px 20px 60px; }
+
+  header { grid-template-columns: 1fr; }
+  .header-rates { text-align: left; margin-top: 12px; }
+
+  .body { grid-template-columns: 1fr; }
+
+  /* 7-col cell grid → 4 */
+  .cells { grid-template-columns: repeat(4, 1fr) !important; }
+
+  /* 3-col footnote → 1 */
+  .footnote { grid-template-columns: 1fr; gap: 12px; }
+
+  canvas { overflow-x: auto; }
+}
+
+@media (max-width: 600px) {
+  h1 { font-size: 36px; }
+
+  .cells { grid-template-columns: repeat(3, 1fr) !important; }
+
+  .footnote { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="title-stack">
+    <div class="eyebrow">Blood Standard · Primary Currency Inversion · Real Value of the Dollar</div>
+    <h1>
+      <span class="bu">BU</span> —<br>
+      The <span class="em">Blood</span> Standard
+    </h1>
+  </div>
+  <div class="header-rates">
+    <span class="hl">1 BU = $2,242,623</span> (real / energy-derived, Modern)<br>
+    <span class="hl">1 BU = $880</span> (market / medical)<br>
+    <span class="hl2">1 USD = 0.4459 µL blood</span> (real rate)<br>
+    <span class="hl2">1 USD = 1,136 µL blood</span> (market rate)<br>
+    <span class="hl3">Blood inflated 21.7× since Bronze Age</span><br>
+    <span style="color:var(--dim)">Unit: 1 BU = 1 litre human blood · 5 BU per person</span>
+  </div>
+</header>
+
+<div class="body">
+<div>
+
+<!-- ERA TABLE -->
+<div class="sh"><span class="sh-t">Exchange Rate History</span>
+  <span>real BU/$ rate across eras · derived from energy extraction accounting</span>
+</div>
+<table class="xt" id="xt"></table>
+
+<!-- MAIN CHART: blood-dollar rate history -->
+<div class="sh" style="margin-top:28px;"><span class="sh-t">The Blood-Dollar Rate</span>
+  <span>µL blood per dollar (real, log) · BU price in dollars · era bands · deflation arc</span>
+</div>
+<canvas id="c1" height="280"></canvas>
+
+<!-- PURCHASING POWER CHART -->
+<div class="sh"><span class="sh-t">Dollar Purchasing Power in Blood</span>
+  <span>what $1 through $1T actually buys in blood at real rate · log scale</span>
+</div>
+<canvas id="c2" height="130"></canvas>
+
+<!-- CELLS -->
+<div class="cells" id="cells"></div>
+
+<div class="footnote">
+  <div><strong>Method.</strong> Blood Unit (BU) = 1 litre. Real BU price = shadow energy value per litre of blood
+    = (shadow_$/GJ × GJ/death) ÷ 5L. Shadow $/GJ = $12.30 (Brent $75 ÷ 6.1 GJ/bbl).
+    GJ/death = per-capita energy base ÷ war-attributable deaths per era.</div>
+  <div><strong>Blood inflation.</strong> BU price rose from $103K (Bronze Age) to $2.24M (Modern) = 21.7×
+    over ~6000 years. As extraction efficiency increases, each death purchases more energy,
+    making blood more expensive in dollar terms. The dollar has deflated 21.7× in blood terms.</div>
+  <div><strong>Market vs real.</strong> Medical market: $880/L — the only price set by intrinsic
+    biological value. Real rate: $2.24M/L — set by energy extraction value.
+    Gap: 2,548×. The dollar is overvalued vs blood by exactly this factor.
+    Or: the market systematically underprices blood by 2,548×.</div>
+</div>
+
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sb"></div>
+</div>
+
+<script>
+const SGJ  = 75 / 6.1;
+const MED  = 880;
+const EJ   = 1e9;
+
+const ERAS = [
+  {n:'Bronze Age', p:'4000–1200 BCE', g:'Apep / Tiamat',
+   pop:50e6,  gpc:6,  yrs:2800, d:20e6, col:'#8b1a00'},
+  {n:'Roman',      p:'500 BCE–476 CE', g:'Kronos / Saturn',
+   pop:60e6,  gpc:10, yrs:900,  d:15e6, col:'#a02818'},
+  {n:'Feudal',     p:'476–1400 CE',  g:'Christus Rex',
+   pop:80e6,  gpc:12, yrs:900,  d:50e6, col:'#5a3018'},
+  {n:'Colonial',   p:'1400–1750 CE', g:'Crown / El',
+   pop:80e6,  gpc:15, yrs:350,  d:12e6, col:'#6a2840'},
+  {n:'Industrial', p:'1750–1950 CE', g:'The Nation-State',
+   pop:400e6, gpc:25, yrs:200,  d:120e6,col:'#284860'},
+  {n:'Modern',     p:'1950–2026 CE', g:'The Market',
+   pop:4e9,   gpc:75, yrs:76,   d:25e6, col:'#8b0000'},
+];
+
+ERAS.forEach(e => {
+  e.tGJ       = e.pop * e.gpc * e.yrs;
+  e.tEJ       = e.tGJ / EJ;
+  e.gpd       = e.tGJ / e.d;
+  e.BU_price  = SGJ * e.gpd / 5;         // $/BU real
+  e.uL_per_d  = 1e6 / e.BU_price;        // µL blood per dollar
+  e.mL_per_d  = 1000 / e.BU_price;       // mL blood per dollar
+  e.GJ_per_BU = e.gpd / 5;               // energy per litre
+  e.kWh_BU    = e.GJ_per_BU * 277.78;
+});
+
+const MODERN = ERAS[5];
+const BRONZE = ERAS[0];
+
+// FORMATTERS
+const fB = n => {
+  if (n >= 1e6)  return (n/1e6).toFixed(2)+'M litres';
+  if (n >= 1e3)  return (n/1e3).toFixed(2)+'K litres';
+  if (n >= 1)    return n.toFixed(3)+' litres';
+  if (n >= 0.001)return (n*1000).toFixed(3)+' mL';
+  if (n >= 1e-6) return (n*1e6).toFixed(3)+' µL';
+  return (n*1e9).toFixed(2)+' nL';
+};
+const fD = n => n>=1e12?'$'+(n/1e12).toFixed(1)+'T':n>=1e9?'$'+(n/1e9).toFixed(1)+'B':n>=1e6?'$'+(n/1e6).toFixed(2)+'M':n>=1e3?'$'+(n/1e3).toFixed(0)+'K':'$'+n.toFixed(0);
+const fN = n => n>=1e6?(n/1e6).toFixed(2)+'M':n>=1e3?(n/1e3).toFixed(1)+'K':n.toFixed(2);
+
+// ── ERA TABLE ─────────────────────────────────────────────────────
+const xt = document.getElementById('xt');
+const maxBU = Math.max(...ERAS.map(e=>e.BU_price));
+
+xt.innerHTML = `<thead><tr>
+  <th style="text-align:left">Era</th>
+  <th>GJ / BU</th>
+  <th>kWh / BU</th>
+  <th>Real $/BU</th>
+  <th>µL blood / $1</th>
+  <th>mL blood / $1K</th>
+  <th>$ per drop (50µL)</th>
+  <th>Blood inflation</th>
+  <th style="min-width:90px">BU price</th>
+</tr></thead><tbody>`;
+
+ERAS.forEach(e => {
+  const dollar_per_drop = e.BU_price / (50/1e6);  // $50µL = 1 drop
+  const infl = e.BU_price / BRONZE.BU_price;
+  const bw   = (e.BU_price / maxBU) * 100;
+  xt.innerHTML += `<tr>
+    <td><div class="era-cell">
+      <span class="era-n" style="color:${e.col}">${e.n}</span>
+      <span class="era-p">${e.p}</span>
+      <span class="era-g">${e.g}</span>
+    </div></td>
+    <td class="rp">${fN(e.GJ_per_BU)} GJ</td>
+    <td class="rp">${fN(e.kWh_BU)} kWh</td>
+    <td class="rb" style="font-weight:400">${fD(e.BU_price)}</td>
+    <td class="rd">${e.uL_per_d.toFixed(4)}</td>
+    <td class="rd">${(e.mL_per_d*1000).toFixed(4)}</td>
+    <td class="rg">${fD(dollar_per_drop)}</td>
+    <td class="rc">${infl.toFixed(2)}×</td>
+    <td>
+      <div class="bb">
+        <div class="bt"><div class="bf" style="width:${bw}%;background:${e.col}"></div></div>
+        <span style="font-size:7px;color:var(--dim);min-width:28px;text-align:right">${(e.BU_price/1e3).toFixed(0)}K</span>
+      </div>
+    </td>
+  </tr>`;
+});
+xt.innerHTML += '</tbody>';
+
+// ── MAIN CHART ────────────────────────────────────────────────────
+function drawC1() {
+  const cv = document.getElementById('c1');
+  const W = cv.offsetWidth, H = 280;
+  cv.width = W; cv.height = H;
+  const c = cv.getContext('2d');
+  const P = {t:28, r:80, b:40, l:80};
+  const pw = W-P.l-P.r, ph = H-P.t-P.b;
+
+  const tMin = -4300, tMax = 2100;
+  const midYr = [-2600, -100, 900, 1575, 1850, 1990];
+
+  // Two series: BU price in $ (left), µL/$ (right — inverse)
+  const logBU = ERAS.map(e => Math.log10(e.BU_price));
+  const loguL = ERAS.map(e => Math.log10(e.uL_per_d));
+
+  const yBUn = Math.min(...logBU)-0.5, yBUx = Math.max(...logBU)+0.5;
+  const yuLn = Math.min(...loguL)-0.5, yuLx = Math.max(...loguL)+0.5;
+
+  const cx  = t => P.l+(t-tMin)/(tMax-tMin)*pw;
+  const cyB = y => P.t+(1-(y-yBUn)/(yBUx-yBUn))*ph;
+  const cyU = y => P.t+(1-(y-yuLn)/(yuLx-yuLn))*ph;
+
+  c.clearRect(0,0,W,H);
+
+  // Era bands
+  [{t0:-4300,t1:-1000,lb:'APEP',    cl:'#5a100a'},
+   {t0:-1000,t1:-100, lb:'MOLOCH',  cl:'#4a0808'},
+   {t0:-100, t1:500,  lb:'KRONOS',  cl:'#3a1840'},
+   {t0:500,  t1:1500, lb:'REX',     cl:'#2a1808'},
+   {t0:1500, t1:1900, lb:'STATE',   cl:'#0a1820'},
+   {t0:1900, t1:2100, lb:'MARKET',  cl:'#3a0808'},
+  ].forEach(b=>{
+    const x0=cx(b.t0), x1=cx(b.t1);
+    c.fillStyle=b.cl+'38'; c.fillRect(x0,0,x1-x0,H);
+    c.fillStyle=b.cl+'cc'; c.font='7px DM Mono,monospace'; c.textAlign='center';
+    if(x1-x0>20) c.fillText(b.lb,(x0+x1)/2,12);
+  });
+
+  // Grid
+  for(let y=Math.floor(yBUn); y<=Math.ceil(yBUx); y++){
+    c.beginPath(); c.moveTo(P.l,cyB(y)); c.lineTo(W-P.r,cyB(y));
+    c.strokeStyle='rgba(139,0,0,0.1)'; c.lineWidth=1; c.stroke();
+    c.fillStyle='#4a1818'; c.font='7px DM Mono,monospace'; c.textAlign='right';
+    c.fillText('$10^'+y,P.l-5,cyB(y)+3);
+  }
+  [-3000,-2000,-1000,0,500,1000,1500,1800,1950,2000].forEach(t=>{
+    c.beginPath(); c.moveTo(cx(t),P.t); c.lineTo(cx(t),H-P.b);
+    c.strokeStyle='rgba(255,255,255,0.02)'; c.lineWidth=1; c.stroke();
+    c.fillStyle='#2e2848'; c.font='7px DM Mono,monospace'; c.textAlign='center';
+    c.fillText(t<0?Math.abs(t)+'B':t+'CE',cx(t),H-P.b+11);
+  });
+
+  // Right axis: µL/$
+  for(let y=Math.floor(yuLn); y<=Math.ceil(yuLx); y++){
+    c.fillStyle='#3a6040'; c.font='7px DM Mono,monospace'; c.textAlign='left';
+    c.fillText('10^'+y+'µL/$',W-P.r+4,cyU(y)+3);
+  }
+
+  // Axis labels
+  c.fillStyle='#8b000066'; c.font='7px DM Mono,monospace';
+  c.save(); c.translate(12,P.t+ph/2); c.rotate(-Math.PI/2); c.textAlign='center';
+  c.fillText('$/BU (real)',0,0); c.restore();
+  c.fillStyle='#3a604066'; c.font='7px DM Mono,monospace';
+  c.save(); c.translate(W-10,P.t+ph/2); c.rotate(Math.PI/2); c.textAlign='center';
+  c.fillText('µL blood / $1',0,0); c.restore();
+
+  // Medical reference line ($880/L)
+  const medLog = Math.log10(880);
+  const ym = cyB(medLog);
+  c.beginPath(); c.moveTo(P.l,ym); c.lineTo(W-P.r,ym);
+  c.strokeStyle='rgba(232,192,128,0.25)'; c.lineWidth=1; c.setLineDash([2,5]); c.stroke(); c.setLineDash([]);
+  c.fillStyle='rgba(232,192,128,0.5)'; c.font='7px DM Mono,monospace'; c.textAlign='left';
+  c.fillText('market $880/L',P.l+4,ym-3);
+
+  // µL/$ line (green, right axis — inverse of BU price)
+  c.beginPath();
+  midYr.forEach((t,i) => i===0?c.moveTo(cx(t),cyU(loguL[i])):c.lineTo(cx(t),cyU(loguL[i])));
+  c.strokeStyle='rgba(96,168,112,0.4)'; c.lineWidth=1.5; c.setLineDash([3,3]); c.stroke(); c.setLineDash([]);
+  midYr.forEach((t,i) => {
+    c.beginPath(); c.arc(cx(t),cyU(loguL[i]),3,0,Math.PI*2);
+    c.fillStyle='#60a870'; c.fill();
+  });
+
+  // BU price line (blood red, left axis)
+  // Gradient line — gets redder as blood gets more expensive
+  c.beginPath();
+  midYr.forEach((t,i) => i===0?c.moveTo(cx(t),cyB(logBU[i])):c.lineTo(cx(t),cyB(logBU[i])));
+  c.strokeStyle='rgba(180,20,0,0.4)'; c.lineWidth=1.5; c.stroke();
+
+  ERAS.forEach((e,i) => {
+    const x=cx(midYr[i]), y=cyB(logBU[i]);
+    c.beginPath(); c.arc(x,y,6,0,Math.PI*2);
+    c.fillStyle=e.col; c.fill();
+    c.strokeStyle='#060409'; c.lineWidth=1.5; c.stroke();
+    c.fillStyle=e.col+'dd'; c.font='7px DM Mono,monospace'; c.textAlign='center';
+    c.fillText(e.n.split(' ')[0],x,y-11);
+  });
+
+  // Legend
+  c.fillStyle='#4a1818cc'; c.font='7px DM Mono,monospace'; c.textAlign='left';
+  c.beginPath(); c.arc(P.l+8,H-P.b+18,3,0,Math.PI*2); c.fillStyle='#8b0000'; c.fill();
+  c.fillStyle='#4a1818'; c.fillText('$/BU (real, left axis)',P.l+16,H-P.b+21);
+  c.beginPath(); c.arc(P.l+160,H-P.b+18,3,0,Math.PI*2); c.fillStyle='#60a870'; c.fill();
+  c.fillStyle='#2e4838'; c.fillText('µL per dollar (right axis)',P.l+168,H-P.b+21);
+}
+
+// ── PURCHASING POWER CHART ────────────────────────────────────────
+function drawC2() {
+  const cv = document.getElementById('c2');
+  const W = cv.offsetWidth, H = 130;
+  cv.width = W; cv.height = H;
+  const c = cv.getContext('2d');
+  const P = {t:16, r:20, b:28, l:180};
+  const pw = W-P.l-P.r, ph = H-P.t-P.b;
+  c.clearRect(0,0,W,H);
+
+  const items = [
+    {l:'$1',                    d:1},
+    {l:'Min wage / hr ($7.25)', d:7.25},
+    {l:'Median wage / hr ($34)',d:34},
+    {l:'Daily median ($272)',   d:272},
+    {l:'Annual salary ($60K)',  d:60000},
+    {l:'1 barrel oil ($75)',    d:75},
+    {l:'F-35 ($80M)',           d:80e6},
+    {l:'Iraq War ($1.6T)',      d:1.6e12},
+    {l:'US GDP ($28T)',         d:28e12},
+  ];
+
+  const bloodLitres = items.map(i => i.d / MODERN.BU_price);
+  const logVals = bloodLitres.map(b => Math.log10(b));
+  const minL = Math.min(...logVals)-0.5, maxL = Math.max(...logVals)+0.5;
+
+  const rowH = ph / items.length;
+
+  // Axis
+  for(let v=Math.ceil(minL); v<=Math.floor(maxL)+1; v++){
+    const x = P.l+(v-minL)/(maxL-minL)*pw;
+    c.beginPath(); c.moveTo(x,P.t); c.lineTo(x,H-P.b);
+    c.strokeStyle='rgba(255,255,255,0.04)'; c.stroke();
+    c.fillStyle='#2e2848'; c.font='6.5px DM Mono,monospace'; c.textAlign='center';
+    // label in meaningful units
+    const val = Math.pow(10,v);
+    let lbl;
+    if(val>=1)      lbl = val.toFixed(0)+'L';
+    else if(val>=0.001) lbl = (val*1000).toFixed(0)+'mL';
+    else if(val>=1e-6)  lbl = (val*1e6).toFixed(0)+'µL';
+    else                lbl = (val*1e9).toFixed(0)+'nL';
+    c.fillText(lbl,x,H-P.b+10);
+  }
+
+  // person lines: 5L, 5000L (1000 people)
+  const personL = Math.log10(5);
+  const px5 = P.l+(personL-minL)/(maxL-minL)*pw;
+  c.beginPath(); c.moveTo(px5,P.t); c.lineTo(px5,H-P.b);
+  c.strokeStyle='rgba(139,0,0,0.3)'; c.lineWidth=1; c.setLineDash([2,4]); c.stroke(); c.setLineDash([]);
+  c.fillStyle='rgba(139,0,0,0.5)'; c.font='6.5px DM Mono,monospace'; c.textAlign='center';
+  c.fillText('1 person',px5,P.t+9);
+
+  items.forEach((item,i) => {
+    const y = P.t+rowH*(i+0.5);
+    const lv = logVals[i];
+    const bx = P.l+(lv-minL)/(maxL-minL)*pw;
+
+    // Color intensity by magnitude
+    const intensity = (lv-minL)/(maxL-minL);
+    const r = Math.round(80+intensity*110);
+    const col = `rgb(${r},0,0)`;
+
+    c.fillStyle=col+'25'; c.fillRect(P.l,y-5,bx-P.l,10);
+    c.beginPath(); c.arc(bx,y,3,0,Math.PI*2);
+    c.fillStyle=col; c.fill();
+
+    c.fillStyle='#4a4468'; c.font='7px DM Mono,monospace'; c.textAlign='right';
+    c.fillText(item.l, P.l-5, y+3);
+
+    c.fillStyle=col+'cc'; c.textAlign='left';
+    c.fillText(fB(bloodLitres[i]), bx+6, y+3);
+  });
+}
+
+// ── GLOBAL CELLS ─────────────────────────────────────────────────
+const cellData = [
+  {v: '$'+MODERN.BU_price.toLocaleString('en',{maximumFractionDigits:0}),
+   l:'Real $/BU\n(Modern)', c:'var(--blood3)'},
+  {v: '$880',
+   l:'Market $/BU\n(medical)', c:'var(--plasma)'},
+  {v: (MODERN.BU_price/880).toFixed(0)+'×',
+   l:'Market under-\nprices blood by', c:'var(--blood3)'},
+  {v: MODERN.uL_per_d.toFixed(4)+'µL',
+   l:'Real: 1 USD\nbuy in blood', c:'var(--dollar2)'},
+  {v: (1/880*1e6).toFixed(0)+'µL',
+   l:'Market: 1 USD\nbuy in blood', c:'var(--dollar2)'},
+  {v: (MODERN.BU_price/BRONZE.BU_price).toFixed(1)+'×',
+   l:'Blood inflation\nBronze→Modern', c:'var(--cold)'},
+  {v: (MODERN.GJ_per_BU/1000).toFixed(0)+'K GJ',
+   l:'Energy per BU\n(Modern)', c:'var(--plasma)'},
+];
+
+const cells = document.getElementById('cells');
+cellData.forEach(cd => {
+  cells.innerHTML += `<div class="cell">
+    <div class="cv" style="color:${cd.c}">${cd.v}</div>
+    <div class="cl">${cd.l.replace('\n','<br>')}</div>
+  </div>`;
+});
+
+// ── SIDEBAR ───────────────────────────────────────────────────────
+const sb = document.getElementById('sb');
+
+// Purchasing power ladder
+const ladder = [
+  {l:'1 drop of blood (50µL)',       v: fD(MODERN.BU_price * 50e-6)},
+  {l:'1 mL blood',                   v: fD(MODERN.BU_price * 0.001)},
+  {l:'1 teaspoon (5mL)',             v: fD(MODERN.BU_price * 0.005)},
+  {l:'1 tablespoon (15mL)',          v: fD(MODERN.BU_price * 0.015)},
+  {l:'1 unit donation (450mL)',      v: fD(MODERN.BU_price * 0.45)},
+  {l:'1 BU — 1 litre',              v: fD(MODERN.BU_price)},
+  {l:'1 person (5 BU)',             v: fD(MODERN.BU_price * 5)},
+  {l:'10 people (50 BU)',           v: fD(MODERN.BU_price * 50)},
+  {l:'100 people (500 BU)',         v: fD(MODERN.BU_price * 500)},
+  {l:'1 combat platoon (~160L)',    v: fD(MODERN.BU_price * 160)},
+  {l:'Hiroshima dead (~80K)',       v: fD(MODERN.BU_price * 80000 * 5)},
+  {l:'Iraq War dead (~940K)',       v: fD(MODERN.BU_price * 940000 * 5)},
+  {l:'WWII dead (~70M)',            v: fD(MODERN.BU_price * 70e6 * 5)},
+];
+
+sb.innerHTML += `<div class="bl-panel" style="border-left:2px solid var(--blood)">
+  <div class="bl-head">
+    <span class="bl-title">Blood Price Ladder</span>
+    <span class="bl-tag">MODERN RATE</span>
+  </div>
+  <div class="bl-body">
+    ${ladder.map(r=>`<div class="bl-row">
+      <span class="bl-l">${r.l}</span>
+      <span class="bl-v rb">${r.v}</span>
+    </div>`).join('')}
+  </div>
+</div>`;
+
+// Dollar in blood units
+const dlad = [
+  {l:'$0.01 (penny)',      d:0.01},
+  {l:'$1',                 d:1},
+  {l:'$100',               d:100},
+  {l:'$1,000',             d:1000},
+  {l:'$10,000',            d:10000},
+  {l:'$1M',                d:1e6},
+  {l:'$1B',                d:1e9},
+  {l:'$1T',                d:1e12},
+];
+
+sb.innerHTML += `<div class="bl-panel" style="border-left:2px solid var(--dollar2)">
+  <div class="bl-head">
+    <span class="bl-title">Dollar in Blood</span>
+    <span class="bl-tag">REAL RATE</span>
+  </div>
+  <div class="bl-body">
+    ${dlad.map(r=>{
+      const bL = r.d / MODERN.BU_price;
+      return `<div class="bl-row">
+        <span class="bl-l">${r.l}</span>
+        <span class="bl-v rd">${fB(bL)}</span>
+      </div>`;
+    }).join('')}
+  </div>
+</div>`;
+
+// Historical BU rates
+sb.innerHTML += `<div class="bl-panel" style="border-left:2px solid var(--grey)">
+  <div class="bl-head">
+    <span class="bl-title">BU Exchange Rate</span>
+    <span class="bl-tag">ALL ERAS</span>
+  </div>
+  <div class="bl-body">
+    ${ERAS.map(e=>`<div class="bl-row">
+      <span class="bl-l" style="color:${e.col}">${e.n}</span>
+      <span class="bl-v" style="color:${e.col}">${fD(e.BU_price)}/BU</span>
+    </div>`).join('')}
+    <div style="border-top:1px solid var(--rule);padding-top:8px;margin-top:4px;font-size:7.5px;color:var(--dim);line-height:1.9">
+      Market (medical): $880/BU<br>
+      Inflation Bronze→Modern: 21.7×<br>
+      Dollar devaluation in blood: 21.7×
+    </div>
+  </div>
+</div>`;
+
+function init(){drawC1();drawC2();}
+window.addEventListener('resize',init);
+window.addEventListener('load',init);
+setTimeout(init,80);
+window.redrawCharts = init;
+</script>
+<script src="theme.js"></script>
+</body>
+</html>

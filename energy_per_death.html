@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Energy Per Death</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400&display=swap');
+
+:root {
+  --bg: #06080a;
+  --s1: #0c1014;
+  --s2: #101418;
+  --border: #1c2228;
+  --muted: #2a3340;
+  --dim: #4a5a6a;
+  --text: #8a9aaa;
+  --light: #c0d0dc;
+  --white: #e8f0f4;
+  --e1: #00c8ff;   /* electric blue — energy */
+  --e2: #0080cc;
+  --e3: #004488;
+  --blood: #cc2200;
+  --blood2: #ff4422;
+  --gold: #f0c040;
+  --green: #20c060;
+}
+
+/* ── Light mode ──────────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg:    #f4f7f9;
+  --s1:    #edf2f5;
+  --s2:    #e4ecf2;
+  --border:#c0ccd8;
+  --muted: #9ab0bf;
+  --dim:   #526070;
+  --text:  #1a2830;
+  --light: #0a1820;
+  --white: #050c12;
+  --e1:    #0080a8;
+  --e2:    #005580;
+  --e3:    #003055;
+  --blood: #aa1c00;
+  --blood2:#dd3310;
+  --gold:  #907010;
+  --green: #107040;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  font-weight: 300;
+  padding: 40px 28px;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.mono { font-family: 'Share Tech Mono', monospace; }
+.cond { font-family: 'Barlow Condensed', sans-serif; }
+
+/* ─── HEADER ─── */
+header {
+  margin-bottom: 48px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 32px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: end;
+}
+
+.tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+h1 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(52px, 9vw, 110px);
+  line-height: 0.88;
+  letter-spacing: -0.01em;
+  color: var(--white);
+}
+
+h1 .energy { color: var(--e1); }
+h1 .slash { color: var(--muted); font-weight: 300; }
+h1 .death { color: var(--blood2); }
+
+.header-stats {
+  text-align: right;
+}
+
+.header-stat {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--dim);
+  line-height: 2;
+}
+
+.header-stat span { color: var(--e1); }
+
+/* ─── LAYOUT ─── */
+.row { display: flex; gap: 2px; margin-bottom: 2px; }
+.col { flex:1; }
+.col-2 { flex:2; }
+.col-3 { flex:3; }
+
+.panel {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  padding: 22px 24px;
+}
+
+.panel-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 10px;
+}
+
+.big-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 38px;
+  line-height: 1;
+  color: var(--white);
+}
+
+.big-num.energy { color: var(--e1); }
+.big-num.blood { color: var(--blood2); }
+.big-num.gold { color: var(--gold); }
+.big-num.green { color: var(--green); }
+
+.sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  color: var(--dim);
+  margin-top: 5px;
+}
+
+/* ─── SECTION ─── */
+.section { margin: 40px 0; }
+.section-head {
+  display: flex; align-items: baseline; gap: 14px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px; margin-bottom: 20px;
+}
+.section-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 20px;
+  letter-spacing: 0.04em; color: var(--white);
+  text-transform: uppercase;
+}
+.section-note {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px; color: var(--dim);
+}
+
+/* ─── WAR TABLE ─── */
+.wtable {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+}
+.wtable th {
+  text-align: left; color: var(--dim);
+  font-size: 8px; letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.wtable td { padding: 9px 10px; border-bottom: 1px solid rgba(255,255,255,0.025); }
+.wtable tr:hover td { background: rgba(255,255,255,0.015); }
+.c-name { color: var(--light); }
+.c-energy { color: var(--e1); }
+.c-blood { color: var(--blood2); }
+.c-gold { color: var(--gold); }
+.c-dim { color: var(--dim); }
+.c-green { color: var(--green); }
+
+/* ─── CANVAS PANELS ─── */
+.chart-panel {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.chart-panel::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(rgba(0,200,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,200,255,0.015) 1px, transparent 1px);
+  background-size: 50px 35px;
+  pointer-events: none;
+}
+canvas { display: block; width: 100% !important; position: relative; z-index: 1; }
+
+/* ─── ANALOGY BLOCK ─── */
+.analogy-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+}
+.analogy-card {
+  background: var(--s2);
+  border: 1px solid var(--border);
+  padding: 18px 16px;
+  text-align: center;
+}
+.analogy-icon {
+  font-size: 28px;
+  margin-bottom: 10px;
+  display: block;
+}
+.analogy-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--e1);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.analogy-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8px;
+  color: var(--dim);
+  letter-spacing: 0.1em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+/* ─── FORMULA ─── */
+.formula {
+  background: #080b0e;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--e1);
+  padding: 20px 24px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text);
+  line-height: 2.2;
+}
+.formula .hl { color: var(--e1); }
+.formula .hl2 { color: var(--gold); }
+.formula .hl3 { color: var(--blood2); }
+.formula .cm { color: var(--muted); font-size: 9px; }
+
+/* ─── FOOTNOTE ─── */
+.footnote {
+  margin-top: 40px;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8px;
+  color: var(--muted);
+  line-height: 2.2;
+}
+
+.accent-bar {
+  display: inline-block;
+  width: 20px; height: 2px;
+  background: var(--e1);
+  vertical-align: middle;
+  margin: 0 6px;
+  opacity: 0.5;
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  body { padding: 28px 20px 60px; }
+
+  header { grid-template-columns: 1fr; }
+  .header-stats { text-align: left; margin-top: 12px; }
+
+  /* Stack flex rows vertically */
+  .row { flex-direction: column; }
+
+  /* 5-col regression grid → 2-3 cols */
+  div[style*="repeat(5,1fr)"] {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+
+  .analogy-grid { grid-template-columns: repeat(3, 1fr); }
+
+  .chart-panel {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .chart-panel canvas { min-width: 400px; }
+}
+
+@media (max-width: 600px) {
+  h1 { font-size: clamp(40px, 14vw, 80px); }
+
+  .analogy-grid { grid-template-columns: repeat(2, 1fr); }
+
+  div[style*="repeat(5,1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="tag">Shadow Energy Accounting · Machine Feed Rate · v2.0</div>
+    <h1>
+      <span class="energy">ENERGY</span><span class="slash">/</span><br>
+      <span class="death">DEATH</span>
+    </h1>
+    <div style="margin-top:16px; font-family:'Share Tech Mono',monospace; font-size:11px; color:var(--dim); line-height:2;">
+      1 barrel crude oil = 6.1 GJ = 1,694 kWh<br>
+      deaths/barrel → GJ/death → kWh/death → human-lifetimes of power per kill
+    </div>
+  </div>
+  <div class="header-stats">
+    <div class="header-stat">Global production <span>102.6M bbl/day</span></div>
+    <div class="header-stat">Energy/day <span>625.9 PJ/day</span></div>
+    <div class="header-stat">1 bbl = <span>6.1 GJ</span> = <span>1,694 kWh</span></div>
+    <div class="header-stat">Avg human lifespan energy* <span>~3,285 kWh/yr</span></div>
+    <div class="header-stat">*US avg consumption per capita</div>
+  </div>
+</header>
+
+<!-- TOP PANELS -->
+<div class="row">
+  <div class="panel col">
+    <div class="panel-label">GJ extracted per death · Tier 1 (war direct, Iraq mid)</div>
+    <div class="big-num energy" id="gj-t1">—</div>
+    <div class="sub">300K deaths · 145B bbl · 6.1 GJ/bbl</div>
+  </div>
+  <div class="panel col">
+    <div class="panel-label">kWh per death · Tier 1</div>
+    <div class="big-num gold" id="kwh-t1">—</div>
+    <div class="sub">= GJ × 277.78 kWh/GJ</div>
+  </div>
+  <div class="panel col">
+    <div class="panel-label">Human-years of electricity per death</div>
+    <div class="big-num green" id="hyr-t1">—</div>
+    <div class="sub">at 3,285 kWh/person/yr global avg</div>
+  </div>
+  <div class="panel col">
+    <div class="panel-label">Atomic bombs equivalent per death</div>
+    <div class="big-num blood" id="nuke-t1">—</div>
+    <div class="sub">Little Boy = 63 TJ · per death yield</div>
+  </div>
+</div>
+
+<!-- FORMULA -->
+<div class="formula" style="margin-bottom:2px;">
+  <span class="cm">// Core conversion chain</span><br>
+  <span class="hl">E_per_death</span> = (reserves_bbl / deaths) × GJ_per_bbl<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= (1 / deaths_per_barrel) × <span class="hl2">6.1 GJ</span><br><br>
+  <span class="cm">// Tier 1 · Iraq war direct</span><br>
+  E_t1 = (145×10⁹ bbl / 300,000) × 6.1 = <span class="hl">2.944×10⁶ GJ/death</span> = <span class="hl2">817.9 GWh/death</span><br><br>
+  <span class="cm">// Tier 3 · Full indirect attribution</span><br>
+  E_t3 = (1.5×10¹² bbl / 100,000,000) × 6.1 = <span class="hl">91,500 GJ/death</span> = <span class="hl2">25.4 GWh/death</span><br><br>
+  <span class="cm">// The machine's feed rate</span><br>
+  feed_rate = global_production × GJ_per_bbl × deaths_per_bbl<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= <span class="hl3">~6 deaths/hour (Tier 1 war rate, Iraq reserves)</span>
+</div>
+
+<!-- WAR TABLE -->
+<div class="section">
+  <div class="section-head">
+    <div class="section-title">Per-Conflict Energy Accounting</div>
+    <div class="section-note">all tiers · GJ/death · kWh/death · human-power-years · war duration</div>
+  </div>
+  <div style="overflow-x:auto; background:var(--s1); border:1px solid var(--border);">
+    <table class="wtable">
+      <thead>
+        <tr>
+          <th>Conflict</th>
+          <th>Deaths (mid)</th>
+          <th>Reserves (Bbbl)</th>
+          <th>GJ / death</th>
+          <th>kWh / death</th>
+          <th>Human-yrs / death</th>
+          <th>City-days / death</th>
+          <th>Nuke-equiv / death</th>
+        </tr>
+      </thead>
+      <tbody id="war-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- MAIN CHART: GJ/death scatter over time -->
+<div class="section">
+  <div class="section-head">
+    <div class="section-title">GJ Per Death · Over Time</div>
+    <div class="section-note">log₁₀ scale · 95% CI bars · OLS regression · mean line</div>
+  </div>
+  <div class="chart-panel">
+    <canvas id="mainChart" height="400"></canvas>
+  </div>
+</div>
+
+<!-- DUAL CHART: energy scale vs blood price -->
+<div class="row" style="margin-bottom:40px;">
+  <div class="chart-panel col-2">
+    <div class="panel-label">Energy per death by tier — log scale</div>
+    <canvas id="tierEnergyChart" height="240"></canvas>
+  </div>
+  <div class="chart-panel col">
+    <div class="panel-label">Feed rate — deaths per unit energy extracted</div>
+    <canvas id="feedChart" height="240"></canvas>
+  </div>
+</div>
+
+<!-- ANALOGY BLOCK -->
+<div class="section">
+  <div class="section-head">
+    <div class="section-title">What Does One Death Buy?</div>
+    <div class="section-note">Tier 1 · Iraq direct · 2.94M GJ per death</div>
+  </div>
+  <div class="analogy-grid">
+    <div class="analogy-card">
+      <span class="analogy-icon">🏠</span>
+      <div class="analogy-val" id="a-homes">—</div>
+      <div class="analogy-label">US homes<br>powered for 1 year</div>
+    </div>
+    <div class="analogy-card">
+      <span class="analogy-icon">🚗</span>
+      <div class="analogy-val" id="a-cars">—</div>
+      <div class="analogy-label">EVs<br>fully charged</div>
+    </div>
+    <div class="analogy-card">
+      <span class="analogy-icon">⚡</span>
+      <div class="analogy-val" id="a-lifetime">—</div>
+      <div class="analogy-label">human lifetimes<br>of electricity (global avg)</div>
+    </div>
+    <div class="analogy-card">
+      <span class="analogy-icon">🌆</span>
+      <div class="analogy-val" id="a-city">—</div>
+      <div class="analogy-label">days NYC<br>fully powered</div>
+    </div>
+    <div class="analogy-card">
+      <span class="analogy-icon">🛸</span>
+      <div class="analogy-val" id="a-moon">—</div>
+      <div class="analogy-label">moon missions<br>energy equivalent</div>
+    </div>
+    <div class="analogy-card">
+      <span class="analogy-icon">💧</span>
+      <div class="analogy-val" id="a-water">—</div>
+      <div class="analogy-label">tonnes of water<br>boiled from 0°C</div>
+    </div>
+    <div class="analogy-card">
+      <span class="analogy-icon">🔋</span>
+      <div class="analogy-val" id="a-battery">—</div>
+      <div class="analogy-label">Tesla Megapacks<br>fully charged</div>
+    </div>
+    <div class="analogy-card">
+      <span class="analogy-icon">🌍</span>
+      <div class="analogy-val" id="a-global">—</div>
+      <div class="analogy-label">seconds of<br>global energy demand</div>
+    </div>
+  </div>
+</div>
+
+<!-- REGRESSION STATS -->
+<div style="display:grid; grid-template-columns:repeat(5,1fr); gap:2px; margin-bottom:40px;">
+  <div class="panel">
+    <div class="panel-label">OLS Slope β₁ (log GJ/death ~ year)</div>
+    <div class="big-num energy" id="r-slope">—</div>
+    <div class="sub">log-GJ per year trend</div>
+  </div>
+  <div class="panel">
+    <div class="panel-label">Intercept β₀</div>
+    <div class="big-num" id="r-b0">—</div>
+    <div class="sub">at year 1991</div>
+  </div>
+  <div class="panel">
+    <div class="panel-label">R²</div>
+    <div class="big-num gold" id="r-r2">—</div>
+    <div class="sub">variance explained</div>
+  </div>
+  <div class="panel">
+    <div class="panel-label">Mean log₁₀(GJ/death)</div>
+    <div class="big-num green" id="r-mean">—</div>
+    <div class="sub">geometric mean GJ/death</div>
+  </div>
+  <div class="panel">
+    <div class="panel-label">Std Dev (log)</div>
+    <div class="big-num" id="r-std">—</div>
+    <div class="sub">±σ in log space</div>
+  </div>
+</div>
+
+<div class="footnote">
+  [1] 1 barrel crude oil = 6.1 GJ = 1,694 kWh (Oak Ridge / NCSU / ScienceDirect consensus)&nbsp;&nbsp;
+  [2] Global avg electricity consumption: ~3,285 kWh/person/yr (IEA 2023)&nbsp;&nbsp;
+  [3] US home avg: ~10,500 kWh/yr (EIA 2023)&nbsp;&nbsp;
+  [4] Tesla Model 3 battery: 75 kWh&nbsp;&nbsp;
+  [5] NYC energy consumption: ~4,300 GWh/month → ~143 GWh/day&nbsp;&nbsp;
+  [6] Apollo 11 total mission energy: ~400 GJ&nbsp;&nbsp;
+  [7] Tesla Megapack: 3.9 MWh = 0.0039 GWh&nbsp;&nbsp;
+  [8] Global energy demand 2024: ~620 EJ/yr → ~19.65 TJ/sec&nbsp;&nbsp;
+  [9] Boiling water from 0°C: 4.186 kJ/kg × 100K = 418.6 kJ/kg → 1 GJ boils ~2,390 tonnes&nbsp;&nbsp;
+  [10] War deaths and reserve data: Brown Univ. CoW / IBC / Lancet / EIA / OPEC (see v1.0 model)&nbsp;&nbsp;
+  INTERPRETATION: The energy-per-death figure is not the cost of the war. It is the energy the machine extracts per unit of human life it destroys. The higher the number, the more "efficient" the machine is at converting death into power. Iraq is the highest-efficiency war ever fought.
+</div>
+
+<script>
+// ─── CONSTANTS ───────────────────────────────────────────────────────────────
+const GJ_PER_BBL = 6.1;
+const KWH_PER_GJ = 277.78;
+const HUMAN_KWH_YR = 3285;       // global avg kWh/person/yr
+const US_HOME_KWH_YR = 10500;    // US home avg
+const EV_KWH = 75;               // Tesla M3 battery
+const NYC_GWH_DAY = 143;         // GWh/day
+const APOLLO_GJ = 400;           // GJ Apollo 11 mission
+const MEGAPACK_KWH = 3900;       // kWh
+const GLOBAL_TJ_SEC = 19650;     // TJ/sec global demand
+const WATER_KG_PER_GJ = 2390;    // kg water boiled 0→100°C per GJ
+const LITTLE_BOY_TJ = 63;        // TJ
+
+// ─── WAR DATA (same as v1) ───────────────────────────────────────────────────
+const wars = [
+  { name:"Gulf War I",      year:1991, dLo:20000,  dMid:85000,   dHi:200000, res:100  },
+  { name:"Afghanistan",     year:2003, dLo:176000, dMid:241000,  dHi:360000, res:0.1  },
+  { name:"Iraq War II",     year:2005, dLo:186000, dMid:300000,  dHi:654000, res:145  },
+  { name:"Libya",           year:2011, dLo:10000,  dMid:25000,   dHi:50000,  res:48   },
+  { name:"Syria",           year:2014, dLo:300000, dMid:500000,  dHi:600000, res:2.5  },
+  { name:"Yemen",           year:2016, dLo:150000, dMid:377000,  dHi:500000, res:3    },
+  { name:"ISIS/OIR",        year:2015, dLo:40000,  dMid:85000,   dHi:130000, res:50   },
+  { name:"Sudan/S.Sudan",   year:2019, dLo:200000, dMid:400000,  dHi:700000, res:3.5  },
+];
+
+wars.forEach(w => {
+  const bbl = w.res * 1e9;
+  w.gjMid = (bbl / w.dMid) * GJ_PER_BBL;
+  w.gjLo  = (bbl / w.dHi)  * GJ_PER_BBL;   // fewer deaths = more GJ
+  w.gjHi  = (bbl / w.dLo)  * GJ_PER_BBL;
+  w.kwhMid= w.gjMid * KWH_PER_GJ;
+  w.hyrMid= w.kwhMid / (HUMAN_KWH_YR * 1000); // human-years (thousands)
+  w.cityDays = w.gjMid / NYC_GWH_DAY / 1000 * 1000; // days, GJ→GWh
+  w.nukeMid = w.gjMid * 1000 / LITTLE_BOY_TJ; // TJ = GJ*1000 / TJ_per_nuke... wait
+  // gjMid is GJ, Little Boy is 63 TJ = 63,000 GJ
+  w.nukeMid = w.gjMid / 63000;
+});
+
+// ─── TOP PANELS ──────────────────────────────────────────────────────────────
+const iraq = wars.find(w=>w.name==="Iraq War II");
+const gjT1 = iraq.gjMid;
+const kwhT1 = gjT1 * KWH_PER_GJ;
+const hyrT1 = kwhT1 / HUMAN_KWH_YR;
+const nukeT1 = gjT1 / 63000;
+
+function fmtBig(n) {
+  if (n >= 1e12) return (n/1e12).toFixed(2)+'T';
+  if (n >= 1e9)  return (n/1e9).toFixed(2)+'B';
+  if (n >= 1e6)  return (n/1e6).toFixed(2)+'M';
+  if (n >= 1e3)  return (n/1e3).toFixed(1)+'K';
+  return n.toFixed(2);
+}
+
+document.getElementById('gj-t1').textContent  = fmtBig(gjT1)+' GJ';
+document.getElementById('kwh-t1').textContent = fmtBig(kwhT1)+' kWh';
+document.getElementById('hyr-t1').textContent = fmtBig(hyrT1)+' yrs';
+document.getElementById('nuke-t1').textContent = nukeT1.toFixed(2)+'×';
+
+// ─── ANALOGIES ───────────────────────────────────────────────────────────────
+document.getElementById('a-homes').textContent    = fmtBig(kwhT1 / US_HOME_KWH_YR);
+document.getElementById('a-cars').textContent     = fmtBig(kwhT1 / EV_KWH);
+document.getElementById('a-lifetime').textContent = fmtBig(hyrT1);
+document.getElementById('a-city').textContent     = fmtBig(gjT1 / 1000 / NYC_GWH_DAY); // GJ→GWh / GWh/day
+document.getElementById('a-moon').textContent     = fmtBig(gjT1 / APOLLO_GJ);
+document.getElementById('a-water').textContent    = fmtBig(gjT1 * WATER_KG_PER_GJ / 1000)+'K tonnes';
+document.getElementById('a-battery').textContent  = fmtBig(kwhT1 / MEGAPACK_KWH);
+document.getElementById('a-global').textContent   = fmtBig(gjT1 * 1000 / GLOBAL_TJ_SEC)+' sec'; // GJ→TJ
+
+// ─── TABLE ───────────────────────────────────────────────────────────────────
+const tbody = document.getElementById('war-tbody');
+wars.forEach(w => {
+  const fmtGJ = n => {
+    if (n>=1e6) return (n/1e6).toFixed(2)+'M GJ';
+    if (n>=1e3) return (n/1e3).toFixed(1)+'K GJ';
+    return n.toFixed(0)+' GJ';
+  };
+  const fmtKwh = n => {
+    if (n>=1e9) return (n/1e9).toFixed(2)+'B kWh';
+    if (n>=1e6) return (n/1e6).toFixed(2)+'M kWh';
+    if (n>=1e3) return (n/1e3).toFixed(1)+'K kWh';
+    return n.toFixed(0)+' kWh';
+  };
+  const cityD = w.gjMid / 1000 / NYC_GWH_DAY;
+  const nukeEq = w.gjMid / 63000;
+  
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="c-name">${w.name}</td>
+    <td class="c-dim">${(w.dMid/1000).toFixed(0)}K</td>
+    <td class="c-dim">${w.res}B</td>
+    <td class="c-energy">${fmtGJ(w.gjMid)}</td>
+    <td class="c-gold">${fmtKwh(w.kwhMid)}</td>
+    <td class="c-green">${fmtBig(w.kwhMid/HUMAN_KWH_YR)} yrs</td>
+    <td class="c-dim">${cityD >= 1 ? cityD.toFixed(1) : cityD.toFixed(3)} days</td>
+    <td class="c-blood">${nukeEq >= 0.01 ? nukeEq.toFixed(2) : nukeEq.toExponential(2)}×</td>
+  `;
+  tbody.appendChild(tr);
+});
+
+// ─── OLS ─────────────────────────────────────────────────────────────────────
+function ols(xs, ys) {
+  const n = xs.length;
+  const xm = xs.reduce((a,b)=>a+b)/n;
+  const ym = ys.reduce((a,b)=>a+b)/n;
+  let ssxy=0, ssxx=0, ssyy=0;
+  xs.forEach((x,i) => { ssxy+=(x-xm)*(ys[i]-ym); ssxx+=(x-xm)**2; ssyy+=(ys[i]-ym)**2; });
+  const b1 = ssxy/ssxx, b0 = ym-b1*xm;
+  const r2 = ssxy**2/(ssxx*ssyy);
+  const resid = ys.map((y,i)=>y-(b0+b1*xs[i]));
+  const mse = resid.reduce((a,r)=>a+r*r)/(n-2);
+  const se_b1 = Math.sqrt(mse/ssxx);
+  const std = Math.sqrt(ys.reduce((a,y)=>a+(y-ym)**2,0)/(n-1));
+  return {b0, b1, r2, mse, se_b1, xm, ym, std};
+}
+
+const xs = wars.map(w=>w.year);
+const ysLog = wars.map(w=>Math.log10(w.gjMid));
+const reg = ols(xs, ysLog);
+
+document.getElementById('r-slope').textContent = (reg.b1>0?'+':'')+reg.b1.toFixed(4);
+document.getElementById('r-b0').textContent = reg.b0.toFixed(2);
+document.getElementById('r-r2').textContent = reg.r2.toFixed(3);
+document.getElementById('r-mean').textContent = reg.ym.toFixed(2);
+document.getElementById('r-std').textContent = '±'+reg.std.toFixed(2);
+
+// ─── MAIN SCATTER CHART ──────────────────────────────────────────────────────
+function drawMain() {
+  const canvas = document.getElementById('mainChart');
+  const W = canvas.offsetWidth;
+  const H = 400;
+  canvas.width = W; canvas.height = H;
+  const c = canvas.getContext('2d');
+
+  const pad = {top:30, right:50, bottom:50, left:90};
+  const pw = W-pad.left-pad.right, ph = H-pad.top-pad.bottom;
+  const minX=1988, maxX=2022;
+  // y: log10(GJ/death)
+  const logVals = wars.map(w=>Math.log10(w.gjMid));
+  const allLogs = wars.flatMap(w=>[Math.log10(w.gjLo), Math.log10(w.gjHi)]);
+  const minY = Math.floor(Math.min(...allLogs))-0.5;
+  const maxY = Math.ceil(Math.max(...allLogs))+0.5;
+
+  const cx = x => pad.left+(x-minX)/(maxX-minX)*pw;
+  const cy = y => pad.top+(1-(y-minY)/(maxY-minY))*ph;
+
+  c.clearRect(0,0,W,H);
+
+  // Grid
+  for (let y=Math.ceil(minY); y<=maxY; y++) {
+    c.beginPath(); c.moveTo(pad.left,cy(y)); c.lineTo(W-pad.right,cy(y));
+    c.strokeStyle='rgba(0,200,255,0.05)'; c.lineWidth=1; c.stroke();
+    c.fillStyle='#2a3340'; c.font='9px Share Tech Mono,monospace'; c.textAlign='right';
+    // label: 10^y GJ
+    const exp = y;
+    c.fillText('10^'+exp+' GJ', pad.left-6, cy(y)+3);
+  }
+  for (let x=1990; x<=2022; x+=4) {
+    c.beginPath(); c.moveTo(cx(x),pad.top); c.lineTo(cx(x),H-pad.bottom);
+    c.strokeStyle='rgba(0,200,255,0.04)'; c.lineWidth=1; c.stroke();
+    c.fillStyle='#2a3340'; c.font='9px Share Tech Mono,monospace'; c.textAlign='center';
+    c.fillText(x, cx(x), H-pad.bottom+16);
+  }
+
+  // Axis label
+  c.fillStyle='#2a3340'; c.font='9px Share Tech Mono,monospace';
+  c.save(); c.translate(14,H/2); c.rotate(-Math.PI/2);
+  c.textAlign='center'; c.fillText('GJ / DEATH  (log₁₀)', 0, 0); c.restore();
+
+  // CI band
+  const n=wars.length, xm=reg.xm, mse=reg.mse, ssxx=xs.reduce((a,x)=>a+(x-xm)**2,0);
+  const bandPts=[];
+  for (let i=0;i<=80;i++) {
+    const x=minX+(maxX-minX)*i/80;
+    const yhat=reg.b0+reg.b1*x;
+    const se=Math.sqrt(mse*(1/n+(x-xm)**2/ssxx));
+    bandPts.push({x,hi:yhat+1.96*se,lo:yhat-1.96*se});
+  }
+  c.beginPath();
+  c.moveTo(cx(bandPts[0].x),cy(bandPts[0].hi));
+  bandPts.forEach(p=>c.lineTo(cx(p.x),cy(p.hi)));
+  for (let i=bandPts.length-1;i>=0;i--) c.lineTo(cx(bandPts[i].x),cy(bandPts[i].lo));
+  c.closePath();
+  c.fillStyle='rgba(0,200,255,0.05)'; c.fill();
+
+  // Regression line
+  c.beginPath();
+  c.moveTo(cx(minX), cy(reg.b0+reg.b1*minX));
+  c.lineTo(cx(maxX), cy(reg.b0+reg.b1*maxX));
+  c.strokeStyle='rgba(0,200,255,0.5)'; c.lineWidth=1.5;
+  c.setLineDash([4,3]); c.stroke(); c.setLineDash([]);
+
+  // Mean line
+  c.beginPath();
+  c.moveTo(pad.left,cy(reg.ym)); c.lineTo(W-pad.right,cy(reg.ym));
+  c.strokeStyle='rgba(240,192,64,0.25)'; c.lineWidth=1;
+  c.setLineDash([2,5]); c.stroke(); c.setLineDash([]);
+  c.fillStyle='rgba(240,192,64,0.5)'; c.font='8px Share Tech Mono,monospace';
+  c.textAlign='left';
+  c.fillText('μ = 10^'+reg.ym.toFixed(2)+' GJ/death', W-pad.right-140, cy(reg.ym)-5);
+
+  // Data points
+  wars.forEach(w => {
+    const x=cx(w.year), yM=cy(Math.log10(w.gjMid));
+    const yLo=cy(Math.log10(w.gjHi)), yHi=cy(Math.log10(w.gjLo));
+
+    // CI bar
+    c.beginPath(); c.moveTo(x,yLo); c.lineTo(x,yHi);
+    c.strokeStyle='rgba(0,200,255,0.25)'; c.lineWidth=1; c.stroke();
+    c.beginPath();
+    c.moveTo(x-4,yLo); c.lineTo(x+4,yLo);
+    c.moveTo(x-4,yHi); c.lineTo(x+4,yHi);
+    c.strokeStyle='rgba(0,200,255,0.3)'; c.stroke();
+
+    // Dot
+    c.beginPath(); c.arc(x,yM,5,0,Math.PI*2);
+    c.fillStyle='#00c8ff'; c.fill();
+    c.strokeStyle='#06080a'; c.lineWidth=1.5; c.stroke();
+
+    // Label
+    c.fillStyle='#4a5a6a'; c.font='8px Share Tech Mono,monospace'; c.textAlign='center';
+    c.fillText(w.name.split(' ')[0], x, yM-11);
+  });
+}
+
+// ─── TIER ENERGY CHART ───────────────────────────────────────────────────────
+function drawTierEnergy() {
+  const canvas = document.getElementById('tierEnergyChart');
+  const W = canvas.offsetWidth;
+  const H = 240;
+  canvas.width=W; canvas.height=H;
+  const c = canvas.getContext('2d');
+
+  const tiers = [
+    { label:'Tier 2 · Labor only',      gjDeath: 2.53e-8 / GJ_PER_BBL * 1e9 * GJ_PER_BBL, color:'#2a6040' },
+    // labor: 1189 deaths / 47B bbl = 2.53e-8 D/bbl → GJ/D = 6.1/2.53e-8
+    { label:'Tier 3 · Full indirect',   gjDeath: 6.1/6.67e-5,                              color:'#cc2200' },
+    { label:'Tier 1 · War direct (avg)',gjDeath: 6.1 / (wars.filter(w=>w.res>5).reduce((a,w)=>a+(w.dMid/(w.res*1e9)),0)/wars.filter(w=>w.res>5).length), color:'#e87830' },
+    { label:'Iraq War II (peak)',        gjDeath: iraq.gjMid,                               color:'#00c8ff' },
+  ];
+
+  // fix tier 2
+  tiers[0].gjDeath = GJ_PER_BBL / 2.53e-8;
+
+  const logVals = tiers.map(t=>Math.log10(t.gjDeath));
+  const minL = Math.min(...logVals)-1;
+  const maxL = Math.max(...logVals)+1;
+
+  const pad={top:16,right:20,bottom:30,left:200};
+  const pw=W-pad.left-pad.right;
+  const rowH=(H-pad.top-pad.bottom)/tiers.length;
+  c.clearRect(0,0,W,H);
+
+  // axis ticks
+  for (let v=Math.ceil(minL); v<=maxL; v++) {
+    const x=pad.left+(v-minL)/(maxL-minL)*pw;
+    c.beginPath(); c.moveTo(x,pad.top); c.lineTo(x,H-pad.bottom);
+    c.strokeStyle='rgba(0,200,255,0.04)'; c.lineWidth=1; c.stroke();
+    c.fillStyle='#2a3340'; c.font='8px Share Tech Mono,monospace'; c.textAlign='center';
+    c.fillText('10^'+v+' GJ', x, H-pad.bottom+14);
+  }
+
+  tiers.forEach((t,i) => {
+    const y=pad.top+rowH*(i+0.5);
+    const lv=Math.log10(t.gjDeath);
+    const bx=pad.left+(lv-minL)/(maxL-minL)*pw;
+
+    c.fillStyle=t.color+'22';
+    c.fillRect(pad.left, y-10, bx-pad.left, 20);
+
+    c.beginPath(); c.arc(bx,y,5,0,Math.PI*2);
+    c.fillStyle=t.color; c.fill();
+
+    c.fillStyle='#4a5a6a'; c.font='8px Share Tech Mono,monospace'; c.textAlign='right';
+    c.fillText(t.label, pad.left-8, y+3);
+
+    c.fillStyle=t.color; c.textAlign='left';
+    const v=t.gjDeath>=1e9?(t.gjDeath/1e9).toFixed(1)+'B GJ':
+             t.gjDeath>=1e6?(t.gjDeath/1e6).toFixed(1)+'M GJ':
+             t.gjDeath>=1e3?(t.gjDeath/1e3).toFixed(0)+'K GJ':
+             t.gjDeath.toFixed(0)+' GJ';
+    c.fillText(v, bx+10, y+3);
+  });
+}
+
+// ─── FEED RATE CHART ─────────────────────────────────────────────────────────
+function drawFeed() {
+  const canvas = document.getElementById('feedChart');
+  const W = canvas.offsetWidth;
+  const H = 240;
+  canvas.width=W; canvas.height=H;
+  const c = canvas.getContext('2d');
+
+  // For each war: deaths per exajoule (EJ = 1e18 J = 1e9 GJ)
+  // deaths_per_EJ = deaths / (reserves_bbl * GJ_per_bbl / 1e9)
+  const items = wars.map(w => ({
+    name: w.name.split(' ')[0],
+    year: w.year,
+    dPerEJ: w.dMid / (w.res * 1e9 * GJ_PER_BBL / 1e9)
+  })).sort((a,b)=>b.dPerEJ-a.dPerEJ);
+
+  const pad={top:20,right:20,bottom:20,left:90};
+  const pw=W-pad.left-pad.right;
+  const rowH=(H-pad.top-pad.bottom)/items.length;
+
+  c.clearRect(0,0,W,H);
+
+  const maxDpEJ = Math.max(...items.map(i=>i.dPerEJ));
+
+  items.forEach((item,i) => {
+    const y=pad.top+rowH*(i+0.5);
+    const bw=item.dPerEJ/maxDpEJ*pw;
+    const intensity=item.dPerEJ/maxDpEJ;
+    const r=Math.round(204*intensity);
+    const g=Math.round(34*intensity);
+    const bl=Math.round(0);
+    const col=`rgb(${r},${g},${bl})`;
+
+    c.fillStyle=col+'33';
+    c.fillRect(pad.left,y-8,bw,16);
+    c.fillStyle=col;
+    c.fillRect(pad.left,y-8,Math.min(bw,3),16);
+
+    c.fillStyle='#4a5a6a'; c.font='8px Share Tech Mono,monospace'; c.textAlign='right';
+    c.fillText(item.name, pad.left-6, y+3);
+
+    const val=item.dPerEJ>=1000?(item.dPerEJ/1000).toFixed(1)+'K':item.dPerEJ.toFixed(0);
+    c.fillStyle=col; c.textAlign='left';
+    c.fillText(val+' D/EJ', pad.left+bw+6, y+3);
+  });
+
+  c.fillStyle='#2a3340'; c.font='8px Share Tech Mono,monospace'; c.textAlign='center';
+  c.fillText('← fewer deaths per EJ   —   more deaths per EJ →', W/2, H-4);
+}
+
+function init() {
+  drawMain();
+  drawTierEnergy();
+  drawFeed();
+}
+
+window.addEventListener('resize', init);
+window.addEventListener('load', init);
+setTimeout(init, 100);
+window.redrawCharts = init;
+</script>
+<script src="theme.js"></script>
+</body>
+</html>
