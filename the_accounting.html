@@ -947,6 +947,104 @@ window.redrawCharts = init;
   els.forEach(function(el){ obs.observe(el); });
 })();
 </script>
+<!-- ═══════ FLOATING BLOOD CALCULATOR ═══════ -->
+<div id="fab" style="
+  position:fixed; bottom:20px; right:20px; z-index:800;
+  width:44px; height:44px;
+  background:var(--red-dark); color:var(--bone);
+  border:none; cursor:pointer;
+  font-family:var(--font-stamp); font-size:18px;
+  display:flex; align-items:center; justify-content:center;
+  transition:all 0.3s ease;
+  box-shadow:0 4px 20px rgba(0,0,0,0.4);
+" onclick="toggleCalc()" title="Blood Calculator">
+  💉
+</div>
+
+<div id="calc-panel" style="
+  position:fixed; bottom:76px; right:20px; z-index:800;
+  width:300px;
+  background:var(--card); border:1px solid var(--red-dark);
+  padding:20px;
+  transform:translateY(10px); opacity:0; pointer-events:none;
+  transition:all 0.3s ease;
+  box-shadow:0 10px 40px rgba(0,0,0,0.5);
+  display:none;
+">
+  <div style="font-family:var(--font-type);font-size:10px;color:var(--smoke);margin-bottom:12px;letter-spacing:0.1em;">BLOOD CALCULATOR</div>
+  <div style="display:flex;align-items:center;gap:4px;margin-bottom:12px;">
+    <span style="font-family:var(--font-stamp);font-size:20px;color:var(--smoke);">$</span>
+    <input id="fc-in" type="text" inputmode="numeric" autocomplete="off" placeholder="0" style="
+      font-family:var(--font-stamp); font-size:20px; color:var(--bone);
+      background:transparent; border:none; border-bottom:2px solid var(--red-dark);
+      outline:none; width:100%; caret-color:var(--red);
+    ">
+  </div>
+  <div id="fc-out" style="font-family:var(--font-stamp);font-size:16px;color:var(--red-bright);min-height:24px;"></div>
+  <div id="fc-ctx" style="font-family:var(--font-hand);font-size:14px;color:var(--red);opacity:0.7;margin-top:6px;min-height:20px;"></div>
+</div>
+
+<script>
+var calcOpen = false;
+function toggleCalc() {
+  calcOpen = !calcOpen;
+  var p = document.getElementById('calc-panel');
+  if (calcOpen) {
+    p.style.display = 'block';
+    setTimeout(function(){ p.style.opacity='1'; p.style.transform='translateY(0)'; p.style.pointerEvents='auto'; }, 10);
+  } else {
+    p.style.opacity='0'; p.style.transform='translateY(10px)'; p.style.pointerEvents='none';
+    setTimeout(function(){ p.style.display='none'; }, 300);
+  }
+}
+
+(function(){
+  var BU = 2242623;
+  var inp = document.getElementById('fc-in');
+  var out = document.getElementById('fc-out');
+  var ctx = document.getElementById('fc-ctx');
+  function fB(l){
+    if(l>=1e6) return (l/1e6).toFixed(2)+' million litres';
+    if(l>=1000) return (l/1000).toFixed(1)+'K litres';
+    if(l>=1) return l.toFixed(3)+' litres';
+    if(l>=0.001) return (l*1000).toFixed(2)+' mL';
+    if(l>=1e-6) return (l*1e6).toFixed(2)+' µL';
+    return (l*1e9).toFixed(1)+' nL';
+  }
+  function gC(l){
+    if(l>=5) return 'One person. All of them.';
+    if(l>=0.45) return 'A blood donation bag.';
+    if(l>=0.005) return 'A teaspoon.';
+    if(l>=0.00005) return 'One drop.';
+    return 'Trace amounts. Still real.';
+  }
+  inp.addEventListener('input',function(){
+    var v=parseFloat(this.value.replace(/[^0-9.]/g,''));
+    if(!v){out.textContent='';ctx.textContent='';return;}
+    var l=v/BU; out.textContent=fB(l); ctx.textContent=gC(l);
+  });
+})();
+
+/* ═══════ ERA CLICK HIGHLIGHT ═══════ */
+(function(){
+  var rows = document.querySelectorAll('#tbl tbody tr');
+  rows.forEach(function(r){
+    r.style.cursor='pointer';
+    r.addEventListener('click',function(){
+      rows.forEach(function(rr){ rr.style.opacity=''; rr.style.background=''; });
+      if(r.dataset.active==='1'){ r.dataset.active=''; return; }
+      rows.forEach(function(rr){ rr.style.opacity='0.3'; rr.dataset.active=''; });
+      r.style.opacity='1'; r.style.background='var(--surface)'; r.dataset.active='1';
+    });
+  });
+  // click outside table to reset
+  document.addEventListener('click',function(e){
+    if(!e.target.closest('#tbl')){
+      rows.forEach(function(rr){ rr.style.opacity=''; rr.style.background=''; rr.dataset.active=''; });
+    }
+  });
+})();
+</script>
 <script src="theme.js"></script>
 </body>
 </html>

@@ -4,1034 +4,1014 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Price of Blood</title>
-<meta name="description" content="A quantitative accounting of the human cost of energy, empire, and economy. Six eras. 237 million deaths. 1.19 billion liters of blood.">
+<meta name="description" content="Your blood is worth $11.2 million. The system pays you $60,000. The math checks out.">
 <link rel="stylesheet" href="shared.css">
 <style>
 /* ══════════════════════════════════════════════
-   INDEX — THE RECEPTION DESK
-   "Welcome to the Bureau. Please take a number."
+   APPRAISAL — Burton × Bloomberg
+   Haunted accountant with a terminal
 ══════════════════════════════════════════════ */
 
-#theme-toggle { display: none; }
+#theme-toggle { display:none; }
 
-/* ── INTRO: The Receipt ─────────────────────── */
-#intro {
-  position: fixed;
-  inset: 0;
-  z-index: 9000;
-  background: var(--bg);
-  cursor: pointer;
-  user-select: none;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+body { overflow-x:hidden; }
+
+/* ── BOOT (typewriter on parchment) ──────────── */
+#boot {
+  position:fixed; inset:0; z-index:9000;
+  background:var(--bg);
+  background-image:var(--stripe);
+  display:flex; align-items:center; justify-content:center;
+  flex-direction:column; gap:4px;
+  transition:opacity 0.6s ease;
 }
 
-/* Burton-esque diagonal stripes behind everything */
-#intro::before {
-  content: '';
-  position: absolute;
-  inset: -50%;
-  background: repeating-linear-gradient(
-    -45deg,
-    transparent,
-    transparent 18px,
-    rgba(160,24,24,0.015) 18px,
-    rgba(160,24,24,0.015) 19px
-  );
-  pointer-events: none;
-  animation: stripeScroll 60s linear infinite;
+.boot-line {
+  font-family:var(--font-type);
+  font-size:11px;
+  color:var(--ash);
+  opacity:0;
+  transition:opacity 0.2s ease;
 }
 
-@keyframes stripeScroll {
-  from { transform: translate(0, 0); }
-  to   { transform: translate(40px, 40px); }
-}
+.boot-line.accent { color:var(--red); }
 
-/* The "receipt" */
-.receipt {
-  position: relative;
-  width: min(440px, 90vw);
-  background: var(--card);
-  border: 1px solid var(--border);
-  padding: 0;
-  z-index: 1;
-  box-shadow: var(--shadow-float);
-  animation: fadeUp 0.8s var(--ease-out) both;
-}
+/* ── MAIN APP ────────────────────────────────── */
+#app { display:none; }
 
-/* Torn receipt top edge */
-.receipt::before {
-  content: '';
-  position: absolute;
-  top: -6px;
-  left: 0;
-  right: 0;
-  height: 6px;
-  background: var(--card);
-  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,6 Q2.5,0 5,6 Q7.5,0 10,6 Q12.5,0 15,6 Q17.5,0 20,6 Q22.5,0 25,6 Q27.5,0 30,6 Q32.5,0 35,6 Q37.5,0 40,6 Q42.5,0 45,6 Q47.5,0 50,6 Q52.5,0 55,6 Q57.5,0 60,6 Q62.5,0 65,6 Q67.5,0 70,6 Q72.5,0 75,6 Q77.5,0 80,6 Q82.5,0 85,6 Q87.5,0 90,6 Q92.5,0 95,6 Q97.5,0 100,6' fill='white'/%3E%3C/svg%3E");
-  mask-size: 100% 100%;
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,6 Q2.5,0 5,6 Q7.5,0 10,6 Q12.5,0 15,6 Q17.5,0 20,6 Q22.5,0 25,6 Q27.5,0 30,6 Q32.5,0 35,6 Q37.5,0 40,6 Q42.5,0 45,6 Q47.5,0 50,6 Q52.5,0 55,6 Q57.5,0 60,6 Q62.5,0 65,6 Q67.5,0 70,6 Q72.5,0 75,6 Q77.5,0 80,6 Q82.5,0 85,6 Q87.5,0 90,6 Q92.5,0 95,6 Q97.5,0 100,6' fill='white'/%3E%3C/svg%3E");
-  -webkit-mask-size: 100% 100%;
-}
-
-/* Same torn edge bottom */
-.receipt::after {
-  content: '';
-  position: absolute;
-  bottom: -6px;
-  left: 0;
-  right: 0;
-  height: 6px;
-  background: var(--card);
-  transform: scaleY(-1);
-  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,6 Q2.5,0 5,6 Q7.5,0 10,6 Q12.5,0 15,6 Q17.5,0 20,6 Q22.5,0 25,6 Q27.5,0 30,6 Q32.5,0 35,6 Q37.5,0 40,6 Q42.5,0 45,6 Q47.5,0 50,6 Q52.5,0 55,6 Q57.5,0 60,6 Q62.5,0 65,6 Q67.5,0 70,6 Q72.5,0 75,6 Q77.5,0 80,6 Q82.5,0 85,6 Q87.5,0 90,6 Q92.5,0 95,6 Q97.5,0 100,6' fill='white'/%3E%3C/svg%3E");
-  mask-size: 100% 100%;
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,6 Q2.5,0 5,6 Q7.5,0 10,6 Q12.5,0 15,6 Q17.5,0 20,6 Q22.5,0 25,6 Q27.5,0 30,6 Q32.5,0 35,6 Q37.5,0 40,6 Q42.5,0 45,6 Q47.5,0 50,6 Q52.5,0 55,6 Q57.5,0 60,6 Q62.5,0 65,6 Q67.5,0 70,6 Q72.5,0 75,6 Q77.5,0 80,6 Q82.5,0 85,6 Q87.5,0 90,6 Q92.5,0 95,6 Q97.5,0 100,6' fill='white'/%3E%3C/svg%3E");
-  -webkit-mask-size: 100% 100%;
-}
-
-.receipt-header {
-  text-align: center;
-  padding: 32px 28px 20px;
-  border-bottom: 1px dashed var(--border);
-}
-
-.receipt-logo {
-  font-family: var(--font-stamp);
-  font-size: 11px;
-  letter-spacing: 0.25em;
-  color: var(--ash);
-  text-transform: uppercase;
-  margin-bottom: 16px;
-}
-
-.receipt-title {
-  font-family: var(--font-stamp);
-  font-size: 36px;
-  color: var(--red);
-  letter-spacing: 0.06em;
-  line-height: 1;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-}
-
-.receipt-title-sub {
-  font-family: var(--font-stamp);
-  font-size: 28px;
-  color: var(--bone);
-  letter-spacing: 0.06em;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-.receipt-date {
-  font-family: var(--font-type);
-  font-size: 10px;
-  color: var(--smoke);
-  margin-top: 12px;
-}
-
-.receipt-body {
-  padding: 20px 28px;
-}
-
-.receipt-line {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  padding: 8px 0;
-  border-bottom: 1px dotted var(--border);
-  font-family: var(--font-type);
-  font-size: 12px;
-  transition: background 0.15s ease;
-}
-
-.receipt-line:hover {
-  background: var(--surface);
-  padding-left: 4px;
-  padding-right: 4px;
-  margin-left: -4px;
-  margin-right: -4px;
-}
-
-.receipt-line:last-child {
-  border-bottom: none;
-}
-
-.receipt-label {
-  color: var(--ash);
-}
-
-.receipt-val {
-  font-family: var(--font-mono);
-  font-weight: 700;
-}
-
-.receipt-val.red { color: var(--red-bright); }
-.receipt-val.bile { color: var(--bile); }
-
-.receipt-total {
-  border-top: 2px solid var(--border);
-  margin-top: 8px;
-  padding-top: 12px;
-}
-
-.receipt-total .receipt-label {
-  color: var(--bone);
-  font-weight: 700;
-  font-size: 13px;
-}
-
-.receipt-total .receipt-val {
-  color: var(--red-vivid);
-  font-size: 15px;
-}
-
-/* The stamp that appears */
-.receipt-stamp {
-  position: absolute;
-  top: 40%;
-  right: 20px;
-  font-family: var(--font-stamp);
-  font-size: 14px;
-  letter-spacing: 0.15em;
-  color: var(--red);
-  border: 3px solid var(--red);
-  padding: 4px 12px;
-  transform: rotate(-12deg);
-  opacity: 0;
-  animation: stampIn 0.5s 1.2s var(--ease-out) both;
-}
-
-.receipt-footer {
-  text-align: center;
-  padding: 16px 28px 28px;
-  border-top: 1px dashed var(--border);
-}
-
-.receipt-msg {
-  font-family: var(--font-hand);
-  font-size: 18px;
-  color: var(--red);
-  margin-bottom: 16px;
-  animation: flicker 4s infinite;
-}
-
-.receipt-enter {
-  font-family: var(--font-stamp);
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--bone);
-  background: var(--red-dark);
-  border: none;
-  padding: 12px 36px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: inline-block;
-}
-
-.receipt-enter:hover {
-  background: var(--red);
-  box-shadow: var(--glow-red);
-  transform: scale(1.02);
-}
-
-.receipt-barcode {
-  margin-top: 16px;
-  font-family: var(--font-mono);
-  font-size: 7px;
-  letter-spacing: 0.3em;
-  color: var(--shadow);
-}
-
-/* Corner decorations */
-.intro-corner {
-  position: absolute;
-  font-family: var(--font-stamp);
-  font-size: 200px;
-  color: var(--red-deep);
-  opacity: 0.15;
-  line-height: 1;
-  pointer-events: none;
-}
-
-.intro-corner.tl { top: -30px; left: -20px; }
-.intro-corner.br { bottom: -30px; right: -20px; transform: rotate(180deg); }
-
-/* Click instruction */
-.intro-hint {
-  position: absolute;
-  bottom: 28px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: var(--font-type);
-  font-size: 10px;
-  color: var(--shadow);
-  letter-spacing: 0.15em;
-  animation: blink 2s ease-in-out infinite;
-}
-
-/* ══════════════════════════════════════════════
-   MAIN SITE
-══════════════════════════════════════════════ */
-#main {
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-
-#main.vis { opacity: 1; }
-
-/* ── Top Bar ─────────────────────────────────── */
+/* ── TOP BAR (Burton style) ──────────────────── */
 .topbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 800;
-  height: 50px;
-  background: var(--bg);
-  border-bottom: 2px solid var(--red-dark);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-}
-
-[data-theme="light"] .topbar {
-  border-bottom-color: var(--red);
+  position:fixed; top:0; left:0; right:0; z-index:800;
+  height:48px;
+  background:var(--bg);
+  border-bottom:2px solid var(--red-dark);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 24px;
 }
 
 .topbar-brand {
-  font-family: var(--font-stamp);
-  font-size: 14px;
-  letter-spacing: 0.1em;
-  color: var(--bone);
-  text-decoration: none;
-  text-transform: uppercase;
+  font-family:var(--font-stamp);
+  font-size:12px;
+  letter-spacing:0.08em;
+  color:var(--bone);
+  text-transform:uppercase;
+  text-decoration:none;
 }
 
-.topbar-brand .r { color: var(--red); }
+.topbar-brand .r { color:var(--red); }
 
-.topbar-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+.topbar-right { display:flex; gap:8px; align-items:center; }
 
 .topbar-link {
-  font-family: var(--font-type);
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  color: var(--ash);
-  text-decoration: none;
-  padding: 4px 10px;
-  border: 1px solid transparent;
-  transition: all 0.2s ease;
+  font-family:var(--font-type);
+  font-size:9px;
+  color:var(--ash);
+  text-decoration:none;
+  padding:4px 10px;
+  border:1px dashed var(--border);
+  transition:all 0.2s;
 }
-
-.topbar-link:hover {
-  color: var(--bone);
-  border-color: var(--border);
-}
+.topbar-link:hover { color:var(--red); border-color:var(--red-dark); border-style:solid; }
 
 .topbar-theme {
-  width: 32px;
-  height: 32px;
-  border: 1px solid var(--red-dark);
-  background: transparent;
-  color: var(--red);
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  font-family: sans-serif;
-  line-height: 1;
-  padding: 0;
+  width:30px; height:30px;
+  border:1px solid var(--red-dark);
+  background:transparent;
+  color:var(--red);
+  font-size:13px;
+  cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:all 0.3s;
+  font-family:sans-serif; line-height:1; padding:0;
+}
+.topbar-theme:hover { background:var(--red-dark); color:var(--bone); transform:rotate(180deg); }
+
+/* ── PROMPT ──────────────────────────────────── */
+#prompt-phase {
+  min-height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  padding:48px 24px 24px;
 }
 
-.topbar-theme:hover {
-  background: var(--red-dark);
-  color: var(--bone);
-  transform: rotate(180deg);
+.prompt-card {
+  width:min(520px, 92vw);
+  background:var(--card);
+  border:1px solid var(--border);
+  position:relative;
+  overflow:hidden;
 }
 
-/* ── Page Container ──────────────────────────── */
-.page {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 32px 80px;
-  padding-top: calc(50px + 80px);
+/* blood drip on top */
+.prompt-card::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0;
+  height:3px;
+  background:linear-gradient(90deg, transparent, var(--red), var(--red-dark), transparent);
 }
 
-/* ── HERO — Bureau front desk ────────────────── */
-.hero {
-  text-align: center;
-  margin-bottom: 64px;
-  position: relative;
-  padding-bottom: 80px;
+.prompt-head {
+  padding:28px 28px 16px;
+  border-bottom:1px dashed var(--border);
+  text-align:center;
 }
 
-/* Dripping red line under hero */
-.hero::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg,
-    transparent 0%,
-    var(--red-dark) 15%,
-    var(--red) 50%,
-    var(--red-dark) 85%,
-    transparent 100%
-  );
+.prompt-bureau {
+  font-family:var(--font-stamp);
+  font-size:8px;
+  letter-spacing:0.3em;
+  text-transform:uppercase;
+  color:var(--ash);
+  margin-bottom:12px;
 }
 
-.hero-bureau {
-  font-family: var(--font-type);
-  font-size: 10px;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--smoke);
-  margin-bottom: 24px;
-  animation: fadeIn 1s both;
+.prompt-title {
+  font-family:var(--font-book);
+  font-size:32px;
+  font-style:italic;
+  font-weight:400;
+  color:var(--bone);
+  line-height:1;
 }
 
-.hero-h1 {
-  font-family: var(--font-stamp);
-  font-size: clamp(60px, 12vw, 120px);
-  line-height: 0.9;
-  letter-spacing: 0.04em;
-  color: var(--bone);
-  text-transform: uppercase;
-  margin-bottom: 8px;
-  animation: fadeUp 0.7s 0.15s var(--ease-out) both;
+.prompt-title em {
+  font-style:normal;
+  color:var(--red);
 }
 
-.hero-h1 .red {
-  color: var(--red);
-  text-shadow: 0 0 40px rgba(160,24,24,0.4);
-  position: relative;
+.prompt-body {
+  padding:24px 28px;
 }
 
-/* Heartbeat on the word PRICE */
-.hero-h1 .red {
-  animation: heartbeat 2s ease-in-out infinite;
-  display: inline-block;
+.prompt-q {
+  font-family:var(--font-type);
+  font-size:12px;
+  color:var(--ash);
+  margin-bottom:16px;
 }
 
-.hero-sub {
-  font-family: var(--font-book);
-  font-style: italic;
-  font-size: clamp(14px, 2.5vw, 20px);
-  color: var(--ash);
-  max-width: 560px;
-  margin: 28px auto 0;
-  line-height: 1.7;
-  animation: fadeUp 0.7s 0.3s var(--ease-out) both;
+.prompt-q .blink {
+  display:inline-block;
+  width:7px; height:14px;
+  background:var(--red);
+  vertical-align:text-bottom;
+  margin-left:3px;
+  animation:blink 1s step-end infinite;
 }
 
-.hero-sub em {
-  color: var(--red);
-  font-style: normal;
-  font-weight: 700;
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+
+.prompt-input-row {
+  display:flex; align-items:center; gap:4px;
+  margin-bottom:20px;
 }
 
-/* ── Stat Counters ───────────────────────────── */
-.counters {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  margin-top: 48px;
-  animation: fadeUp 0.7s 0.5s var(--ease-out) both;
+.prompt-sign {
+  font-family:var(--font-stamp);
+  font-size:32px;
+  color:var(--smoke);
 }
 
-.counter {
-  background: var(--card);
-  padding: 24px 20px;
-  text-align: center;
-  cursor: default;
-  transition: all 0.2s ease;
-  position: relative;
-  overflow: hidden;
+.prompt-input {
+  font-family:var(--font-stamp);
+  font-size:32px;
+  color:var(--bone);
+  background:transparent;
+  border:none; outline:none;
+  border-bottom:2px solid var(--border);
+  width:100%;
+  padding:6px 0;
+  caret-color:var(--red);
+  transition:border-color 0.2s;
 }
 
-.counter::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 0;
-  background: var(--red-deep);
-  transition: height 0.4s var(--ease-out);
-  z-index: 0;
+.prompt-input:focus { border-color:var(--red-dark); }
+.prompt-input::placeholder { color:var(--shadow); font-weight:400; }
+
+.prompt-hint {
+  font-family:var(--font-type);
+  font-size:9px;
+  color:var(--shadow);
+  margin-bottom:20px;
+  line-height:1.8;
 }
 
-.counter:hover::before {
-  height: 100%;
+.prompt-actions {
+  display:flex; align-items:center; gap:12px;
 }
 
-.counter-num {
-  font-family: var(--font-stamp);
-  font-size: 32px;
-  line-height: 1;
-  margin-bottom: 8px;
-  position: relative;
-  z-index: 1;
+.prompt-go {
+  font-family:var(--font-stamp);
+  font-size:10px;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:var(--bone);
+  background:var(--red-dark);
+  border:none;
+  padding:12px 28px;
+  cursor:pointer;
+  transition:all 0.2s;
+}
+.prompt-go:hover { background:var(--red); box-shadow:var(--glow-red); }
+
+.prompt-skip {
+  font-family:var(--font-type);
+  font-size:9px;
+  color:var(--shadow);
+  background:none; border:none;
+  cursor:pointer;
+  text-decoration:underline;
+  text-decoration-style:dashed;
+  transition:color 0.2s;
+}
+.prompt-skip:hover { color:var(--ash); }
+
+.prompt-stamp {
+  position:absolute;
+  top:50%; right:16px;
+  transform:translateY(-50%) rotate(-12deg);
+  font-family:var(--font-stamp);
+  font-size:11px;
+  letter-spacing:0.12em;
+  color:var(--red);
+  border:2px solid var(--red);
+  padding:3px 10px;
+  opacity:0.15;
+  pointer-events:none;
 }
 
-.counter-num.red { color: var(--red-bright); }
-.counter-num.rust { color: var(--rust); }
-.counter-num.teal { color: var(--teal); }
+/* ── RESULTS ─────────────────────────────────── */
+#result-phase { display:none; padding:64px 24px 40px; max-width:1100px; margin:0 auto; }
 
-.counter-label {
-  font-family: var(--font-type);
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  color: var(--smoke);
-  text-transform: uppercase;
-  position: relative;
-  z-index: 1;
+/* Split ledger */
+.ledger {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1px;
+  background:var(--border);
+  border:1px solid var(--border);
+  margin-bottom:16px;
 }
 
-/* ══════════════════════════════════════════════
-   DOCUMENT CARDS — The Filing Cabinet
-══════════════════════════════════════════════ */
-.filing-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 32px;
+.ledger-side {
+  background:var(--card);
+  background-image:var(--stripe);
+  padding:24px 22px 18px;
 }
 
-.filing-label-text {
-  font-family: var(--font-stamp);
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--ash);
+.ledger-label {
+  font-family:var(--font-stamp);
+  font-size:8px;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:16px;
 }
 
-.filing-label-line {
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-  min-width: 40px;
+.ledger-label.you { color:var(--teal); }
+.ledger-label.blood { color:var(--red); }
+
+.lrow {
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  padding:7px 0;
+  border-bottom:1px dotted var(--border);
+  transition:background 0.15s, padding-left 0.15s;
 }
 
-/* ── Document Cards ──────────────────────────── */
-.docs {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-bottom: 32px;
+.lrow:hover { background:var(--surface); padding-left:4px; }
+.lrow:last-child { border-bottom:none; }
+
+.lrow-l {
+  font-family:var(--font-type);
+  font-size:10px;
+  color:var(--smoke);
 }
 
-.doc {
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-  color: inherit;
-  background: var(--card);
-  border: 1px solid var(--border);
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s var(--ease-out);
-  min-height: 480px;
+.lrow-v {
+  font-family:var(--font-mono);
+  font-size:13px;
+  font-weight:700;
 }
 
-/* Red accent line — drips in on hover */
-.doc::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 0;
-  background: linear-gradient(180deg, var(--red), var(--red-dark), transparent 90%);
-  transition: height 0.6s var(--ease-out);
+.lrow-v.teal { color:var(--teal); }
+.lrow-v.red  { color:var(--red-bright); }
+.lrow-v.rust { color:var(--rust); }
+.lrow-v.bone { color:var(--bone); }
+
+/* Verdict */
+.verdict {
+  text-align:center;
+  padding:48px 24px;
+  border:1px solid var(--border);
+  background:var(--card);
+  background-image:var(--stripe);
+  margin-bottom:16px;
+  position:relative;
 }
 
-.doc.amber-doc::before {
-  background: linear-gradient(180deg, var(--rust), var(--rust-dim), transparent 90%);
+.verdict::after {
+  content:'';
+  position:absolute; inset:0;
+  background:radial-gradient(ellipse at 50% 50%, rgba(160,24,24,0.04), transparent 70%);
+  pointer-events:none;
 }
 
-.doc:hover {
-  border-color: var(--border-hi);
-  box-shadow: var(--shadow-float);
-  transform: translateY(-3px);
+.verdict-pre {
+  font-family:var(--font-stamp);
+  font-size:8px;
+  letter-spacing:0.25em;
+  text-transform:uppercase;
+  color:var(--ash);
+  margin-bottom:12px;
 }
 
-.doc:hover::before {
-  height: 100%;
+.verdict-num {
+  font-family:var(--font-stamp);
+  font-size:clamp(56px,12vw,120px);
+  color:var(--red);
+  line-height:0.85;
+  animation:heartbeat 2s ease-in-out infinite;
 }
 
-/* Interior */
-.doc-top {
-  padding: 32px 28px 0;
-  flex: 0;
+@keyframes heartbeat {
+  0%,100%{transform:scale(1);} 14%{transform:scale(1.03);} 28%{transform:scale(1);} 42%{transform:scale(1.02);} 56%{transform:scale(1);}
 }
 
-.doc-number {
-  font-family: var(--font-stamp);
-  font-size: 64px;
-  color: var(--border);
-  line-height: 1;
-  letter-spacing: 0.02em;
-  transition: color 0.3s ease;
+.verdict-sub {
+  font-family:var(--font-type);
+  font-size:11px;
+  color:var(--smoke);
+  margin-top:16px;
+  line-height:1.9;
 }
 
-.doc:hover .doc-number { color: var(--border-hi); }
-
-.doc-exhibit {
-  font-family: var(--font-stamp);
-  font-size: 8px;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--red);
-  border: 1px solid var(--red-dark);
-  display: inline-block;
-  padding: 2px 8px;
-  margin: 16px 0 12px;
+.verdict-sub em {
+  color:var(--red);
+  font-style:normal;
+  font-weight:700;
 }
 
-.doc.amber-doc .doc-exhibit {
-  color: var(--rust);
-  border-color: var(--rust-dim);
+/* Gauge bar */
+.gauge {
+  border:1px solid var(--border);
+  background:var(--card);
+  padding:18px 22px;
+  margin-bottom:16px;
 }
 
-.doc-body {
-  flex: 1;
-  padding: 0 28px;
+.gauge-label {
+  font-family:var(--font-stamp);
+  font-size:8px;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:var(--ash);
+  margin-bottom:10px;
 }
 
-.doc-title {
-  font-family: var(--font-book);
-  font-size: clamp(28px, 3.5vw, 42px);
-  font-style: italic;
-  color: var(--bone);
-  font-weight: 400;
-  line-height: 1.1;
-  letter-spacing: -0.01em;
-  margin-bottom: 16px;
+.gauge-track {
+  position:relative;
+  height:20px;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  margin-bottom:6px;
 }
 
-.doc-desc {
-  font-family: var(--font-type);
-  font-size: 12px;
-  line-height: 1.8;
-  color: var(--ash);
-  max-width: 400px;
-  margin-bottom: 28px;
+.gauge-fill-blood {
+  position:absolute; left:0; top:0; bottom:0;
+  background:var(--red-deep);
+  width:100%; z-index:1;
 }
 
-/* ── Document metrics ────────────────────────── */
-.doc-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  margin: 0 28px 28px;
+.gauge-fill-you {
+  position:absolute; left:0; top:0; bottom:0;
+  background:var(--teal);
+  z-index:2;
+  transition:width 1.5s cubic-bezier(0.16,1,0.3,1);
 }
 
-.doc-stat {
-  background: var(--bg2);
-  padding: 14px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  transition: background 0.2s ease;
+.gauge-meta {
+  display:flex; justify-content:space-between;
+  font-family:var(--font-type); font-size:8px; color:var(--smoke);
 }
 
-.doc-stat:hover { background: var(--surface); }
+.gauge-meta .r { color:var(--red); }
 
-.doc-stat-val {
-  font-family: var(--font-stamp);
-  font-size: 20px;
-  line-height: 1;
-  letter-spacing: 0.02em;
+/* Handwritten annotation */
+.margin-note {
+  font-family:var(--font-hand);
+  font-size:clamp(16px,2.5vw,22px);
+  color:var(--red);
+  transform:rotate(-1.5deg);
+  text-align:center;
+  margin:20px 0 24px;
+  opacity:0.75;
 }
 
-.doc-stat-val.red  { color: var(--red-bright); }
-.doc-stat-val.rust { color: var(--rust); }
-.doc-stat-val.teal { color: var(--teal); }
-
-.doc-stat-label {
-  font-family: var(--font-type);
-  font-size: 7px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--smoke);
-  line-height: 1.5;
+/* ── DIVIDER ─────────────────────────────────── */
+.dagger {
+  text-align:center;
+  padding:40px 0;
+  font-size:16px;
+  color:var(--red-dark);
 }
 
-/* Card footer */
-.doc-foot {
-  padding: 14px 28px;
-  border-top: 1px solid var(--border);
-  font-family: var(--font-type);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--smoke);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  transition: all 0.3s ease;
+/* ── ERA GAME ────────────────────────────────── */
+.era-section { margin-bottom:48px; }
+
+.era-head {
+  display:flex; align-items:baseline; gap:12px;
+  border-bottom:2px solid var(--border);
+  padding-bottom:10px; margin-bottom:16px;
 }
 
-.doc-foot-arrow {
-  font-size: 16px;
-  transition: transform 0.3s var(--ease-bounce);
-  color: var(--red-dark);
+.era-head-num {
+  font-family:var(--font-stamp); font-size:24px;
+  color:var(--red-dark); opacity:0.5;
 }
 
-.doc:hover .doc-foot {
-  color: var(--bone);
-  background: var(--surface);
+.era-head-title {
+  font-family:var(--font-book);
+  font-size:20px; font-style:italic;
+  color:var(--bone); font-weight:400;
 }
 
-.doc:hover .doc-foot-arrow {
-  transform: translateX(8px);
-  color: var(--red);
+.era-head-sub {
+  font-family:var(--font-type);
+  font-size:9px; color:var(--smoke);
+  margin-left:auto;
 }
 
-/* ── Other Links ─────────────────────────────── */
-.other-docs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  justify-content: center;
-  padding: 8px 0 0;
+/* Era tabs */
+.era-tabs {
+  display:flex; gap:1px;
+  background:var(--border);
+  border:1px solid var(--border);
+  margin-bottom:12px;
+  overflow-x:auto;
 }
 
-.other-link {
-  font-family: var(--font-type);
-  font-size: 9px;
-  color: var(--smoke);
-  text-decoration: none;
-  padding: 6px 14px;
-  border: 1px dashed var(--border);
-  transition: all 0.2s ease;
+.era-tab {
+  flex:1; min-width:100px;
+  padding:14px 10px;
+  background:var(--card);
+  border:none;
+  font-family:var(--font-type);
+  font-size:10px;
+  color:var(--smoke);
+  cursor:pointer; text-align:center;
+  transition:all 0.2s;
+  position:relative;
 }
 
-.other-link:hover {
-  color: var(--red);
-  border-color: var(--red-dark);
-  border-style: solid;
-  background: var(--card);
+.era-tab::after {
+  content:''; position:absolute;
+  bottom:0; left:0; right:0; height:3px;
+  background:var(--red);
+  transform:scaleX(0);
+  transition:transform 0.3s var(--ease-bounce);
 }
 
-/* ── Footer ──────────────────────────────────── */
+.era-tab:hover { color:var(--bone); background:var(--surface); }
+.era-tab.active { color:var(--red); background:var(--surface); }
+.era-tab.active::after { transform:scaleX(1); }
+
+.era-tab-name {
+  font-family:var(--font-book);
+  font-style:italic;
+  font-size:13px;
+  display:block;
+  margin-bottom:2px;
+}
+
+.era-tab-period {
+  font-size:8px; color:var(--shadow);
+}
+
+/* Timeline bar */
+.timeline {
+  display:flex; height:36px;
+  border:1px solid var(--border);
+  background:var(--card);
+  margin-bottom:12px; cursor:pointer;
+}
+
+.tl-seg {
+  height:100%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-type);
+  font-size:7px; letter-spacing:0.05em;
+  color:var(--shadow);
+  border-right:1px solid var(--border);
+  transition:all 0.3s;
+}
+.tl-seg:last-child { border-right:none; }
+.tl-seg:hover { color:var(--bone); }
+.tl-seg.active { color:var(--bone); }
+
+/* Era data cells */
+.era-cells {
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:1px;
+  background:var(--border);
+  border:1px solid var(--border);
+  margin-bottom:12px;
+}
+
+.era-cell {
+  background:var(--card);
+  padding:16px 14px;
+  transition:background 0.2s;
+  position:relative;
+}
+
+.era-cell::before {
+  content:''; position:absolute;
+  top:0; left:0; width:0; height:2px;
+  background:var(--red);
+  transition:width 0.4s var(--ease-out);
+}
+
+.era-cell:hover { background:var(--surface); }
+.era-cell:hover::before { width:100%; }
+
+.ecv {
+  font-family:var(--font-stamp);
+  font-size:22px; line-height:1;
+  margin-bottom:8px;
+  transition:color 0.3s;
+}
+
+.ecl {
+  font-family:var(--font-type);
+  font-size:7px; letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--smoke); line-height:1.6;
+}
+
+/* Insight text */
+.era-insight {
+  border:1px solid var(--border);
+  border-left:3px solid var(--red-dark);
+  background:var(--card);
+  background-image:var(--stripe);
+  padding:16px 20px;
+  font-family:var(--font-type);
+  font-size:11px;
+  color:var(--ash);
+  line-height:1.9;
+  transition:all 0.3s;
+}
+
+.era-insight b { color:var(--bone); font-weight:500; }
+.era-insight em { color:var(--red); font-style:normal; }
+
+/* ── EVIDENCE ────────────────────────────────── */
+.evidence {
+  margin-top:48px;
+  border-top:2px solid var(--border);
+  padding-top:20px;
+}
+
+.evidence-label {
+  font-family:var(--font-stamp);
+  font-size:9px; letter-spacing:0.2em;
+  text-transform:uppercase; color:var(--red);
+  border:2px solid var(--red-dark);
+  display:inline-block;
+  padding:3px 10px; margin-bottom:16px;
+}
+
+.ev-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px; margin-bottom:12px;
+}
+
+.ev-card {
+  display:flex; flex-direction:column;
+  text-decoration:none; color:inherit;
+  background:var(--card);
+  border:1px solid var(--border);
+  padding:24px 20px;
+  position:relative; overflow:hidden;
+  transition:all 0.3s var(--ease-out);
+}
+
+.ev-card::before {
+  content:''; position:absolute;
+  top:0; left:0; width:3px; height:0;
+  background:var(--red);
+  transition:height 0.5s var(--ease-out);
+}
+
+.ev-card:hover { border-color:var(--border-hi); box-shadow:var(--shadow-float); transform:translateY(-2px); }
+.ev-card:hover::before { height:100%; }
+
+.ev-badge {
+  font-family:var(--font-stamp);
+  font-size:7px; letter-spacing:0.2em;
+  color:var(--red); margin-bottom:10px;
+}
+
+.ev-name {
+  font-family:var(--font-book);
+  font-size:22px; font-style:italic;
+  font-weight:400; color:var(--bone);
+  margin-bottom:8px;
+}
+
+.ev-desc {
+  font-family:var(--font-type);
+  font-size:10px; color:var(--smoke);
+  line-height:1.7; flex:1;
+}
+
+.ev-foot {
+  font-family:var(--font-type);
+  font-size:9px; color:var(--shadow);
+  margin-top:12px; padding-top:8px;
+  border-top:1px dotted var(--border);
+  display:flex; justify-content:space-between;
+  transition:color 0.2s;
+}
+
+.ev-card:hover .ev-foot { color:var(--bone); }
+
+.ev-arrow {
+  color:var(--red-dark);
+  transition:transform 0.3s var(--ease-bounce);
+}
+
+.ev-card:hover .ev-arrow { transform:translateX(6px); color:var(--red); }
+
+.ev-more {
+  display:flex; flex-wrap:wrap; gap:4px;
+}
+
+.ev-link {
+  font-family:var(--font-type);
+  font-size:9px; color:var(--shadow);
+  text-decoration:none;
+  padding:5px 12px;
+  border:1px dashed var(--border);
+  transition:all 0.2s;
+}
+.ev-link:hover { color:var(--red); border-color:var(--red-dark); border-style:solid; }
+
 .foot {
-  margin-top: 80px;
-  border-top: 2px solid var(--border);
-  padding-top: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: var(--font-type);
-  font-size: 9px;
-  color: var(--shadow);
+  margin-top:48px; padding:16px 0;
+  border-top:2px solid var(--border);
+  font-family:var(--font-type);
+  font-size:9px; color:var(--shadow);
+  text-align:center;
 }
 
-.foot-left::before {
-  content: '⬥';
-  margin-right: 6px;
-  color: var(--red-dark);
+.foot::before { content:'†'; margin-right:8px; color:var(--red-dark); }
+
+/* ── RESPONSIVE ──────────────────────────────── */
+@media (max-width:768px) {
+  .ledger { grid-template-columns:1fr; }
+  .era-cells { grid-template-columns:1fr 1fr; }
+  .ev-grid { grid-template-columns:1fr; }
+  #result-phase { padding:56px 16px 40px; }
+  .era-head-sub { display:none; }
 }
 
-/* ══════════════════════════════════════════════
-   RESPONSIVE
-══════════════════════════════════════════════ */
-@media (max-width: 768px) {
-  .page { padding-left: 16px; padding-right: 16px; }
-  .docs { grid-template-columns: 1fr; }
-  .doc { min-height: auto; }
-  .counters { grid-template-columns: 1fr; }
-  .counter { padding: 16px; display: flex; align-items: center; gap: 12px; text-align: left; }
-  .counter-num { margin-bottom: 0; font-size: 24px; }
-  .receipt { width: 92vw; }
-  .foot { flex-direction: column; gap: 8px; text-align: center; }
-  .topbar-link { display: none; }
-}
-
-@media (max-width: 480px) {
-  .hero-h1 { font-size: clamp(48px, 14vw, 80px); }
-  .doc-stats { grid-template-columns: 1fr 1fr; }
+@media (max-width:480px) {
+  .era-cells { grid-template-columns:1fr; }
+  .prompt-input { font-size:24px; }
+  .prompt-sign { font-size:24px; }
 }
 </style>
 </head>
 <body>
 
-<!-- ════════════════════════════════════════════
-     THE RECEIPT — Intro
-════════════════════════════════════════════ -->
-<div id="intro">
-  <div class="intro-corner tl">†</div>
-  <div class="intro-corner br">†</div>
-
-  <div class="receipt">
-    <div class="receipt-header">
-      <div class="receipt-logo">Bureau of Mortality Economics</div>
-      <div class="receipt-title">The Price</div>
-      <div class="receipt-title-sub">of Blood</div>
-      <div class="receipt-date">Transaction Date: 4000 BCE — Present · In Progress</div>
-    </div>
-
-    <div class="receipt-body">
-      <div class="receipt-line">
-        <span class="receipt-label">Human bodies (qty)</span>
-        <span class="receipt-val red">237,000,000</span>
-      </div>
-      <div class="receipt-line">
-        <span class="receipt-label">Blood per body</span>
-        <span class="receipt-val">5.00 L</span>
-      </div>
-      <div class="receipt-line">
-        <span class="receipt-label">Total blood</span>
-        <span class="receipt-val red">1.19B liters</span>
-      </div>
-      <div class="receipt-line">
-        <span class="receipt-label">Market rate (medical)</span>
-        <span class="receipt-val">$880/L</span>
-      </div>
-      <div class="receipt-line">
-        <span class="receipt-label">Actual extracted value</span>
-        <span class="receipt-val red">$2,242,623/L</span>
-      </div>
-      <div class="receipt-line receipt-total">
-        <span class="receipt-label">EXTERNALITY GAP</span>
-        <span class="receipt-val red">2,548×</span>
-      </div>
-    </div>
-
-    <div class="receipt-stamp">VERIFIED</div>
-
-    <div class="receipt-footer">
-      <div class="receipt-msg">The math checks out. It always does.</div>
-      <button class="receipt-enter" id="enter-btn">Open the Ledger →</button>
-      <div class="receipt-barcode">|||| ||| || |||| | ||| |||| || ||| ||| || |||| ||||</div>
-    </div>
-  </div>
-
-  <div class="intro-hint">press enter or click the button</div>
+<!-- ═══════ BOOT ═══════ -->
+<div id="boot">
+  <div class="boot-line" data-d="0">BUREAU OF MORTALITY ECONOMICS</div>
+  <div class="boot-line" data-d="120">Appraisal Terminal · v6.0</div>
+  <div class="boot-line" data-d="280">─────────────────────────────</div>
+  <div class="boot-line" data-d="420">Loading era dataset ............ OK</div>
+  <div class="boot-line" data-d="540">Shadow pricing engine .......... OK</div>
+  <div class="boot-line" data-d="660">Blood-dollar converter ......... OK</div>
+  <div class="boot-line accent" data-d="800">6 eras · 237,000,000 records · 1.19B litres</div>
+  <div class="boot-line" data-d="960">READY.</div>
 </div>
 
-<!-- ════════════════════════════════════════════
-     MAIN SITE
-════════════════════════════════════════════ -->
-<div id="main">
+<!-- ═══════ APP ═══════ -->
+<div id="app">
 
   <div class="topbar">
-    <a href="#" class="topbar-brand">The <span class="r">Price</span> of Blood</a>
+    <span class="topbar-brand">The <span class="r">Price</span> of Blood</span>
     <div class="topbar-right">
-      <a href="#docs" class="topbar-link">Documents</a>
+      <a href="the_accounting.html" class="topbar-link">Exhibit A</a>
+      <a href="blood_standard.html" class="topbar-link">Exhibit B</a>
       <button class="topbar-theme" id="theme-btn" aria-label="Toggle theme">◑</button>
     </div>
   </div>
 
-  <div class="page">
+  <!-- ═══════ PROMPT ═══════ -->
+  <div id="prompt-phase">
+    <div class="prompt-card">
+      <div class="prompt-stamp">CONFIDENTIAL</div>
 
-    <header class="hero">
-      <div class="hero-bureau">Bureau of Mortality Economics · Est. 4000 BCE · "We never close"</div>
-      <h1 class="hero-h1">
-        THE <span class="red">PRICE</span><br>OF BLOOD
-      </h1>
-      <p class="hero-sub">
-        A quantitative accounting of the human cost of energy, empire, and economy.
-        Six eras. <em>237 million deaths.</em> 1.19 billion liters of blood.
-        All math cited. No one asked for this. We did it anyway.
-      </p>
+      <div class="prompt-head">
+        <div class="prompt-bureau">Bureau of Mortality Economics · Subject Appraisal</div>
+        <div class="prompt-title">What are <em>you</em> worth?</div>
+      </div>
 
-      <div class="counters">
-        <div class="counter">
-          <div class="counter-num red" id="c-deaths">237M</div>
-          <div class="counter-label">Deaths across 6 eras</div>
+      <div class="prompt-body">
+        <div class="prompt-q">How much do you earn per year?<span class="blink"></span></div>
+        <div class="prompt-input-row">
+          <span class="prompt-sign">$</span>
+          <input class="prompt-input" type="text" id="salary-in" placeholder="60,000" autocomplete="off" inputmode="numeric">
         </div>
-        <div class="counter">
-          <div class="counter-num rust" id="c-value">$2.2M/L</div>
-          <div class="counter-label">Extracted value per liter</div>
+        <div class="prompt-hint">
+          All computation is local. Nothing leaves your browser.<br>
+          We'll show you what you're actually worth — and by how much you're being scammed.
         </div>
-        <div class="counter">
-          <div class="counter-num teal" id="c-gap">2,548×</div>
-          <div class="counter-label">Above what the hospital charges</div>
+        <div class="prompt-actions">
+          <button class="prompt-go" id="go-btn">Run Appraisal →</button>
+          <button class="prompt-skip" id="skip-btn">use $60,000</button>
         </div>
       </div>
-    </header>
-
-    <section id="docs">
-
-      <div class="filing-label reveal">
-        <span class="filing-label-text">The Filing Cabinet</span>
-        <span class="filing-label-line"></span>
-      </div>
-
-      <div class="docs reveal-stagger">
-
-        <a href="the_accounting.html" class="doc reveal">
-          <div class="doc-top">
-            <div class="doc-number">01</div>
-            <div class="doc-exhibit">Exhibit A</div>
-          </div>
-          <div class="doc-body">
-            <div class="doc-title">The<br>Accounting</div>
-            <div class="doc-desc">
-              How much energy does the machine extract per liter of blood?
-              Six eras. All the math. The answer has not changed in 6,000 years.
-            </div>
-          </div>
-          <div class="doc-stats">
-            <div class="doc-stat">
-              <span class="doc-stat-val red">237M</span>
-              <span class="doc-stat-label">total deaths<br>across 6 eras</span>
-            </div>
-            <div class="doc-stat">
-              <span class="doc-stat-val rust">$2.2M/L</span>
-              <span class="doc-stat-label">modern value<br>per liter blood</span>
-            </div>
-            <div class="doc-stat">
-              <span class="doc-stat-val teal">2,548×</span>
-              <span class="doc-stat-label">externality<br>gap (modern)</span>
-            </div>
-          </div>
-          <div class="doc-foot">
-            <span>Open The Ledger</span>
-            <span class="doc-foot-arrow">→</span>
-          </div>
-        </a>
-
-        <a href="blood_standard.html" class="doc amber-doc reveal">
-          <div class="doc-top">
-            <div class="doc-number">02</div>
-            <div class="doc-exhibit">Exhibit B</div>
-          </div>
-          <div class="doc-body">
-            <div class="doc-title">The Blood<br>Standard</div>
-            <div class="doc-desc">
-              What if we just said it out loud? Currency backed by human lives.
-              1 BU = 1 liter. Five liters per person. Do the math.
-            </div>
-          </div>
-          <div class="doc-stats">
-            <div class="doc-stat">
-              <span class="doc-stat-val red">$2.24M</span>
-              <span class="doc-stat-label">real value<br>per BU (modern)</span>
-            </div>
-            <div class="doc-stat">
-              <span class="doc-stat-val rust">$880</span>
-              <span class="doc-stat-label">medical price<br>per BU</span>
-            </div>
-            <div class="doc-stat">
-              <span class="doc-stat-val teal">21.7×</span>
-              <span class="doc-stat-label">inflation since<br>Bronze Age</span>
-            </div>
-          </div>
-          <div class="doc-foot">
-            <span>Open The Ledger</span>
-            <span class="doc-foot-arrow">→</span>
-          </div>
-        </a>
-
-      </div>
-
-      <div class="other-docs reveal">
-        <a href="blood_price_oil.html" class="other-link">Blood Price of Oil</a>
-        <a href="energy_per_death.html" class="other-link">Energy Per Death</a>
-        <a href="kronos_feed_rate.html" class="other-link">Kronos Feed Rate</a>
-        <a href="kronos_mythic_overlay.html" class="other-link">The Devourer</a>
-        <a href="the_escaped.html" class="other-link">The Escaped</a>
-      </div>
-
-    </section>
-
-    <footer class="foot">
-      <span class="foot-left">The Price of Blood · 2026 · Mortality Economics</span>
-      <span>The numbers are exact. The sources are cited.</span>
-    </footer>
-
+    </div>
   </div>
+
+  <!-- ═══════ RESULTS ═══════ -->
+  <div id="result-phase">
+
+    <!-- LEDGER: side by side -->
+    <div class="ledger">
+      <div class="ledger-side">
+        <div class="ledger-label you">Your File — What the System Sees</div>
+        <div class="lrow"><span class="lrow-l">Annual salary</span><span class="lrow-v teal" id="r-sal">—</span></div>
+        <div class="lrow"><span class="lrow-l">Hourly rate</span><span class="lrow-v teal" id="r-hr">—</span></div>
+        <div class="lrow"><span class="lrow-l">Daily rate</span><span class="lrow-v teal" id="r-day">—</span></div>
+        <div class="lrow"><span class="lrow-l">Lifetime earnings (45 yrs)</span><span class="lrow-v teal" id="r-life">—</span></div>
+      </div>
+      <div class="ledger-side">
+        <div class="ledger-label blood">Your Blood File — What You're Worth</div>
+        <div class="lrow"><span class="lrow-l">Blood volume</span><span class="lrow-v red">5.00 litres</span></div>
+        <div class="lrow"><span class="lrow-l">Value per litre (extracted)</span><span class="lrow-v red">$2,242,623</span></div>
+        <div class="lrow"><span class="lrow-l">Total blood value</span><span class="lrow-v red">$11,213,115</span></div>
+        <div class="lrow"><span class="lrow-l">System keeps</span><span class="lrow-v red" id="r-keeps">—</span></div>
+      </div>
+    </div>
+
+    <!-- VERDICT -->
+    <div class="verdict">
+      <div class="verdict-pre">Years to earn what's already inside you</div>
+      <div class="verdict-num" id="v-years">—</div>
+      <div class="verdict-sub">
+        The system pays you <em id="v-pct">—</em> of your actual value per year.<br>
+        The other <em id="v-rest">—</em> is the margin it keeps. It calls this "a fair wage."
+      </div>
+    </div>
+
+    <div class="margin-note">You are the most undervalued asset in the economy.</div>
+
+    <!-- GAUGE -->
+    <div class="gauge">
+      <div class="gauge-label">Your salary vs your blood value</div>
+      <div class="gauge-track">
+        <div class="gauge-fill-blood"></div>
+        <div class="gauge-fill-you" id="gauge-you"></div>
+      </div>
+      <div class="gauge-meta">
+        <span id="gauge-sal">$0</span>
+        <span class="r">$11,213,115 (your blood)</span>
+      </div>
+    </div>
+
+    <div class="dagger">†</div>
+
+    <!-- ═══════ ERA GAME ═══════ -->
+    <div class="era-section">
+      <div class="era-head">
+        <span class="era-head-num">II</span>
+        <span class="era-head-title">The Machine</span>
+        <span class="era-head-sub">click an era · watch the equation stay the same</span>
+      </div>
+
+      <div class="era-tabs" id="era-tabs"></div>
+      <div class="timeline" id="timeline"></div>
+      <div class="era-cells" id="era-cells"></div>
+      <div class="era-insight" id="era-insight"></div>
+
+      <div class="margin-note" id="era-note">The gods changed. The math didn't.</div>
+    </div>
+
+    <!-- ═══════ EVIDENCE ═══════ -->
+    <div class="evidence">
+      <div class="evidence-label">The Evidence</div>
+
+      <div class="ev-grid">
+        <a href="the_accounting.html" class="ev-card">
+          <div class="ev-badge">EXHIBIT A</div>
+          <div class="ev-name">The Accounting</div>
+          <div class="ev-desc">Six eras. 12 variables. The machine eats the same amount every time. The accountant remains unbothered.</div>
+          <div class="ev-foot"><span>Open the ledger</span><span class="ev-arrow">→</span></div>
+        </a>
+        <a href="blood_standard.html" class="ev-card">
+          <div class="ev-badge">EXHIBIT B</div>
+          <div class="ev-name">The Blood Standard</div>
+          <div class="ev-desc">1 BU = 1 litre. Your dollar buys 0.45 µL at the real rate. The mispricing is the system.</div>
+          <div class="ev-foot"><span>Open the ledger</span><span class="ev-arrow">→</span></div>
+        </a>
+      </div>
+
+      <div class="ev-more">
+        <a href="blood_price_oil.html" class="ev-link">Blood Price of Oil</a>
+        <a href="energy_per_death.html" class="ev-link">Energy Per Death</a>
+        <a href="kronos_feed_rate.html" class="ev-link">Kronos Feed Rate</a>
+        <a href="kronos_mythic_overlay.html" class="ev-link">The Devourer</a>
+        <a href="the_escaped.html" class="ev-link">The Escaped</a>
+      </div>
+    </div>
+
+    <div class="foot">Bureau of Mortality Economics · Est. 4000 BCE · "We never close"</div>
+  </div>
+
 </div>
 
 <script>
+/* ═══════ CONSTANTS ═══════ */
+var SGJ=75/6.1, MED=880, EJ=1e9, BU=2242623, BPP=5;
+var PVAL = BU*BPP;
+
+var ERAS=[
+  {name:'Bronze Age',p:'4000–1200 BCE',god:'Apep · Tiamat',sub:'Grain',gjU:14.4,pop:50e6,gpc:6,yrs:2800,dM:20e6,col:'#c87820'},
+  {name:'Roman',p:'500 BCE–476 CE',god:'Kronos · Saturn',sub:'Grain',gjU:14.4,pop:60e6,gpc:10,yrs:900,dM:15e6,col:'#c83030'},
+  {name:'Feudal',p:'476–1400 CE',god:'Christus Rex',sub:'Wood',gjU:18.0,pop:80e6,gpc:12,yrs:900,dM:50e6,col:'#5a8a3a'},
+  {name:'Colonial',p:'1400–1750 CE',god:'Crown · El',sub:'Biomass',gjU:17.0,pop:80e6,gpc:15,yrs:350,dM:12e6,col:'#8050c0'},
+  {name:'Industrial',p:'1750–1950 CE',god:'The Nation-State',sub:'Coal',gjU:27.0,pop:400e6,gpc:25,yrs:200,dM:120e6,col:'#607090'},
+  {name:'Modern',p:'1950–2026 CE',god:'The Market',sub:'Oil',gjU:6.1,pop:4e9,gpc:75,yrs:76,dM:25e6,col:'#e02020'},
+];
+
+ERAS.forEach(function(e){
+  e.tGJ=e.pop*e.gpc*e.yrs; e.tEJ=e.tGJ/EJ;
+  e.gpd=e.tGJ/e.dM; e.bpej=e.dM*BPP/e.tEJ;
+  e.bext=SGJ*e.gpd/BPP; e.gap=e.bext/MED;
+});
+
+var salary=60000, activeEra=5;
+
+/* ═══════ BOOT ═══════ */
+(function(){
+  var lines=document.querySelectorAll('.boot-line');
+  lines.forEach(function(l){
+    setTimeout(function(){l.style.opacity='1';l.style.transition='opacity 0.15s';},
+    parseInt(l.getAttribute('data-d')));
+  });
+  setTimeout(function(){
+    var b=document.getElementById('boot');
+    b.style.opacity='0';
+    setTimeout(function(){
+      b.style.display='none';
+      document.getElementById('app').style.display='block';
+      document.getElementById('salary-in').focus();
+    },500);
+  },1300);
+})();
+
 /* ═══════ THEME ═══════ */
-(function () {
-  var KEY = 'pob-theme';
-  var root = document.documentElement;
-  var saved = localStorage.getItem(KEY) || 'dark';
-  root.setAttribute('data-theme', saved);
-
-  function icon(t) { return t === 'dark' ? '◑' : '◐'; }
-
-  document.addEventListener('DOMContentLoaded', function () {
-    var btn = document.getElementById('theme-btn');
-    if (!btn) return;
-    btn.textContent = icon(saved);
-    btn.addEventListener('click', function () {
-      var cur = root.getAttribute('data-theme');
-      var next = cur === 'dark' ? 'light' : 'dark';
-      root.setAttribute('data-theme', next);
-      localStorage.setItem(KEY, next);
-      btn.textContent = icon(next);
-    });
+(function(){
+  var KEY='pob-theme',root=document.documentElement;
+  var saved=localStorage.getItem(KEY)||'dark';
+  root.setAttribute('data-theme',saved);
+  var btn=document.getElementById('theme-btn');
+  function ic(t){return t==='dark'?'◑':'◐';}
+  btn.textContent=ic(saved);
+  btn.addEventListener('click',function(){
+    var c=root.getAttribute('data-theme'),n=c==='dark'?'light':'dark';
+    root.setAttribute('data-theme',n);
+    localStorage.setItem(KEY,n);
+    btn.textContent=ic(n);
   });
 })();
 
-/* ═══════ INTRO ═══════ */
-(function () {
-  var intro = document.getElementById('intro');
-  var main  = document.getElementById('main');
-  var btn   = document.getElementById('enter-btn');
+/* ═══════ FMT ═══════ */
+function fD(n){return n>=1e12?'$'+(n/1e12).toFixed(1)+'T':n>=1e9?'$'+(n/1e9).toFixed(1)+'B':n>=1e6?'$'+(n/1e6).toFixed(2)+'M':n>=1e3?'$'+Math.round(n).toLocaleString('en-US'):'$'+n.toFixed(0);}
+function fN(n){return Math.round(n).toLocaleString('en-US');}
 
-  function dismiss() {
-    intro.style.transition = 'opacity 0.6s ease';
-    intro.style.opacity = '0';
-    intro.style.pointerEvents = 'none';
-    main.style.display = '';
-    setTimeout(function () {
-      main.classList.add('vis');
-      intro.style.display = 'none';
-    }, 600);
-  }
+/* ═══════ INPUT ═══════ */
+var inp=document.getElementById('salary-in');
+inp.addEventListener('input',function(){
+  var r=this.value.replace(/[^0-9]/g,'');
+  if(r)this.value=parseInt(r).toLocaleString('en-US');
+});
+inp.addEventListener('keydown',function(e){if(e.key==='Enter')go();});
+document.getElementById('go-btn').addEventListener('click',go);
+document.getElementById('skip-btn').addEventListener('click',function(){inp.value='60,000';go();});
 
-  btn.addEventListener('click', function (e) {
-    e.stopPropagation();
-    dismiss();
+function go(){
+  salary=parseInt(inp.value.replace(/[^0-9]/g,''))||60000;
+  if(salary<1)salary=60000;
+  document.getElementById('prompt-phase').style.display='none';
+  document.getElementById('result-phase').style.display='block';
+  fill();
+  buildEra();
+  animateIn();
+}
+
+/* ═══════ FILL ═══════ */
+function fill(){
+  var hr=salary/2080,dy=salary/260,life=salary*45;
+  var yrs=PVAL/salary,pct=salary/PVAL*100;
+  document.getElementById('r-sal').textContent='$'+fN(salary);
+  document.getElementById('r-hr').textContent='$'+hr.toFixed(2)+'/hr';
+  document.getElementById('r-day').textContent='$'+fN(Math.round(dy))+'/day';
+  document.getElementById('r-life').textContent=fD(life);
+  document.getElementById('r-keeps').textContent=(100-pct).toFixed(2)+'%';
+  document.getElementById('v-years').textContent=fN(Math.round(yrs));
+  document.getElementById('v-pct').textContent=pct.toFixed(2)+'%';
+  document.getElementById('v-rest').textContent=(100-pct).toFixed(2)+'%';
+  var mp=Math.max(0.4,pct);
+  document.getElementById('gauge-you').style.width=mp+'%';
+  document.getElementById('gauge-sal').textContent='$'+fN(salary)+' ('+pct.toFixed(2)+'%)';
+}
+
+/* ═══════ ANIMATE ═══════ */
+function animateIn(){
+  var els=document.querySelectorAll('#result-phase > *');
+  els.forEach(function(el,i){
+    el.style.opacity='0';el.style.transform='translateY(24px)';
+    el.style.transition='opacity 0.5s ease, transform 0.5s ease';
+    setTimeout(function(){el.style.opacity='1';el.style.transform='translateY(0)';},80+i*100);
+  });
+}
+
+/* ═══════ ERA GAME ═══════ */
+function buildEra(){
+  var tabs=document.getElementById('era-tabs'),tl=document.getElementById('timeline');
+  tabs.innerHTML='';tl.innerHTML='';
+  var totYrs=ERAS.reduce(function(a,e){return a+e.yrs;},0);
+  ERAS.forEach(function(e,i){
+    var b=document.createElement('button');
+    b.className='era-tab'+(i===activeEra?' active':'');
+    b.innerHTML='<span class="era-tab-name">'+e.name+'</span><span class="era-tab-period">'+e.p+'</span>';
+    b.onclick=function(){selectEra(i);};
+    tabs.appendChild(b);
+    var s=document.createElement('div');
+    s.className='tl-seg'+(i===activeEra?' active':'');
+    s.style.width=(e.yrs/totYrs*100)+'%';
+    s.style.background=e.col+'12';
+    s.textContent=e.name.split(' ')[0];
+    s.onclick=function(){selectEra(i);};
+    tl.appendChild(s);
+  });
+  selectEra(activeEra);
+}
+
+function selectEra(idx){
+  activeEra=idx;var e=ERAS[idx];
+  document.querySelectorAll('.era-tab').forEach(function(t,i){t.className='era-tab'+(i===idx?' active':'');});
+  document.querySelectorAll('.tl-seg').forEach(function(s,i){s.className='tl-seg'+(i===idx?' active':'');});
+
+  var cells=[
+    {v:fN(e.dM),l:'Deaths',c:'var(--red-bright)'},
+    {v:e.tEJ.toFixed(0)+' EJ',l:'Total energy',c:'var(--teal)'},
+    {v:(e.bpej/1e6).toFixed(1)+'M L',l:'Blood per EJ',c:'var(--red)'},
+    {v:fD(e.bext),l:'Value per litre',c:'var(--rust)'},
+    {v:e.gap.toFixed(0)+'×',l:'Gap vs $880/L',c:'var(--red-bright)'},
+    {v:e.sub,l:'Substrate',c:'var(--bile)'},
+    {v:e.god,l:'God-name',c:'var(--bruise)'},
+    {v:(e.pop>=1e9?(e.pop/1e9).toFixed(0)+'B':(e.pop/1e6).toFixed(0)+'M'),l:'Population',c:'var(--teal)'},
+    {v:e.gpc+' GJ/cap',l:'Energy per person',c:'var(--teal)'},
+  ];
+
+  var disp=document.getElementById('era-cells');disp.innerHTML='';
+  cells.forEach(function(c){
+    var d=document.createElement('div');d.className='era-cell';
+    d.innerHTML='<div class="ecv" style="color:'+c.c+'">'+c.v+'</div><div class="ecl">'+c.l+'</div>';
+    disp.appendChild(d);
   });
 
-  document.addEventListener('keydown', function (e) {
-    if (intro.style.display === 'none') return;
-    if (e.key === 'Enter' || e.key === 'Escape') {
-      dismiss();
-    }
-  });
+  var insights=[
+    'Grain powered the world. Apep swallowed the sun nightly and had to be fed. <b>'+fN(e.dM)+' died</b> to extract <b>'+e.tEJ.toFixed(0)+' EJ</b>. Blood price: <em>'+fD(e.bext)+'/L</em>. Gap: <em>'+e.gap.toFixed(0)+'×</em>. The sacrifice was public. The altar was named.',
+    'Kronos ate his children. Rome expanded. Still grain. Fewer deaths per EJ — more energy per kill. Blood price: <em>'+fD(e.bext)+'/L</em>. Gap: <em>'+e.gap.toFixed(0)+'×</em>. The machine got more efficient. The accountant\'s expression did not change.',
+    'Christ replaced Saturn. Tithes replaced sacrifices. Wood replaced grain. <b>50 million died</b>. Blood-per-EJ went up — busier machine, less efficient. <em>'+e.gap.toFixed(0)+'× above market</em>.',
+    'The Crown sailed. Colonies bled. Biomass. <b>12M dead</b> over 350 years. Blood: <em>'+fD(e.bext)+'/L</em>. They called it commerce.',
+    'Coal. Steam. Nationalism. <b>120M dead</b> in 200 years. Two world wars. Energy tripled. Blood: <em>'+fD(e.bext)+'/L</em>. Gap: <em>'+e.gap.toFixed(0)+'×</em>. They called it progress.',
+    'Oil. <b>25M dead</b> in 76 years. But <b>'+e.tEJ.toFixed(0)+' EJ</b> extracted — more than all other eras combined. Blood: <em>'+fD(e.bext)+'/L</em>. Gap: <em>'+e.gap.toFixed(0)+'×</em>. The god is "The Market." The ritual is the quarterly earnings call. The sacrifice is called "an externality." <b>The equation has not changed in 6,000 years.</b>',
+  ];
 
-  main.style.display = 'none';
-})();
+  document.getElementById('era-insight').innerHTML=insights[idx];
 
-/* ═══════ SCROLL REVEAL ═══════ */
-(function () {
-  var els = document.querySelectorAll('.reveal');
-  var obs = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) {
-        e.target.classList.add('vis');
-        obs.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-  els.forEach(function (el) { obs.observe(el); });
-})();
+  var notes=[
+    'The first ledger. Someone was counting even then.',
+    'Saturn devours. The books balance.',
+    'Holy wars. Holy profits.',
+    'They mapped the world. Then they drained it.',
+    'Progress is a body count with good PR.',
+    'You are here. The machine is still running.',
+  ];
+  document.getElementById('era-note').textContent=notes[idx];
+}
 </script>
 </body>
 </html>
