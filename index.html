@@ -690,22 +690,22 @@ body { overflow-x:hidden; }
       <div class="prompt-stamp">CONFIDENTIAL</div>
 
       <div class="prompt-head">
-        <div class="prompt-bureau">Bureau of Mortality Economics · Subject Appraisal</div>
-        <div class="prompt-title">What are <em>you</em> worth?</div>
+        <div class="prompt-bureau">Bureau of Mortality Economics · Era Placement</div>
+        <div class="prompt-title">Locate yourself<br>in the <em>ledger.</em></div>
       </div>
 
       <div class="prompt-body">
-        <div class="prompt-q">How much do you earn per year?<span class="blink"></span></div>
+        <div class="prompt-q">Annual salary — for scale.<span class="blink"></span></div>
         <div class="prompt-input-row">
           <span class="prompt-sign">$</span>
           <input class="prompt-input" type="text" id="salary-in" placeholder="60,000" autocomplete="off" inputmode="numeric">
         </div>
         <div class="prompt-hint">
-          All computation is local. Nothing leaves your browser.<br>
-          We'll show you what you're actually worth — and by how much you're being scammed.
+          This isn't a personal valuation. It's a reference point.<br>
+          The accounting predates your salary by approximately 6,000 years.
         </div>
         <div class="prompt-actions">
-          <button class="prompt-go" id="go-btn">Run Appraisal →</button>
+          <button class="prompt-go" id="go-btn">Open the Ledger →</button>
           <button class="prompt-skip" id="skip-btn">use $60,000</button>
         </div>
       </div>
@@ -729,8 +729,8 @@ body { overflow-x:hidden; }
     <div class="era-section">
       <div class="era-head">
         <span class="era-head-num">II</span>
-        <span class="era-head-title">Six Eras. One Equation.</span>
-        <span class="era-head-sub">click an era · watch the ratio hold</span>
+        <span class="era-head-title">The Full Accounting.</span>
+        <span class="era-head-sub">click an era · the blood price per EJ barely moves</span>
       </div>
 
       <div class="era-tabs" id="era-tabs"></div>
@@ -738,7 +738,7 @@ body { overflow-x:hidden; }
       <div class="era-cells" id="era-cells"></div>
       <div class="era-insight" id="era-insight"></div>
 
-      <div class="margin-note" id="era-note">The gods changed. The math didn't.</div>
+      <div class="margin-note" id="era-note">Different fuel. Same price in blood.</div></div>
     </div>
 
     <!-- ═══════ EVIDENCE ═══════ -->
@@ -749,13 +749,13 @@ body { overflow-x:hidden; }
         <a href="the_accounting.html" class="ev-card">
           <div class="ev-badge">EXHIBIT A</div>
           <div class="ev-name">The Accounting</div>
-          <div class="ev-desc">Six eras. 12 variables. The extraction rate holds across every substrate, every deity, every century. The accountant remains unbothered.</div>
+          <div class="ev-desc">Six eras. 12 variables. Blood per EJ computed across every substrate from grain to oil. The rate barely moves. The accountant remains unbothered.</div>
           <div class="ev-foot"><span>Open the ledger</span><span class="ev-arrow">→</span></div>
         </a>
         <a href="blood_standard.html" class="ev-card">
           <div class="ev-badge">EXHIBIT B</div>
           <div class="ev-name">The Blood Standard</div>
-          <div class="ev-desc">1 BU = 1 litre. Your dollar buys 0.45 µL at the real rate. The 2,548× gap is not a bug.</div>
+          <div class="ev-desc">1 BU = 1 litre of blood. The dollar is a translation of this unit. The exchange rate, priced against energy extraction, has been running since the Bronze Age.</div>
           <div class="ev-foot"><span>Open the ledger</span><span class="ev-arrow">→</span></div>
         </a>
       </div>
@@ -859,47 +859,49 @@ function buildSteps(){
   var yrs=PVAL/salary, pct=salary/PVAL*100;
   var bloodVal=PVAL*1; // 5L * $2.24M/L
 
+  // Blood cost of modern era energy: liters per GJ
+  var modernEra=ERAS[5];
+  var lPerGJ=modernEra.dM*BPP/modernEra.tGJ;          // litres blood per GJ (modern)
+  var yourGJ=salary/2000*8*modernEra.gpc/8760;         // rough GJ implied by your consumption share
+  var eraBloodL=modernEra.dM*BPP;                      // total litres bled in modern era
+  var eraEJ=modernEra.tEJ;
+
   var steps=[
     {
-      label:'YOUR SALARY',
-      num:'$'+fN(salary), cls:'teal',
-      interp:'Logged. The ledger has been assigning numbers like this for 6,000 years. The substrate changed — grain, wood, coal, oil. The number it assigns you did not.'
+      label:'YOUR ERA',
+      num:'Modern · 1950–2026', cls:'teal',
+      interp:'Oil substrate. <em>75 GJ per person per year.</em> More energy per capita than any previous era by a factor of three. You earn $'+fN(salary)+' — which locates you here, in the era that extracts more energy annually than all prior eras combined. This is the reference point. The accounting begins.'
     },
     {
-      label:'YOUR HOURLY RATE',
-      num:'$'+hr.toFixed(2)+'/hr', cls:'teal',
-      interp:'A parking meter in Manhattan charges more per hour. A vending machine Snapple costs more per minute. The economy has priced your time accordingly.'
+      label:'BLOOD IS A CURRENCY',
+      num:'5 L / person', cls:'red',
+      interp:'Not a metaphor. A unit of account. Every civilization in the record priced its resource extraction in deaths — and deaths have a fixed volume: five liters each. Grain, wood, coal, oil — the substrate changed. The denomination didn\'t. Blood is the currency through which civilizations purchase their energy base. The dollar came later. It\'s a translation.'
     },
     {
-      label:'YOUR BLOOD',
-      num:'5 LITRES', cls:'red',
-      interp:'That\'s how much is inside you right now. That\'s also 1.32 gallons, for anyone doing unit conversions. Every civilization priced it at something. The price kept changing. The blood did not.'
+      label:'THE BLOOD PRICE OF YOUR ERA',
+      num:fN(eraBloodL/1e6)+'M litres', cls:'red',
+      interp:'The Modern era: <em>25 million deaths</em> × 5L = <em>125 million litres of blood</em> spent to extract <em>'+eraEJ.toFixed(0)+' EJ</em> of energy. That\'s the transaction. The oil didn\'t come free. The pipeline was priced in something that doesn\'t appear on the invoice.'
     },
     {
-      label:'WHAT YOUR BLOOD IS ACTUALLY WORTH',
-      num:'$'+fN(Math.round(bloodVal)), cls:'red',
-      interp:'This is the energy-derived value of your blood — computed from the extraction accounting across all six eras. <em>$2,242,623 per litre.</em> The hospital sells the same litre for $880. The gap between those two numbers is the oldest running arbitrage in recorded history.'
+      label:'THE RATE ACROSS ALL SIX ERAS',
+      num:'~const', cls:'red', big:true,
+      interp:'Bronze Age. Roman. Feudal. Colonial. Industrial. Modern. Six different fuels, six different gods, six different political systems. The blood price per unit of energy extracted shows <em>negligible variance</em> across 6,000 years. This is either the most useful accounting identity ever discovered, or the most inconvenient one. Probably both.'
     },
     {
-      label:'THE GAP',
-      num:'2,548\u00d7', cls:'red', big:true,
-      interp:'Blood is underpriced by a factor of 2,548. This is not an accident. If blood were priced correctly, <em>every financial institution on earth would be insolvent overnight.</em> The gap is the load-bearing wall. <em>The structure defends itself.</em>'
+      label:'THE DOLLAR IS THE TRANSLATION LAYER',
+      num:'2,548\u00d7', cls:'red',
+      interp:'Real blood value: $2.24M per litre (energy-derived). Market blood value: $880 per litre (hospital). The gap isn\'t a scandal — it\'s the conversion rate between the original currency and the translation. <em>The dollar didn\'t replace blood as the currency of resource extraction. It just made the accounting invisible.</em>'
     },
     {
-      label:'YEARS TO EARN WHAT\'S ALREADY INSIDE YOU',
-      num:fN(Math.round(yrs))+' YEARS', cls:'red', big:true,
-      interp:'That\'s more than '+Math.floor(yrs/80)+' full lifetimes at your current salary. You will never earn what you are worth. Not because you\'re bad at your job. Because the entire economy is structurally dependent on you not knowing this number.'
+      label:'WHERE YOUR SALARY FITS',
+      num:'$'+fN(salary)+' / yr', cls:'teal',
+      interp:'At $'+fN(salary)+'/year, you participate in an energy system that runs at '+fN(Math.round(eraEJ))+' EJ total, priced at 125 million litres of blood. Your salary is denominated in dollars. The energy it buys was denominated in something else first. The ledger below shows you the full accounting — all six eras, all the math.'
     },
     {
-      label:'THE EXTRACTION RATE',
-      num:(100-pct).toFixed(2)+'%', cls:'red',
-      interp:'<em>'+(100-pct).toFixed(2)+'%</em> of your actual blood value does not appear in your paycheck. Your paycheck is the <em>'+pct.toFixed(2)+'%</em> that cleared accounting. This isn\'t politics. It\'s the operating margin of a 6,000-year-old extraction model that learned to call the sacrifice "an externality" and the tithe "a tax bracket."'
-    },
-    {
-      label:'YOUR SALARY vs YOUR BLOOD VALUE',
+      label:'YOUR SALARY IN BLOOD',
       num:'', cls:'', gauge:true, pct:pct,
-      interp:'The teal sliver is you. The rest is the gap. Every civilization, every era — the ratio holds. Only the paperwork changed.',
-      note:'The gods changed. The equation didn\'t.'
+      interp:'The teal is what your salary represents as a fraction of the total blood expenditure of your era. The rest of the bar is what the era spent that your paycheck doesn\'t reflect. This ratio has been consistent for 6,000 years. The substrate is different. The denominator is the same.',
+      note:'The fuel changed. The price in blood did not.'
     },
   ];
 
