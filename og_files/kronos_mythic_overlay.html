@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Devourer — Mythic Overlay</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Share+Tech+Mono&display=swap');
+
+:root {
+  --void:    #030208;
+  --deep:    #06040f;
+  --surface: #0b0818;
+  --layer:   #110e22;
+  --border:  #1c1830;
+  --muted:   #2e2848;
+  --dim:     #524870;
+  --text:    #9080b0;
+  --light:   #c8b8e0;
+  --white:   #ede8ff;
+
+  /* Each mythic form has its own signature */
+  --apep:    #1a7a40;   /* Apep — Nile green, primordial water */
+  --tiamat:  #1a4a7a;   /* Tiamat — deep sea indigo */
+  --moloch:  #7a2010;   /* Moloch/Baal — furnace red */
+  --kronos:  #6a3a90;   /* Kronos — titan purple */
+  --saturn:  #8a6a20;   /* Saturn — harvest gold */
+  --yahweh:  #7a7a7a;   /* YHWH / El — iron grey, the hidden one */
+  --bip:     #c84010;   /* Black Iron Prison — PKD orange-red */
+
+  /* substrate eras (inherited) */
+  --c-bronze:  #c87820;
+  --c-roman:   #c83030;
+  --c-feudal:  #5a8a3a;
+  --c-colonial:#8050c0;
+  --c-coal:    #607090;
+  --c-oil:     #30a0b0;
+
+  --gold: #d4a830;
+  --blood: #991800;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--void);
+  color: var(--text);
+  font-family: 'Cormorant Garamond', serif;
+  overflow-x: hidden;
+}
+
+/* ══════════════════════════════════════════════
+   HERO — full-width ritual header
+══════════════════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  padding: 80px 40px;
+  background:
+    radial-gradient(ellipse 120% 80% at 50% 50%,
+      rgba(106,58,144,0.18) 0%,
+      rgba(26,74,122,0.10) 40%,
+      transparent 75%),
+    radial-gradient(ellipse 60% 40% at 20% 80%,
+      rgba(26,122,64,0.08) 0%,
+      transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 20%,
+      rgba(122,32,16,0.08) 0%,
+      transparent 60%),
+    var(--void);
+  overflow: hidden;
+}
+
+/* ancient grid lines */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg,
+      transparent, transparent 59px,
+      rgba(255,255,255,0.015) 59px, rgba(255,255,255,0.015) 60px),
+    repeating-linear-gradient(90deg,
+      transparent, transparent 59px,
+      rgba(255,255,255,0.010) 59px, rgba(255,255,255,0.010) 60px);
+  pointer-events: none;
+}
+
+/* ouroboros ring */
+.ouroboros {
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  border: 1px solid rgba(106,58,144,0.15);
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  animation: slowspin 120s linear infinite;
+}
+.ouroboros::before {
+  content: '';
+  position: absolute; inset: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(26,122,64,0.10);
+  animation: slowspin 80s linear infinite reverse;
+}
+.ouroboros::after {
+  content: '';
+  position: absolute; inset: 80px;
+  border-radius: 50%;
+  border: 1px solid rgba(122,32,16,0.08);
+}
+@keyframes slowspin { to { transform: rotate(360deg); } }
+
+.hero-inner { position: relative; z-index: 1; max-width: 900px; }
+
+.pre-title {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  color: var(--dim);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+h1 {
+  font-family: 'Cinzel Decorative', serif;
+  font-weight: 900;
+  font-size: clamp(36px, 7vw, 88px);
+  line-height: 1.05;
+  color: var(--white);
+  letter-spacing: 0.04em;
+  margin-bottom: 16px;
+}
+
+h1 .the { color: var(--dim); font-size: 0.5em; display: block; letter-spacing: 0.3em; margin-bottom: 8px; }
+h1 .sub {
+  display: block;
+  font-family: 'Cinzel', serif;
+  font-weight: 400;
+  font-size: 0.3em;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  margin-top: 20px;
+  text-transform: uppercase;
+}
+
+.hero-desc {
+  font-size: 17px;
+  line-height: 2;
+  color: var(--dim);
+  font-style: italic;
+  max-width: 680px;
+  margin: 32px auto 0;
+}
+.hero-desc em { color: var(--light); font-style: normal; }
+
+/* name tags in hero */
+.name-ring {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 40px;
+}
+.name-tag {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  padding: 6px 14px;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  opacity: 0.7;
+}
+
+/* ══════════════════════════════════════════════
+   BODY
+══════════════════════════════════════════════ */
+.body { max-width: 1120px; margin: 0 auto; padding: 0 40px 100px; }
+
+/* ══════════════════════════════════════════════
+   SECTION
+══════════════════════════════════════════════ */
+.section { margin: 72px 0; }
+.section-head {
+  display: flex; align-items: baseline; gap: 18px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 14px; margin-bottom: 28px;
+}
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 20px; font-weight: 600;
+  color: var(--light); letter-spacing: 0.06em;
+}
+.section-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px; color: var(--dim);
+  letter-spacing: 0.12em; text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════════════
+   DEITY CARDS — 3-col grid
+══════════════════════════════════════════════ */
+.deity-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2px;
+}
+.deity-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-top: 2px;
+}
+
+.deity-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.deity-top {
+  padding: 22px 24px 18px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.deity-accent {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+.deity-glow {
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  opacity: 0.06;
+  pointer-events: none;
+}
+
+.deity-name {
+  font-family: 'Cinzel', serif;
+  font-size: 22px; font-weight: 600;
+  line-height: 1;
+  margin-bottom: 4px;
+  margin-top: 10px;
+}
+.deity-also {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8px; color: var(--dim);
+  letter-spacing: 0.14em; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.deity-culture {
+  font-size: 12px; font-style: italic; color: var(--dim);
+}
+.deity-period {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8px; color: var(--muted);
+  letter-spacing: 0.1em; margin-top: 4px;
+}
+
+.deity-body { padding: 18px 24px 22px; }
+
+.deity-function {
+  font-size: 13px; line-height: 1.8; color: var(--text);
+  margin-bottom: 14px;
+}
+
+.deity-mechanism {
+  font-size: 12px; font-style: italic; line-height: 1.7;
+  color: var(--dim);
+  border-left: 2px solid var(--border);
+  padding-left: 14px;
+  margin-bottom: 14px;
+}
+
+.deity-stats {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin-top: 14px;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+.ds-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8px; color: var(--dim);
+  letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 3px;
+}
+.ds-val {
+  font-family: 'Cinzel', serif;
+  font-size: 15px; color: var(--white);
+}
+
+/* substrate match pill */
+.substrate-match {
+  display: inline-block;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  padding: 3px 9px;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════════════
+   MAIN OVERLAY CHART — the big one
+══════════════════════════════════════════════ */
+.chart-outer {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 36px;
+  position: relative;
+  overflow: hidden;
+}
+
+.chart-outer::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(0deg,
+      transparent, transparent 49px,
+      rgba(255,255,255,0.018) 49px, rgba(255,255,255,0.018) 50px),
+    repeating-linear-gradient(90deg,
+      transparent, transparent 79px,
+      rgba(255,255,255,0.012) 79px, rgba(255,255,255,0.012) 80px);
+  pointer-events: none;
+}
+
+canvas { display: block; width: 100% !important; position: relative; z-index: 1; }
+
+/* legend */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12px;
+  color: var(--dim);
+}
+.legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.legend-line {
+  width: 24px; height: 2px;
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════════════
+   STRUCTURAL ANALYSIS
+══════════════════════════════════════════════ */
+.analysis-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2px;
+}
+
+.analysis-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 24px;
+}
+.ac-title {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  color: var(--light);
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+}
+.ac-body {
+  font-size: 12px;
+  line-height: 1.9;
+  color: var(--dim);
+  font-style: italic;
+}
+.ac-body em { color: var(--text); font-style: normal; }
+
+/* ══════════════════════════════════════════════
+   TRANSMISSION TABLE
+══════════════════════════════════════════════ */
+.ttable {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+}
+.ttable th {
+  text-align: left; color: var(--dim);
+  font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 9px 14px; border-bottom: 1px solid var(--border);
+  background: var(--deep);
+}
+.ttable td {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.025);
+  vertical-align: top;
+}
+.ttable tr:hover td { background: rgba(255,255,255,0.015); }
+
+/* ══════════════════════════════════════════════
+   CLOSING GLYPH
+══════════════════════════════════════════════ */
+.closing {
+  margin-top: 80px;
+  text-align: center;
+  padding: 60px 40px;
+  background: radial-gradient(ellipse 60% 60% at 50% 50%,
+    rgba(106,58,144,0.08) 0%, transparent 70%);
+  border-top: 1px solid var(--border);
+}
+.closing-glyph {
+  font-size: 48px;
+  margin-bottom: 24px;
+  opacity: 0.5;
+}
+.closing-title {
+  font-family: 'Cinzel', serif;
+  font-size: 18px; color: var(--light);
+  letter-spacing: 0.1em; margin-bottom: 20px;
+}
+.closing-text {
+  font-size: 16px; font-style: italic;
+  line-height: 2; color: var(--dim);
+  max-width: 700px; margin: 0 auto;
+}
+.closing-text em { color: var(--light); font-style: normal; }
+
+.footnote {
+  margin-top: 40px;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8px; color: var(--muted);
+  line-height: 2.2;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════════════ -->
+<div class="hero">
+  <div class="ouroboros"></div>
+  <div class="hero-inner">
+    <div class="pre-title">Mythic Structural Overlay · Energy-Death Conversion · v4.0</div>
+    <h1>
+      <span class="the">The</span>
+      DEVOURER
+      <span class="sub">One God — Six Faces — Six Thousand Years of Eating</span>
+    </h1>
+    <div class="hero-desc">
+      The structure does not change. <em>Only the mask changes.</em>
+      Each civilization encodes the same invariant in its cosmology:
+      a god who requires the consumption of generative life to sustain order.
+      The Mesopotamians called it Tiamat's hunger. The Egyptians called it Apep.
+      The Greeks called it Kronos. Rome called it Saturn. The Semites encoded it
+      in the firstborn sacrifice to El-Yahweh-Moloch. The modern world calls it
+      geopolitics. The children are always the same children.
+      <em>The stomach is always the same stomach.</em>
+    </div>
+    <div class="name-ring">
+      <span class="name-tag" style="color:var(--apep);">Apep · Apophis</span>
+      <span class="name-tag" style="color:var(--tiamat);">Tiamat · Abzu</span>
+      <span class="name-tag" style="color:var(--moloch);">Moloch · Baal-Hammon</span>
+      <span class="name-tag" style="color:var(--kronos);">Kronos · Cronus</span>
+      <span class="name-tag" style="color:var(--saturn);">Saturn · Saturnus</span>
+      <span class="name-tag" style="color:var(--yahweh);">El · YHWH · Yahweh</span>
+      <span class="name-tag" style="color:var(--bip);">Black Iron Prison</span>
+    </div>
+  </div>
+</div>
+
+<div class="body">
+
+<!-- ═══════════════════════════════════════════════════════
+     DEITY CARDS
+═══════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-head">
+    <div class="section-title">The Faces of the Devourer</div>
+    <div class="section-sub">structural function · substrate era · mechanism of consumption · children per EJ</div>
+  </div>
+
+  <div class="deity-grid" id="deity-grid-a"></div>
+  <div class="deity-grid-2" id="deity-grid-b" style="margin-top:2px;"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     MAIN OVERLAY CHART
+═══════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-head">
+    <div class="section-title">The Hunger Line — All Faces, One Function</div>
+    <div class="section-sub">
+      children / EJ · log scale · mythic forms overlaid as labeled bands · era data points · regression
+    </div>
+  </div>
+  <div class="chart-outer">
+    <canvas id="mainChart" height="520"></canvas>
+    <div class="legend" id="legend"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     STRUCTURAL ANALYSIS
+═══════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-head">
+    <div class="section-title">The Invariant Structure</div>
+    <div class="section-sub">what changes · what does not · the transmission chain</div>
+  </div>
+  <div class="analysis-grid">
+    <div class="analysis-card">
+      <div class="ac-title">What Changes</div>
+      <div class="ac-body">
+        The <em>substrate</em> changes every 500–1500 years. Grain → wood → coal → oil.
+        The <em>name of the god</em> changes with each culture contact event.
+        The <em>ritual form</em> changes — from literal child-burning at the Tophet
+        to metaphorical sacrifice via conscription and resource war.
+        The <em>visibility</em> of the accounting decreases over time.
+        The Bronze Age at least performed the calculation openly at an altar.
+      </div>
+    </div>
+    <div class="analysis-card">
+      <div class="ac-title">What Does Not Change</div>
+      <div class="ac-body">
+        The <em>equation</em>: generative life must be destroyed to sustain
+        the energy-surplus system that constitutes order.
+        The <em>prophecy structure</em>: the god knows the child will overthrow it,
+        and devours preemptively. Every war is this. The soldier knows.
+        The <em>cosmological justification</em>: without the sacrifice, chaos returns.
+        Apep swallows the sun. Tiamat reclaims the waters. The BIP collapses.
+        This is always the argument.
+      </div>
+    </div>
+    <div class="analysis-card">
+      <div class="ac-title">The Transmission Chain</div>
+      <div class="ac-body">
+        Tiamat/Apsu → Baal-Hammon/Moloch → El/Yahweh → Kronos/Saturn → Jupiter/Mars →
+        Christus Rex (Crusades) → the Nation-State (WWI/WWII) → the Market (oil wars).
+        Each link is a syncretism event where the devouring function
+        <em>survives</em> while the name is upgraded.
+        The Moloch-Kronos identity is explicit in Diodorus Siculus:
+        Carthaginian Baal-Hammon <em>is</em> the Greek Kronos.
+        The BIP is the final secularization: the god who ate children
+        now does it via fiscal policy and reserve currency.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     TRANSMISSION TABLE
+═══════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-head">
+    <div class="section-title">Full Transmission Record</div>
+    <div class="section-sub">face → era → substrate → mechanism → children/EJ · sources</div>
+  </div>
+  <div style="overflow-x:auto; background:var(--surface); border:1px solid var(--border);">
+    <table class="ttable">
+      <thead>
+        <tr>
+          <th>Face</th>
+          <th>Also Known As</th>
+          <th>Era</th>
+          <th>Substrate</th>
+          <th>Mechanism of Consumption</th>
+          <th>Children / EJ</th>
+          <th>Structural Role</th>
+        </tr>
+      </thead>
+      <tbody id="main-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- CLOSING -->
+<div class="closing">
+  <div class="closing-glyph">𓂀</div>
+  <div class="closing-title">The Eye That Never Closes</div>
+  <div class="closing-text">
+    Apep is not defeated. He is <em>contained</em> — bound, pierced, burned — and returns
+    the next night. This is the precise mechanics of the Black Iron Prison: the system
+    cannot be destroyed because it regenerates from the same substrate it appears to threaten.
+    Every revolution that succeeds becomes the next Kronos. Every liberating god becomes
+    the next devourer when it consolidates power. <em>Zeus is Kronos with better PR.</em>
+    The question is not which face you are looking at. The question is whether you can
+    identify the structure beneath the face before the next syncretism event renders
+    it unrecognizable again.
+    <br><br>
+    The children are still being eaten. The altar is a spreadsheet.
+    The priest is a central banker. The fire is a barrel of crude at $75.
+  </div>
+</div>
+
+<div class="footnote">
+  MYTHOLOGICAL SOURCES: Apep/Apophis — Book of Overthrowing Apep, Book of the Dead, Amduat (New Kingdom, c.1550–1069 BCE). Tiamat — Enuma Elish (Babylonian, c.1800–1200 BCE, recorded). Moloch/Baal-Hammon — Hebrew Bible (Lev 18:21, 2 Kgs 23:10, Jer 7:31); Diodorus Siculus 20.14; Tophet excavations Carthage (20,000+ urns, Oxford); Mosca, Smith (Moloch = mlk sacrifice). Kronos — Hesiod Theogony; Plato Euthyphro; Plutarch De Iside. Saturn — Cicero De Natura Deorum II; Roman Saturnalia. El/Yahweh — Exod 22:28-29; Genesis 22 (Aqedah); Ezek 20:25-26; Jephthah's daughter Judg 11; scholarly consensus: Stavrakopoulou, Heider, Ackerman, Lange on mlk-sacrifice to Yahweh. PKD/BIP — Philip K. Dick, VALIS (1981), The Exegesis; "the empire never ended." Moloch-Kronos identity — Diodorus Siculus 20.14.6 (explicit equation Baal-Hammon = Kronos). ENERGY DATA: all from v1.0–v3.0 model. Energy normalization: GJ. Children/EJ = deaths per exajoule extracted during era.
+</div>
+
+</div><!-- /body -->
+
+<script>
+// ─── DEITY DATA ───────────────────────────────────────────────────────────────
+const deities = [
+  {
+    name: "Apep",
+    also: "Apophis · Aapep · The World-Encircler",
+    culture: "Ancient Egyptian",
+    period: "c. 2400 BCE – 400 CE",
+    color: "#1a7a40",
+    eraMatch: "Bronze Age",
+    eraColor: "#c87820",
+    childrenPerEJ: 1.39,    // Bronze Age rate
+    chartYear: -2600,
+    function: "The primordial serpent of chaos who attempts to devour Ra's solar barque each night. Not a god to be worshipped — only to be ritually destroyed. His hunger is total: he wishes to return all of creation to undifferentiated darkness.",
+    mechanism: "Consumption of light-energy. Apep does not eat children — he eats the sun itself, the primary energy source of agricultural civilization. Every ritual against Apep is a ritual to keep the grain surplus flowing. The priests perform the burning of his effigy annually: a literal energy-protection rite.",
+    substrate: "Solar energy → Nile flood → grain surplus",
+    structRole: "Chaos adversary. Entropy given form. The system that collapses when surplus stops.",
+    note: "Apep cannot be permanently killed — only temporarily defeated each night. This is the honest cosmological admission that the devouring function is structural and eternal, not contingent."
+  },
+  {
+    name: "Tiamat",
+    also: "Tâmtu · Thallath · The Salt Sea",
+    culture: "Sumerian / Babylonian",
+    period: "c. 2300 – 500 BCE",
+    color: "#1a4a7a",
+    eraMatch: "Bronze Age",
+    eraColor: "#c87820",
+    childrenPerEJ: 1.39,
+    chartYear: -2000,
+    function: "The primordial salt sea. Mother of all gods. Turns destructive when her children — the irrigation engineers — drain the marshes and make the land fertile, destroying her primordial chaos. She is not evil; she is the resource base resisting extraction.",
+    mechanism: "The Enuma Elish is an allegory of agricultural conquest. Tiamat = the salt-water marshes of Mesopotamia. Marduk = the state that drains them to grow grain. The 'battle' is irrigation. The children Tiamat devours are the ones who try to stop the extraction. She is defeated, and from her body the world is built — from her eyes, the Tigris and Euphrates.",
+    substrate: "Water control → irrigation surplus → grain-state",
+    structRole: "Primordial resource. The substrate herself, resisting conversion into surplus. When the state wins, Tiamat's body becomes the infrastructure.",
+    note: "Marduk creates humanity from the blood of Qingu to 'serve the gods' — i.e., to labor. The labor theory of surplus extraction is encoded in the creation myth itself."
+  },
+  {
+    name: "Moloch",
+    also: "Baal-Hammon · Melek · Melqart · The King",
+    culture: "Phoenician / Carthaginian / Canaanite",
+    period: "c. 1400 – 146 BCE",
+    color: "#7a2010",
+    eraMatch: "Roman",
+    eraColor: "#c83030",
+    childrenPerEJ: 0.13,
+    chartYear: -800,
+    function: "The fire-god who receives literal firstborn children as burnt offerings. 20,000+ infant urns excavated at Carthage. Diodorus Siculus makes the identity explicit: Baal-Hammon is Kronos. The sacrifice intensifies during crisis — drought, siege, military threat — exactly when the energy surplus is threatened.",
+    mechanism: "The tophet operates as a futures market for divine protection. When the grain fails or the enemy approaches, the most valued asset — the child, the next generation of labor — is burned in advance payment for surplus restoration. This is the naked form of what modern states do: consume the next generation's productive capacity to maintain current order.",
+    substrate: "Grain surplus → military protection → Carthaginian trade empire",
+    structRole: "Crisis-feed mechanism. When normal extraction rates are insufficient, Kronos escalates to literal consumption of the generative layer.",
+    note: "The mlk-sacrifice debate: scholars Stavrakopoulou, Heider, Lange argue some sacrifices were to Yahweh himself. The boundary between Moloch and Yahweh is contested — which is the point."
+  },
+  {
+    name: "Kronos",
+    also: "Cronus · Χρόνος (Time) · Father of Gods",
+    culture: "Greek / Orphic",
+    period: "c. 800 BCE – 200 CE",
+    color: "#6a3a90",
+    eraMatch: "Roman",
+    eraColor: "#c83030",
+    childrenPerEJ: 0.13,
+    chartYear: -500,
+    function: "Youngest Titan, harvest-god, ruler of the Golden Age. Eats all five of his children the moment they are born. The prophecy: one will overthrow him. He devours preemptively, consuming the future to protect the present. He is also Time — and time devours all generations.",
+    mechanism: "The sickle is dual-purpose: it castrates Uranus (severs the generative capacity of the old order) and harvests grain (extracts surplus). Kronos is the god of the harvest because the harvest IS the devouring — the taking of life-force accumulated over the growing season. Eating children is harvest logic applied to generations.",
+    substrate: "Agricultural surplus → grain → Golden Age stability → fear of succession",
+    structRole: "The state as time-devourer. Each generation's surplus is consumed before the generation can use it to challenge the existing order. Conscription and debt are the modern implementation.",
+    note: "Plutarch: 'Kronos is an allegorical name for chrónos — time.' Cicero: 'Saturn is saturated with years because he devours his sons — time devours the ages.' The metaphysics is not ambiguous."
+  },
+  {
+    name: "Saturn",
+    also: "Saturnus · Dies Saturni · Saturnalia",
+    culture: "Roman",
+    period: "c. 500 BCE – 400 CE",
+    color: "#8a6a20",
+    eraMatch: "Roman",
+    eraColor: "#c83030",
+    childrenPerEJ: 0.13,
+    chartYear: -200,
+    function: "Roman syncretism of Kronos: more benign face, same structural function. God of agriculture, wealth, the harvest. Celebrated at Saturnalia — the one festival where masters serve slaves, briefly inverting the extraction relationship. This inversion is containment, not liberation: it releases pressure to sustain the system another year.",
+    mechanism: "Saturnalia as pressure-valve: the slave-master inversion lasts 7 days, then snaps back. The energy-surplus system reveals itself for one week as contingent and constructed — then reseals. Goya's painting (1820) shows what the official festival conceals: wild-eyed, blood-soaked devouring of the next body.",
+    substrate: "Roman grain provinces + slave economy + military expansion",
+    structRole: "Institutional legitimization. The devouring function is embedded in the calendar, the festival cycle, the cosmology — normalized as the price of order.",
+    note: "Saturday = Dies Saturni. The god who eats children owns the most productive day of the Roman week. This is not accidental."
+  },
+  {
+    name: "El / Yahweh",
+    also: "YHWH · Elohim · Baal (early) · The Firstborn Creditor",
+    culture: "Israelite / Judahite / early Judeo-Christian",
+    period: "c. 1200 BCE – present",
+    color: "#7a7a7a",
+    eraMatch: "Colonial",
+    eraColor: "#8050c0",
+    childrenPerEJ: 0.17,
+    chartYear: 600,
+    function: "Exodus 22:29: 'The firstborn of your sons you shall give to me.' The earliest stratum of Yahwism includes a firstborn-sacrifice requirement — later reformed into redemption via animal substitute. Scholars consensus (Stavrakopoulou, Heider, Lange): some Israelites did sacrifice firstborn to Yahweh. The Aqedah (binding of Isaac) is the pivot-point: the god who previously required the child now accepts the ram. The structural demand remains; only the token changes.",
+    mechanism: "El is the Canaanite father-god, head of the pantheon. Yahweh begins as a storm/war-god who merges with El. The sacrifice-of-firstborn is the tribute paid to the sovereign for protection of surplus — the protection-racket cosmology. As the Israelite state develops, the sacrifice is internalized as military service: the firstborn son now serves the army instead of the altar. Same extraction, new liturgy.",
+    substrate: "Land-grant agriculture → temple tribute → conquest surplus",
+    structRole: "Covenant as extraction contract. The god protects the grain; the people supply the first-fruits and firstborn. When the covenant breaks, the god devours: plague, famine, enemy invasion.",
+    note: "Martin Buber proposed 'Moloch' = 'Melekh Yahweh' (King Yahweh). Scholarly consensus: the boundary between Yahweh-worship and Moloch-worship in early Israel is contested and possibly non-existent."
+  },
+  {
+    name: "The Black Iron Prison",
+    also: "The Empire · VALIS · The Machine · Late Capital",
+    culture: "Philip K. Dick / contemporary",
+    period: "1974 CE – present",
+    color: "#c84010",
+    eraMatch: "Modern Oil",
+    eraColor: "#30a0b0",
+    childrenPerEJ: 0.013,
+    chartYear: 1990,
+    function: "PKD's Exegesis: 'The Empire never ended.' The BIP is the name for the same devouring structure in its final, fully secularized form. The god is now the market, the state, the reserve currency. The sacrifice is no longer named. The altar is a fiscal budget. The child is the soldier, the miner, the climate refugee.",
+    mechanism: "The BIP operates through information suppression: the conversion equation (children per exajoule) is not legible in official accounting. The god no longer announces its hunger — it simply processes it through war-cost externalization, climate-mortality attribution gaps, and occupational mortality statistics that nobody reads. The ritual continues. The naming has stopped.",
+    substrate: "Crude oil → industrial civilization → petrodollar reserve currency",
+    structRole: "Final secularization. The most efficient face: it extracts the same tribute with the least visible ritual. Children/EJ is at an all-time low not because the god is satisfied but because the denominator — total energy extracted — is at an all-time high.",
+    note: "PKD: 'The symbols of the divine show up in our world initially at the trash stratum.' The oil fields of Iraq are the new Tophet. The quarterly earnings report is the new Book of the Dead."
+  }
+];
+
+// ─── ERA DATA (from v3) ───────────────────────────────────────────────────────
+const eras = [
+  { name:"Bronze Age",    chartYear:-2600, childrenPerEJ:1.39,  color:"#c87820",  energyGJ:500000*14.4*1800, deathsMid:20e6 },
+  { name:"Roman",         chartYear:-100,  childrenPerEJ:0.128, color:"#c83030",  energyGJ:3e6*14.4*900,     deathsMid:15e6 },
+  { name:"Feudal",        chartYear:900,   childrenPerEJ:0.293, color:"#5a8a3a",  energyGJ:(100e6*18+1e6*14.4)*900, deathsMid:50e6 },
+  { name:"Colonial",      chartYear:1575,  childrenPerEJ:0.171, color:"#8050c0",  energyGJ:20e6*17*350,       deathsMid:12e6 },
+  { name:"Industrial",    chartYear:1850,  childrenPerEJ:2.31,  color:"#607090",  energyGJ:400e6*27*200,      deathsMid:120e6 },
+  { name:"Modern Oil",    chartYear:1990,  childrenPerEJ:0.013, color:"#30a0b0",  energyGJ:60e6*365*75*6.1,  deathsMid:25e6 },
+];
+const EJ = 1e9;
+eras.forEach(e => { e.energyEJ = e.energyGJ/EJ; });
+
+// ─── BUILD DEITY CARDS ────────────────────────────────────────────────────────
+const gridA = document.getElementById('deity-grid-a');
+const gridB = document.getElementById('deity-grid-b');
+
+deities.forEach((d, i) => {
+  const card = document.createElement('div');
+  card.className = 'deity-card';
+  card.innerHTML = `
+    <div class="deity-accent" style="background:${d.color};"></div>
+    <div class="deity-glow" style="background:${d.color};"></div>
+    <div class="deity-top">
+      <div class="deity-name" style="color:${d.color};">${d.name}</div>
+      <div class="deity-also">${d.also}</div>
+      <div class="deity-culture">${d.culture}</div>
+      <div class="deity-period">${d.period}</div>
+    </div>
+    <div class="deity-body">
+      <div class="deity-function">${d.function}</div>
+      <div class="deity-mechanism">${d.mechanism}</div>
+      <div class="deity-stats">
+        <div>
+          <div class="ds-label">Era Match</div>
+          <div class="ds-val" style="font-size:12px;color:${d.eraColor};">${d.eraMatch}</div>
+        </div>
+        <div>
+          <div class="ds-label">Children / EJ</div>
+          <div class="ds-val" style="color:${d.color};">${d.childrenPerEJ.toFixed(3)}</div>
+        </div>
+      </div>
+      <div>
+        <span class="substrate-match" style="color:${d.eraColor};">Substrate: ${d.substrate}</span>
+      </div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--muted);margin-top:10px;line-height:1.7;font-style:italic;">${d.note}</div>
+    </div>
+  `;
+  if (i < 3) gridA.appendChild(card);
+  else gridB.appendChild(card);
+});
+
+// ─── TABLE ────────────────────────────────────────────────────────────────────
+const tbody = document.getElementById('main-tbody');
+deities.forEach(d => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td style="color:${d.color};font-family:'Cinzel',serif;font-size:12px;">${d.name}</td>
+    <td style="color:var(--dim);font-size:9px;">${d.also}</td>
+    <td style="color:var(--muted);">${d.period}</td>
+    <td style="color:${d.eraColor};font-size:9px;">${d.substrate}</td>
+    <td style="color:var(--dim);font-size:9px;line-height:1.7;">${d.mechanism.substring(0,120)}…</td>
+    <td style="color:${d.color};font-family:'Cinzel',serif;">${d.childrenPerEJ.toFixed(3)}</td>
+    <td style="color:var(--muted);font-size:9px;line-height:1.7;">${d.structRole.substring(0,80)}…</td>
+  `;
+  tbody.appendChild(tr);
+});
+
+// ─── MAIN OVERLAY CHART ───────────────────────────────────────────────────────
+function drawMain() {
+  const canvas = document.getElementById('mainChart');
+  const W = canvas.offsetWidth;
+  const H = 520;
+  canvas.width = W; canvas.height = H;
+  const c = canvas.getContext('2d');
+
+  const pad = {top:40, right:60, bottom:60, left:100};
+  const pw = W-pad.left-pad.right, ph = H-pad.top-pad.bottom;
+
+  const timeMin = -3200, timeMax = 2100;
+  // y: log10(children/EJ)
+  const allVals = [...eras.map(e=>Math.log10(e.childrenPerEJ)), ...deities.map(d=>Math.log10(d.childrenPerEJ))];
+  const yMin = Math.min(...allVals)-0.8;
+  const yMax = Math.max(...allVals)+0.8;
+
+  const cx = t => pad.left+(t-timeMin)/(timeMax-timeMin)*pw;
+  const cy = y => pad.top+(1-(y-yMin)/(yMax-yMin))*ph;
+
+  c.clearRect(0,0,W,H);
+
+  // ── ERA BACKGROUND SPANS ──────────────────────────────────────────────────
+  const spans = [
+    {t0:-4000,t1:-1200,color:'#c8782008',name:'Bronze'},
+    {t0:-500, t1:476,  color:'#c8303008',name:'Roman'},
+    {t0:476,  t1:1400, color:'#5a8a3a08',name:'Feudal'},
+    {t0:1400, t1:1750, color:'#8050c008',name:'Colonial'},
+    {t0:1750, t1:1950, color:'#60709008',name:'Industrial'},
+    {t0:1950, t1:2030, color:'#30a0b008',name:'Oil'},
+  ];
+  spans.forEach(s => {
+    c.fillStyle = s.color;
+    const x0 = cx(Math.max(s.t0, timeMin));
+    const x1 = cx(Math.min(s.t1, timeMax));
+    c.fillRect(x0, pad.top, x1-x0, ph);
+  });
+
+  // ── Y-AXIS GRID ───────────────────────────────────────────────────────────
+  for (let y=Math.floor(yMin); y<=Math.ceil(yMax); y+=0.5) {
+    c.beginPath(); c.moveTo(pad.left, cy(y)); c.lineTo(W-pad.right, cy(y));
+    c.strokeStyle = Number.isInteger(y) ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.02)';
+    c.lineWidth = 1; c.stroke();
+  }
+  for (let y=Math.floor(yMin); y<=Math.ceil(yMax); y++) {
+    c.fillStyle='#2e2848'; c.font='9px Share Tech Mono,monospace'; c.textAlign='right';
+    c.fillText('10^'+y, pad.left-8, cy(y)+3);
+  }
+
+  // ── X-AXIS ────────────────────────────────────────────────────────────────
+  const xticks = [-3000,-2000,-1000,0,500,1000,1500,1750,1900,1950,2000];
+  xticks.forEach(t => {
+    c.beginPath(); c.moveTo(cx(t),pad.top); c.lineTo(cx(t),H-pad.bottom);
+    c.strokeStyle='rgba(255,255,255,0.025)'; c.lineWidth=1; c.stroke();
+    c.fillStyle='#2e2848'; c.font='8px Share Tech Mono,monospace'; c.textAlign='center';
+    c.fillText(t<0?Math.abs(t)+'B':t+'CE', cx(t), H-pad.bottom+14);
+  });
+
+  // ── DEITY HORIZONTAL BANDS ────────────────────────────────────────────────
+  // Each deity: draw a faint horizontal band at their children/EJ level
+  // spanning the era they're active
+  const deityBands = [
+    {d:deities[0], t0:-2600, t1:-1000},   // Apep
+    {d:deities[1], t0:-2300, t1:-500},    // Tiamat
+    {d:deities[2], t0:-1400, t1:-146},    // Moloch
+    {d:deities[3], t0:-800,  t1:400},     // Kronos
+    {d:deities[4], t0:-500,  t1:400},     // Saturn
+    {d:deities[5], t0:-1200, t1:1500},    // El/Yahweh
+    {d:deities[6], t0:1900,  t1:2030},    // BIP
+  ];
+
+  deityBands.forEach(({d, t0, t1}) => {
+    const logV = Math.log10(d.childrenPerEJ);
+    const x0 = cx(t0), x1 = cx(t1);
+    const yc = cy(logV);
+
+    // faint fill band ±0.2 log units
+    const yTop = cy(logV+0.15), yBot = cy(logV-0.15);
+    c.fillStyle = d.color + '18';
+    c.fillRect(x0, yTop, x1-x0, yBot-yTop);
+
+    // solid line
+    c.beginPath(); c.moveTo(x0, yc); c.lineTo(x1, yc);
+    c.strokeStyle = d.color + '55';
+    c.lineWidth = 1.5;
+    c.setLineDash([5,4]); c.stroke(); c.setLineDash([]);
+
+    // name label at right edge
+    c.fillStyle = d.color + 'cc';
+    c.font = 'italic 10px Cormorant Garamond,serif';
+    c.textAlign = 'right';
+    if (x1 < W - pad.right - 4) {
+      c.fillText(d.name, x1-4, yc-5);
+    }
+  });
+
+  // ── OLS ON ERA DATA ───────────────────────────────────────────────────────
+  const xs = eras.map(e=>e.chartYear);
+  const ys = eras.map(e=>Math.log10(e.childrenPerEJ));
+  const n=xs.length, xm=xs.reduce((a,b)=>a+b)/n, ym=ys.reduce((a,b)=>a+b)/n;
+  let ssxy=0,ssxx=0,ssyy=0;
+  xs.forEach((x,i)=>{ssxy+=(x-xm)*(ys[i]-ym);ssxx+=(x-xm)**2;ssyy+=(ys[i]-ym)**2;});
+  const b1=ssxy/ssxx, b0=ym-b1*xm, r2=ssxy**2/(ssxx*ssyy);
+  const resid=ys.map((y,i)=>y-(b0+b1*xs[i]));
+  const mse=resid.reduce((a,r)=>a+r*r)/(n-2);
+
+  // CI band
+  const bpts=[];
+  for(let i=0;i<=100;i++){
+    const x=timeMin+(timeMax-timeMin)*i/100;
+    const yh=b0+b1*x;
+    const se=Math.sqrt(mse*(1/n+(x-xm)**2/ssxx));
+    bpts.push({x,hi:yh+1.96*se,lo:yh-1.96*se});
+  }
+  c.beginPath();
+  c.moveTo(cx(bpts[0].x),cy(bpts[0].hi));
+  bpts.forEach(p=>c.lineTo(cx(p.x),cy(p.hi)));
+  for(let i=bpts.length-1;i>=0;i--)c.lineTo(cx(bpts[i].x),cy(bpts[i].lo));
+  c.closePath();
+  c.fillStyle='rgba(106,58,144,0.07)'; c.fill();
+
+  // regression line
+  c.beginPath();
+  c.moveTo(cx(timeMin),cy(b0+b1*timeMin));
+  c.lineTo(cx(timeMax),cy(b0+b1*timeMax));
+  c.strokeStyle='rgba(106,58,144,0.45)';
+  c.lineWidth=1.5; c.setLineDash([6,4]); c.stroke(); c.setLineDash([]);
+
+  // mean line
+  c.beginPath(); c.moveTo(pad.left,cy(ym)); c.lineTo(W-pad.right,cy(ym));
+  c.strokeStyle='rgba(212,168,48,0.25)'; c.lineWidth=1;
+  c.setLineDash([2,6]); c.stroke(); c.setLineDash([]);
+  c.fillStyle='rgba(212,168,48,0.5)'; c.font='8px Share Tech Mono,monospace'; c.textAlign='left';
+  c.fillText('μ=10^'+ym.toFixed(2)+' children/EJ', pad.left+6, cy(ym)-5);
+
+  // ── ERA DATA POINTS ───────────────────────────────────────────────────────
+  eras.forEach(e => {
+    const x=cx(e.chartYear), yc=cy(Math.log10(e.childrenPerEJ));
+    c.beginPath(); c.arc(x,yc,8,0,Math.PI*2);
+    c.fillStyle=e.color; c.fill();
+    c.strokeStyle='#030208'; c.lineWidth=2; c.stroke();
+    c.fillStyle=e.color+'cc'; c.font='bold 9px Cinzel,serif'; c.textAlign='center';
+    c.fillText(e.name.split('/')[0], x, yc-13);
+  });
+
+  // ── DEITY INTERSECTION MARKERS ────────────────────────────────────────────
+  // Where a deity's canonical period center falls: mark with a different symbol
+  deityBands.forEach(({d, t0, t1}) => {
+    const tMid = (t0+t1)/2;
+    const x = cx(tMid);
+    const yc = cy(Math.log10(d.childrenPerEJ));
+    // diamond
+    c.beginPath();
+    c.moveTo(x, yc-7);
+    c.lineTo(x+7, yc);
+    c.lineTo(x, yc+7);
+    c.lineTo(x-7, yc);
+    c.closePath();
+    c.fillStyle=d.color+'88'; c.fill();
+    c.strokeStyle=d.color; c.lineWidth=1; c.stroke();
+  });
+
+  // regression annotation
+  c.fillStyle='rgba(106,58,144,0.5)'; c.font='8px Share Tech Mono,monospace'; c.textAlign='left';
+  c.fillText(`OLS: β₁=${b1.toFixed(5)}  R²=${r2.toFixed(3)}  n=${n} (era data)`, pad.left+8, pad.top+16);
+
+  // axis label
+  c.fillStyle='#2e2848'; c.font='9px Share Tech Mono,monospace';
+  c.save(); c.translate(16,H/2); c.rotate(-Math.PI/2); c.textAlign='center';
+  c.fillText('CHILDREN / EXAJOULE  (log₁₀)', 0, 0); c.restore();
+}
+
+// ─── LEGEND ───────────────────────────────────────────────────────────────────
+function buildLegend() {
+  const legend = document.getElementById('legend');
+  const items = [
+    ...eras.map(e => ({label: e.name+' (era data)', color: e.color, type:'dot'})),
+    ...deities.map(d => ({label: d.name, color: d.color, type:'line'})),
+    {label:'OLS regression', color:'rgba(106,58,144,0.6)', type:'line'},
+    {label:'Mean', color:'rgba(212,168,48,0.5)', type:'line'},
+  ];
+  items.forEach(item => {
+    const div = document.createElement('div');
+    div.className='legend-item';
+    if (item.type==='dot') {
+      div.innerHTML=`<div class="legend-dot" style="background:${item.color};"></div><span>${item.label}</span>`;
+    } else {
+      div.innerHTML=`<div class="legend-line" style="background:${item.color};"></div><span>${item.label}</span>`;
+    }
+    legend.appendChild(div);
+  });
+}
+
+function init() { drawMain(); buildLegend(); }
+window.addEventListener('resize', ()=>{ document.getElementById('legend').innerHTML=''; init(); });
+window.addEventListener('load', init);
+setTimeout(init, 100);
+</script>
+</body>
+</html>

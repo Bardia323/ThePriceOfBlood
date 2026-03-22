@@ -643,6 +643,16 @@ body { overflow-x:hidden; }
 
 .foot::before { content:'†'; margin-right:8px; color:var(--red-dark); }
 
+.foot-redo {
+  display:block; margin:12px auto 0;
+  background:none; border:1px dashed var(--border);
+  color:var(--smoke); font-family:var(--font-type);
+  font-size:9px; letter-spacing:0.1em;
+  padding:4px 12px; cursor:pointer;
+  transition:all 0.2s;
+}
+.foot-redo:hover { color:var(--red); border-color:var(--red-dark); border-style:solid; }
+
 /* ── BLOOD/EJ BAR CHART ──────────────────────── */
 .era-bars {
   width: min(600px, 88vw);
@@ -770,7 +780,7 @@ body { overflow-x:hidden; }
       <div class="era-cells" id="era-cells"></div>
       <div class="era-insight" id="era-insight"></div>
 
-      <div class="margin-note" id="era-note">Different fuel. Same price in blood.</div></div>
+      <div class="margin-note" id="era-note">Different fuel. Same price in blood.</div>
     </div>
 
     <!-- ═══════ EVIDENCE ═══════ -->
@@ -801,7 +811,12 @@ body { overflow-x:hidden; }
       </div>
     </div>
 
-    <div class="foot">Bureau of Mortality Economics · Est. 4000 BCE · "We never close"</div>
+    <div class="foot">
+      Bureau of Mortality Economics · Est. 4000 BCE · "We never close"
+      <button class="foot-redo" id="redo-btn">↺ start over</button>
+    </div>
+  </div>
+
   </div>
 
 </div>
@@ -887,6 +902,15 @@ inp.addEventListener('input',function(){
 inp.addEventListener('keydown',function(e){if(e.key==='Enter')go();});
 document.getElementById('go-btn').addEventListener('click',go);
 document.getElementById('skip-btn').addEventListener('click',function(){inp.value='60,000';go();});
+
+/* ═══════ REDO ═══════ */
+document.getElementById('redo-btn').addEventListener('click',function(){
+  sessionStorage.removeItem('pob-salary');
+  document.getElementById('result-phase').style.display='none';
+  document.getElementById('prompt-phase').style.display='block';
+  document.getElementById('salary-in').value='';
+  window.scrollTo({top:0,behavior:'smooth'});
+});
 
 function go(){
   salary=parseInt(inp.value.replace(/[^0-9]/g,''))||60000;

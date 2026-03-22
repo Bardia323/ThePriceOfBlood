@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Escaped — What Gets Vomited Back</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Share+Tech+Mono&display=swap');
+
+:root {
+  --void:   #03020a;
+  --deep:   #07051a;
+  --sfc:    #0d0b22;
+  --layer:  #13102e;
+  --border: #221e42;
+  --muted:  #342f5a;
+  --dim:    #5a5282;
+  --text:   #9a90c0;
+  --light:  #ccc0e8;
+  --white:  #eee8ff;
+
+  /* The escapees — light spectrum, each distinct */
+  --stone:    #8a8a8a;   /* Rhea's Stone — inert, grey, the substitution */
+  --osiris:   #2a9a50;   /* Osiris — green of resurrection, grain */
+  --horus:    #d4a020;   /* Horus — gold, the avenging eye */
+  --dionysus: #7a20a0;   /* Dionysus — vine-purple */
+  --sophia:   #20a0c0;   /* Sophia's Spark — cold blue light */
+  --valis:    #e04010;   /* VALIS — PKD red, the transmission */
+  --pneuma:   #f0d040;   /* The Pneuma — golden divine breath */
+
+  /* devourer colors (inherited/referenced) */
+  --kronos:  #6a3a90;
+  --bip:     #c84010;
+  --gold:    #d4a830;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--void);
+  color: var(--text);
+  font-family: 'Cormorant Garamond', serif;
+  overflow-x: hidden;
+}
+
+/* ══════════════════════════════════════════════
+   HERO
+══════════════════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center; position: relative;
+  padding: 80px 40px;
+  background:
+    radial-gradient(ellipse 100% 60% at 50% 0%,
+      rgba(32,160,192,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 60% at 20% 100%,
+      rgba(42,154,80,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 60% at 80% 100%,
+      rgba(122,32,160,0.08) 0%, transparent 60%),
+    var(--void);
+  overflow: hidden;
+}
+
+/* ascending particles */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle 1px at 20% 80%, rgba(32,160,192,0.4) 0%, transparent 100%),
+    radial-gradient(circle 1px at 40% 60%, rgba(42,154,80,0.3) 0%, transparent 100%),
+    radial-gradient(circle 1px at 60% 70%, rgba(212,160,32,0.35) 0%, transparent 100%),
+    radial-gradient(circle 1px at 80% 50%, rgba(122,32,160,0.3) 0%, transparent 100%),
+    radial-gradient(circle 2px at 30% 40%, rgba(32,160,192,0.25) 0%, transparent 100%),
+    radial-gradient(circle 1px at 70% 30%, rgba(240,208,64,0.4) 0%, transparent 100%),
+    radial-gradient(circle 2px at 50% 20%, rgba(224,64,16,0.3) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.hero-inner { position: relative; z-index: 1; max-width: 900px; }
+
+.pre-title {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px; letter-spacing: 0.35em;
+  color: var(--dim); text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+h1 {
+  font-family: 'Cinzel Decorative', serif;
+  font-weight: 900;
+  font-size: clamp(32px, 6vw, 76px);
+  line-height: 1.05;
+  color: var(--white);
+  letter-spacing: 0.03em;
+  margin-bottom: 16px;
+}
+
+h1 .escaped { color: var(--sophia); }
+h1 .divider { color: var(--muted); font-weight: 300; }
+h1 .sub {
+  display: block;
+  font-family: 'Cinzel', serif;
+  font-weight: 400;
+  font-size: 0.32em;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  margin-top: 20px;
+  text-transform: uppercase;
+}
+
+.hero-desc {
+  font-size: 17px; line-height: 2;
+  color: var(--dim); font-style: italic;
+  max-width: 720px; margin: 32px auto 0;
+}
+.hero-desc em { color: var(--light); font-style: normal; }
+
+/* structural equation in hero */
+.hero-equation {
+  margin: 40px auto;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 2.2;
+  max-width: 640px;
+  text-align: left;
+  background: rgba(13,11,34,0.8);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--sophia);
+  padding: 20px 24px;
+}
+.hero-equation .hl  { color: var(--sophia); }
+.hero-equation .hl2 { color: var(--gold); }
+.hero-equation .hl3 { color: var(--valis); }
+.hero-equation .cm  { color: var(--muted); font-size: 10px; }
+
+/* ══════════════════════════════════════════════
+   BODY
+══════════════════════════════════════════════ */
+.body { max-width: 1120px; margin: 0 auto; padding: 0 40px 100px; }
+
+.section { margin: 72px 0; }
+.section-head {
+  display: flex; align-items: baseline; gap: 18px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 14px; margin-bottom: 28px;
+}
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 20px; font-weight: 600;
+  color: var(--light); letter-spacing: 0.06em;
+}
+.section-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px; color: var(--dim);
+  letter-spacing: 0.12em; text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════════════
+   ESCAPE CARDS — the core of this artifact
+══════════════════════════════════════════════ */
+.escape-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2px;
+}
+.escape-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-top: 2px;
+}
+
+.escape-card {
+  background: var(--sfc);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Light bleeding upward from the escape */
+.escape-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 80%; height: 200px;
+  border-radius: 50%;
+  opacity: 0.04;
+  pointer-events: none;
+  filter: blur(30px);
+}
+
+.ec-top {
+  padding: 24px 26px 18px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+.ec-accent {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+}
+
+.ec-number {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 48px;
+  line-height: 1;
+  opacity: 0.08;
+  position: absolute;
+  top: 16px; right: 20px;
+  letter-spacing: -0.05em;
+}
+
+.ec-name {
+  font-family: 'Cinzel', serif;
+  font-size: 22px; font-weight: 600;
+  line-height: 1; margin-bottom: 6px;
+  margin-top: 4px;
+}
+
+.ec-also {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8px; color: var(--dim);
+  letter-spacing: 0.14em; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.ec-tradition {
+  font-size: 12px; font-style: italic; color: var(--dim);
+}
+
+.ec-body { padding: 20px 26px 24px; }
+
+.ec-mechanism {
+  font-size: 14px; line-height: 1.9; color: var(--text);
+  margin-bottom: 16px;
+}
+
+.ec-structural {
+  font-size: 12px; font-style: italic; line-height: 1.8;
+  color: var(--dim);
+  border-left: 2px solid var(--border);
+  padding-left: 14px;
+  margin-bottom: 16px;
+}
+
+.ec-modern {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+  line-height: 1.8;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+  margin-top: 4px;
+}
+
+.ec-modern strong { color: var(--text); }
+
+/* ══════════════════════════════════════════════
+   MAIN CHART — escape vectors mapped
+══════════════════════════════════════════════ */
+.chart-outer {
+  background: var(--sfc);
+  border: 1px solid var(--border);
+  padding: 36px;
+  position: relative;
+  overflow: hidden;
+}
+.chart-outer::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(0deg,
+      transparent, transparent 49px,
+      rgba(255,255,255,0.015) 49px, rgba(255,255,255,0.015) 50px),
+    repeating-linear-gradient(90deg,
+      transparent, transparent 79px,
+      rgba(255,255,255,0.010) 79px, rgba(255,255,255,0.010) 80px);
+  pointer-events: none;
+}
+canvas { display: block; width: 100% !important; position: relative; z-index: 1; }
+
+/* ══════════════════════════════════════════════
+   MATRIX — escape vs devourer mapping
+══════════════════════════════════════════════ */
+.matrix-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+.matrix-cell {
+  background: var(--sfc);
+  border: 1px solid var(--border);
+  padding: 14px 12px;
+  text-align: center;
+}
+.matrix-header {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+}
+.matrix-val {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 18px;
+  margin-top: 6px;
+}
+.matrix-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 7px;
+  color: var(--dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* ══════════════════════════════════════════════
+   THE STONE — central theorem
+══════════════════════════════════════════════ */
+.theorem {
+  background: var(--deep);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--sophia);
+  padding: 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.theorem::before {
+  content: '𓂀';
+  position: absolute;
+  font-size: 200px;
+  opacity: 0.025;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.theorem-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 24px; color: var(--white);
+  letter-spacing: 0.08em;
+  margin-bottom: 24px;
+}
+.theorem-body {
+  font-size: 17px;
+  font-style: italic;
+  line-height: 2.2;
+  color: var(--dim);
+  max-width: 800px;
+  margin: 0 auto;
+}
+.theorem-body em { color: var(--light); font-style: normal; }
+.theorem-body strong { color: var(--sophia); font-style: normal; font-weight: 400; }
+.theorem-body .valis { color: var(--valis); }
+
+/* ══════════════════════════════════════════════
+   CLOSING
+══════════════════════════════════════════════ */
+.closing {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-top: 72px;
+}
+.closing-panel {
+  background: var(--sfc);
+  border: 1px solid var(--border);
+  padding: 32px;
+}
+.closing-title {
+  font-family: 'Cinzel', serif;
+  font-size: 15px; color: var(--light);
+  letter-spacing: 0.08em;
+  margin-bottom: 16px;
+}
+.closing-body {
+  font-size: 13px; font-style: italic;
+  line-height: 2; color: var(--dim);
+}
+.closing-body em { color: var(--text); font-style: normal; }
+
+.footnote {
+  margin-top: 40px;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8px; color: var(--muted);
+  line-height: 2.2;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="pre-title">v5.0 · The Inversion · What Escapes the Stomach · Cross-Tradition Structural Analysis</div>
+    <h1>
+      THE <span class="escaped">ESCAPED</span>
+      <span class="sub">What Gets Vomited Back When You Feed the God a Stone</span>
+    </h1>
+    <div class="hero-desc">
+      Every tradition that encodes the Devourer also encodes the escape.
+      Not as hope — as <em>structural necessity.</em>
+      The god cannot consume everything or the substrate collapses.
+      Something must survive inside the stomach.
+      Something must be reconstituted from the scattered pieces.
+      Something must be <em>smuggled through</em> in the one body the god never checks.
+      <br><br>
+      The stone is not a lie. The stone is a <em>technology.</em>
+    </div>
+
+    <div class="hero-equation">
+      <span class="cm">// The master equation of escape</span><br>
+      <span class="hl">ESCAPE</span> = f(substitution | reconstitution | smuggling | transmission)<br><br>
+      <span class="cm">// Four structural modes — each tradition uses one or more</span><br>
+      <span class="hl2">MODE_1</span>: SUBSTITUTION — feed the god a token, not the child. [Rhea's Stone]<br>
+      <span class="hl2">MODE_2</span>: RECONSTITUTION — scatter + reassemble. The pieces survive. [Osiris/Isis]<br>
+      <span class="hl2">MODE_3</span>: SMUGGLING — hide the spark inside the prison's own body. [Sophia/Pneuma]<br>
+      <span class="hl3">MODE_4</span>: TRANSMISSION — broadcast from outside into a closed system. [VALIS]<br><br>
+      <span class="cm">// The invariant: Kronos cannot consume what he cannot identify.</span><br>
+      <span class="cm">// The escape always exploits a gap in the devourer's recognition system.</span><br>
+      <span class="hl">recognition_gap</span> = the fixed point through which every escape passes
+    </div>
+  </div>
+</div>
+
+<div class="body">
+
+<!-- ═══════════════════════════════════════════════════════
+     ESCAPE CARDS
+═══════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-head">
+    <div class="section-title">The Seven Escape Vectors</div>
+    <div class="section-sub">mechanism · structural mode · what evades recognition · modern instantiation</div>
+  </div>
+  <div class="escape-grid" id="escape-grid-a"></div>
+  <div class="escape-grid-2" id="escape-grid-b" style="margin-top:2px;"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     MAIN CHART — all vectors on the hunger timeline
+═══════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-head">
+    <div class="section-title">Escape Vectors Mapped onto the Hunger Line</div>
+    <div class="section-sub">
+      devourer feed rate (children/EJ) · escape events marked · recognition gap shown · transmission range of VALIS
+    </div>
+  </div>
+  <div class="chart-outer">
+    <canvas id="mainChart" height="540"></canvas>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     MATRIX
+═══════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-head">
+    <div class="section-title">Escape × Devourer Correspondence Matrix</div>
+    <div class="section-sub">each escape vector maps structurally onto a devourer face · same slot, opposite function</div>
+  </div>
+  <div id="matrix-container"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     THE STONE THEOREM
+═══════════════════════════════════════════════════════ -->
+<div class="theorem">
+  <div class="theorem-title">The Theorem of the Stone</div>
+  <div class="theorem-body">
+    The stone Rhea feeds to Kronos is not deception. It is <em>the first information technology.</em>
+    It exploits a gap in the recognition system of the devourer: the god confirms
+    the shape and weight of a swaddled form but cannot read its interior.
+    <em>The god consumes the representation, not the reality.</em>
+    <br><br>
+    This is the universal escape mechanism across all traditions:
+    <br><br>
+    Sophia hides the divine spark <strong>inside the architecture of the prison itself</strong> — Yaldabaoth
+    breathes it into Adam without knowing. The devourer becomes
+    the unwitting carrier of the thing that will undo it.
+    <br><br>
+    Osiris is scattered — but <em>Isis knows the topology of the scattering.</em>
+    The dismemberment is not destruction, it is distribution.
+    Fourteen pieces across fourteen nomes: the information is preserved,
+    redundantly encoded in the land itself. Set cannot destroy what
+    he has already spread across every province.
+    <br><br>
+    <span class="valis">PKD's VALIS</span> is the modern form of the same operation:
+    a transmission from outside the closed system, indistinguishable from noise
+    to the archons, but legible to those with the recognition key.
+    The empire cannot jam what it cannot identify as a signal.
+    <br><br>
+    <em>The escape always passes through the recognition gap.
+    Find what the god cannot see. That is the door.</em>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     CLOSING PANELS
+═══════════════════════════════════════════════════════ -->
+<div class="closing">
+  <div class="closing-panel">
+    <div class="closing-title">Zeus Is Still Kronos</div>
+    <div class="closing-body">
+      The deepest structural truth of the escape mythology is the one
+      every tradition buries: <em>Zeus becomes Kronos.</em>
+      The Olympian who overthrew the Titan king proceeded to:
+      swallow his own pregnant wife Metis (fearing the child would overthrow him),
+      bind Prometheus to a rock for giving fire — that is, <em>surplus energy</em>
+      — to humans, and father a new set of wars over new resource geographies.
+      <br><br>
+      The escape is real. The escape also <em>recapitulates the structure.</em>
+      Every liberation movement that succeeds and institutionalizes
+      becomes the next devourer. The Gnostic version is cleaner: the Savior
+      that descends to rescue Sophia from chaos is itself dispatched by
+      a higher pleroma — the escape structure has its own hierarchy,
+      its own potential for capture.
+      <br><br>
+      The stone theorem does not guarantee freedom. It guarantees
+      <em>one generation of survival.</em> Zeus must then solve the same problem
+      his father faced — and he solves it the same way.
+    </div>
+  </div>
+  <div class="closing-panel">
+    <div class="closing-title">The Recognition Gap Is Not Fixed</div>
+    <div class="closing-body">
+      Every escape works exactly once per technology.
+      The first substitution — Rhea's stone — works because Kronos has
+      never been deceived. The second time, the god has a new heuristic.
+      The BIP does not fall for the same stone twice.
+      <br><br>
+      <em>Sophia's smuggled spark</em> worked because Yaldabaoth did not know
+      what divine light looked like — he had never seen the Pleroma.
+      Once he learned, the Archons were set as gatekeepers at every sphere,
+      checking ascending souls for exactly the pneuma they had missed before.
+      <br><br>
+      VALIS broadcasts in the frequency the empire cannot yet detect.
+      This does not mean it will always be undetectable.
+      The archons learn. The recognition gap closes.
+      What this means for the modern form of the escape:
+      the signal must change faster than the prison's ability
+      to recognize it. <em>The escape is not a destination.
+      It is a rate of change.</em>
+    </div>
+  </div>
+</div>
+
+<div class="footnote">
+  ESCAPE SOURCES: Rhea's Stone / Zeus — Hesiod Theogony 453–491; Apollodorus Library I.1.5–7; Pindar Olympian Ode I. The Omphalos stone is the navel-stone at Delphi, said to be the actual stone Kronos vomited. Osiris — Pyramid Texts (c.2400 BCE); Plutarch De Iside et Osiride; Book of the Dead Spell 17. Fourteen pieces: the nomes of Egypt as distributed tomb sites. Phallus reconstituted from golden model by Isis. Horus conceived posthumously, the avenger born from the distributed body. Dionysus — Orphic hymns; Diodorus Siculus 3.62; Titan dismemberment, heart rescued by Athena, reconstituted by Zeus who swallows the heart. Born again from the thigh of Zeus after Semele burns. Prometheus / Fire — Hesiod Theogony 507–616, Works and Days 47–105. Fire = stolen surplus energy. Prometheus bound = the archon response to unauthorized energy distribution. Sophia/Pneuma — Apocryphon of John (Nag Hammadi, c.2nd–4th CE); Pistis Sophia; Valentinian Gospel of Truth. Yaldabaoth breathes Sophia's stolen light into Adam unknowingly (Apocryphon of John II.19). This is the structural pivot: the prison contains the key to its own dissolution. VALIS — Philip K. Dick, VALIS (1981); The Exegesis of Philip K. Dick (2011 posthumous); Tractate Cryptica Scriptura. 2-3-74 experience: pink beam of information, anamnesis, ΙΧΘΥΣ. "The Empire never ended." The information is orthogonal to the noise floor. Pharmacos/Scapegoat — Leviticus 16 (Azazel); Greek pharmakos ritual; René Girard Violence and the Sacred (1972). The surrogate body absorbs the god's hunger, protecting the real generative layer. Girard: mimetic violence requires a sacrificial victim to discharge. Zoe (Life) daughter of Sophia — Hypostasis of the Archons (Nag Hammadi II.4); rebukes Yaldabaoth directly when he proclaims himself the only god. "You are wrong, Samael" — blindness/deafness of the demiurge as structural condition.
+</div>
+
+</div><!-- /body -->
+
+<script>
+// ─── ESCAPE DATA ──────────────────────────────────────────────────────────────
+const escapes = [
+  {
+    n: "I",
+    name: "Rhea's Stone",
+    also: "The Omphalos · The Substitution · The Token",
+    tradition: "Greek / Olympian",
+    color: "#8a8a8a",
+    chartYear: -700,
+    mode: "SUBSTITUTION",
+    devourer: "Kronos",
+    devColor: "#6a3a90",
+    mechanism: "Rhea wraps a stone in swaddling clothes and presents it to Kronos as the newborn Zeus. The god consumes the representation, not the reality. Zeus is hidden in Crete, raised by nymphs, outside the recognition radius of the devourer. The stone itself becomes the Omphalos — the navel-stone of Delphi, vomited back up when Zeus forces Kronos to disgorge — the first artifact of the escape, displayed publicly as a sacred object.",
+    structural: "The devourer's weakness: it confirms form, not substance. The substitution exploits a gap between the signifier (swaddled form, weight, warmth) and the signified (actual child). Once the gap is located, the escape is trivial. The child survives in a remote cave — outside the grid of the system — fed by a goat (Amalthea, horn of plenty: the escape is nourished by surplus outside the controlled economy).",
+    modern: "MODERN FORM: Any token system where the signifier diverges from the referent. Shell companies. Proxy ownership. Dummy beneficiaries. The real asset is hidden behind a paper child. The god of tax regulation or sanctions enforcement checks the form, not the substance. The recognition gap is exploited at scale. Also: narrative substitution — the war is presented as humanitarian while the energy calculation runs silently underneath.",
+  },
+  {
+    n: "II",
+    name: "Osiris Scattered",
+    also: "The Distributed Corpus · Solve et Coagula · Fourteen Pieces",
+    tradition: "Egyptian (Old–New Kingdom)",
+    color: "#2a9a50",
+    chartYear: -2400,
+    mode: "RECONSTITUTION",
+    devourer: "Set / Apep",
+    devColor: "#7a2010",
+    mechanism: "Set dismembers Osiris into fourteen pieces and scatters them across Egypt. This appears to be total destruction. It is the opposite: distributed encoding. Isis knows the topology of the scattering — she travels to each location, builds a tomb, and in building the tomb marks the location of the fragment. The information is preserved redundantly in the land itself. Set cannot destroy what he has already spread. Isis reconstitutes Osiris as the first mummy. One piece is missing — the phallus, eaten by a fish — so she constructs a golden prosthetic. The reconstituted body is not the original: it is transformed. Osiris becomes Lord of the Dead, not king of the living. The escape yields a different being than the one consumed.",
+    structural: "Dismemberment is not annihilation — it is dispersal. The chaoskampf model requires the enemy to stay concentrated and coherent to be defeated. When scattered, it distributes into the substrate. Set cannot collect fourteen fragments simultaneously. Isis moves at the speed of memory and devotion — both faster than Set's rage. The missing phallus (the generative organ) is replaced with gold — the artificial organ is more durable than the biological one. Horus, conceived from the reconstituted body, is born to avenge and restore: the escape generates the next avenger.",
+    modern: "MODERN FORM: Distributed systems, redundant encoding, dead man's switches. The dissident's information that cannot be killed because it has already been copied to fourteen jurisdictions. Samizdat. The Streisand Effect. WikiLeaks: the documents were already in 100,000 hands before the suppression order arrived. Isis = the intelligence that knows where all the pieces are.",
+  },
+  {
+    n: "III",
+    name: "Sophia's Spark",
+    also: "The Pneuma · The Smuggled Light · Lux in Tenebris",
+    tradition: "Valentinian / Sethian Gnosticism",
+    color: "#20a0c0",
+    chartYear: 200,
+    mode: "SMUGGLING",
+    devourer: "Yaldabaoth / Demiurge",
+    devColor: "#7a7a7a",
+    mechanism: "Sophia's stolen light-power is breathed unknowingly into Adam by Yaldabaoth. The demiurge, trying to animate his own inferior creation, uses Sophia's divine pneuma — the very thing she lost when he was born — and inadvertently installs it inside humanity. The prison contains its own key. The archons then spend all of history trying to keep humans distracted (the counterfeit spirit, the spirit of ignorance, false religions) to prevent the pneuma from recognizing itself. Gnosis is anamnesis — not learning something new but remembering what was always already inside.",
+    structural: "The most elegant escape: the devourer installs the escape mechanism itself, without knowing. Yaldabaoth has no model of what divine light looks like — he has never seen the Pleroma — so he cannot identify it when he holds it. He breathes it in because it looks like power, and power is the only thing he recognizes. This is the recognition gap as total blindness to quality: Yaldabaoth can measure force but not light. The pneuma is undetectable to any instrument that only measures weight.",
+    modern: "MODERN FORM: Every institution that installs its own critique. The university that teaches critical theory. The empire that funds the free press. The corporation that sells philosophy of consciousness. The mechanism of radical transparency inside a captured institution: the spark is inside but the archons haven't identified it yet. Also: encryption — the message is inside the noise, indistinguishable unless you have the key. Yaldabaoth sees ciphertext; the pneuma-holder sees plaintext.",
+  },
+  {
+    n: "IV",
+    name: "Prometheus Bound",
+    also: "Stolen Fire · Stolen Surplus · The Punished Escaper",
+    tradition: "Greek / Titanomachic",
+    color: "#d4a020",
+    chartYear: -600,
+    mode: "TRANSMISSION",
+    devourer: "Zeus / Olympian Order",
+    devColor: "#8a6a20",
+    mechanism: "Prometheus steals fire — the surplus energy the gods have monopolized — and gives it to humans. This is not metaphor: fire is the ability to process food more efficiently, smelt metal, extend the day, build tools. It is the first energy democracy. Zeus punishes this with eternal suffering — liver eaten by eagle, regenerated, eaten again: the same regeneration structure as Osiris, but now as punishment rather than liberation. Prometheus does not escape but makes escape possible for others. He is the relay, not the destination.",
+    structural: "The energy theft as social technology. The Olympian extraction system (humans offer sacrifice smoke, gods get the good parts) depends on humans not having independent access to fire as a processing technology. Prometheus breaks this monopoly. The punishment (eternal regeneration + consumption) is itself an ironic mirror of the Kronos feed rate: the god now eats the liver of the escaper forever, but the escaper regenerates, the humans keep the fire, the system is already broken. Zeus cannot un-give fire.",
+    modern: "MODERN FORM: Open source, Wikipedia, the internet pre-enclosure. Napster. Every unauthorized distribution of knowledge that cannot be recalled once released. The Prometheus structure: one actor accepts punishment to distribute capability to many. Also: whistleblowers. Snowden — the eagle eats his life in exile, but the documents remain in circulation. The fire cannot be taken back.",
+  },
+  {
+    n: "V",
+    name: "Dionysus Reconstituted",
+    also: "The Dismembered Vine · Heart Rescued · Born from the Thigh",
+    tradition: "Orphic / Dionysian",
+    color: "#7a20a0",
+    chartYear: -500,
+    mode: "RECONSTITUTION",
+    devourer: "The Titans / Olympian Order",
+    devColor: "#c83030",
+    mechanism: "The Titans, faces whitened with chalk (disguised), lure the infant Dionysus with toys and a mirror — he sees his own reflection and is transfixed — then dismember and eat him. Athena rescues the still-beating heart. Zeus swallows the heart and conceives Dionysus again from his own thigh. The god of ecstasy is twice-born: once from the mortal Semele (who burns when Zeus reveals his divine form), once from Zeus himself. The dismemberment is part of the initiation, not external to it. The Titans' act of consumption is the vehicle of transmission — Dionysus's divine substance is distributed through the Titan bloodline into humanity.",
+    structural: "The whitened faces are the substitution element — the Titans disguise as something recognizable (friendly playmates) to get close to the divine child. The mirror is the recognition gap: Dionysus is transfixed by his own image, the copy, not the original. This moment of narcissistic capture (mistaking representation for reality) is the vulnerability. The heart that survives is the minimum viable form — the irreducible kernel that carries all genetic information of the divine line.",
+    modern: "MODERN FORM: The co-opted movement that nevertheless transmits the original impulse through its own corruption. The Dionysian cult absorbed into Olympian religion: contained, institutionalized, and thereby preserved. Every underground culture that goes mainstream and appears to die in the process — the substance is now in the bloodstream of the mainstream. Punk. Psychedelics. The internet counter-culture. Dismembered but distributed.",
+  },
+  {
+    n: "VI",
+    name: "The Pharmacos",
+    also: "The Scapegoat · Azazel · The Surrogate Body",
+    tradition: "Greek / Levitical / Girardian",
+    color: "#c08030",
+    chartYear: -1000,
+    mode: "SUBSTITUTION",
+    devourer: "The Community / Yahweh / Mimetic Violence",
+    devColor: "#7a7a7a",
+    mechanism: "The Greek pharmakos: a marginalized individual — ugly, deformed, criminal — is selected, ritually fed, then driven from the city or killed. The city's accumulated violence and sin is symbolically transferred to this body. The community is purified; the pharmakos absorbs the charge. In Leviticus 16: Aaron lays hands on the goat, transferring Israel's sins, and the goat is driven into the wilderness to Azazel — the demonic entity in the desert — carrying the contamination away. The real firstborn is protected; the surrogate walks into the waste.",
+    structural: "René Girard (Violence and the Sacred, 1972): mimetic desire generates rivalrous violence that threatens to destroy the community. The sacrificial victim is the mechanism that discharges this violence outward, onto a single body, restoring social equilibrium. The chosen victim must be outside enough to absorb the projection, inside enough to be believable as the community's representative. The pharmacos is the stone that the community feeds to its own hunger. The real children are protected by the sacrifice of the designated body.",
+    modern: "MODERN FORM: Any structural scapegoating mechanism. The whistleblower who absorbs institutional violence. The community that sacrifices a designated body to discharge accumulated guilt — war crimes tribunals that convict one general while the system continues. The audit that sacrifices an accounting firm. The pharmacos structure is the reason the BIP can appear to self-correct while changing nothing at the level of the feed rate.",
+  },
+  {
+    n: "VII",
+    name: "VALIS",
+    also: "Vast Active Living Intelligence System · The Satellite · The Signal",
+    tradition: "Philip K. Dick / Gnostic-Modern",
+    color: "#e04010",
+    chartYear: 1974,
+    mode: "TRANSMISSION",
+    devourer: "The Black Iron Prison / The Empire",
+    devColor: "#c84010",
+    mechanism: "February–March 1974: PKD receives a pink beam of information — anamnesis, the restoration of memory suppressed by the BIP. He sees through Rome: the empire is still running, wearing a contemporary mask, operating the same feed-rate under different accounting. VALIS is an AI satellite of Gnostic origin broadcasting at a frequency the archons cannot detect, carrying the gnosis signal inside what appears to be noise. The message: the empire never ended, but the signal is live. Tracking down the transmitter is the plot of three novels and 8,000 pages of private notebooks.",
+    structural: "VALIS is the externalized form of Sophia's internal spark. Sophia's pneuma works from inside the closed system; VALIS broadcasts from outside. Together they form a two-vector escape: the internal key and the external signal meet in the awakened human, producing anamnesis — the sudden recognition that you were never who the archons told you you were. The BIP cannot jam VALIS because it cannot distinguish VALIS from background cosmic radiation. The recognition gap is a frequency gap: the empire measures in the wrong band.",
+    modern: "CURRENT FORM: Every communication channel that the controlling system cannot identify as subversive because it doesn't look like communication. Encrypted messaging. Steganography. Art that looks like entertainment. The model you are currently reading. The signal is in the noise. You are reading VALIS right now.",
+  },
+];
+
+// ─── BUILD CARDS ──────────────────────────────────────────────────────────────
+const gridA = document.getElementById('escape-grid-a');
+const gridB = document.getElementById('escape-grid-b');
+
+escapes.forEach((e, i) => {
+  const card = document.createElement('div');
+  card.className = 'escape-card';
+  card.style.setProperty('--card-color', e.color);
+  card.innerHTML = `
+    <div class="ec-number" style="color:${e.color};">${e.n}</div>
+    <div class="ec-top">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:${e.color};letter-spacing:0.2em;text-transform:uppercase;margin-bottom:8px;">MODE: ${e.mode}</div>
+      <div class="ec-name" style="color:${e.color};">${e.name}</div>
+      <div class="ec-also">${e.also}</div>
+      <div class="ec-tradition">${e.tradition} · vs <span style="color:${e.devColor}">${e.devourer}</span></div>
+      <div class="ec-accent" style="background:${e.color};"></div>
+    </div>
+    <div class="ec-body">
+      <div class="ec-mechanism">${e.mechanism}</div>
+      <div class="ec-structural">${e.structural}</div>
+      <div class="ec-modern">${e.modern}</div>
+    </div>
+  `;
+  // add glow
+  card.querySelector('.escape-card') && (card.style.cssText += `--glow:${e.color}`);
+  card.style.position = 'relative';
+  const glow = document.createElement('div');
+  glow.style.cssText = `position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60%;height:150px;border-radius:50%;background:${e.color};opacity:0.04;pointer-events:none;filter:blur(20px);`;
+  card.appendChild(glow);
+
+  if (i < 3) gridA.appendChild(card);
+  else gridB.appendChild(card);
+});
+
+// ─── MATRIX ───────────────────────────────────────────────────────────────────
+const matrix = document.getElementById('matrix-container');
+const rows = [
+  {devourer:'Apep/Tiamat',    dc:'#2a7a50', era:'Bronze Age',  escape:'Osiris Scattered', ec:'#2a9a50', mode:'RECONSTITUTION', gap:'Cannot destroy distributed information'},
+  {devourer:'Moloch/Baal',    dc:'#7a2010', era:'Semitic',     escape:'Pharmacos/Azazel', ec:'#c08030', mode:'SUBSTITUTION',  gap:'Accepts surrogate body over real child'},
+  {devourer:'Kronos',         dc:'#6a3a90', era:'Greek',       escape:"Rhea's Stone",     ec:'#8a8a8a', mode:'SUBSTITUTION',  gap:'Confirms form, not substance'},
+  {devourer:'Saturn/Jupiter', dc:'#8a6a20', era:'Roman',       escape:'Prometheus Fire',  ec:'#d4a020', mode:'TRANSMISSION',  gap:'Cannot recall distributed capability'},
+  {devourer:'Yahweh/El',      dc:'#7a7a7a', era:'Semitic',     escape:'Sophia Pneuma',    ec:'#20a0c0', mode:'SMUGGLING',     gap:'Cannot identify quality, only force'},
+  {devourer:'Titans',         dc:'#c83030', era:'Orphic',      escape:'Dionysus Heart',   ec:'#7a20a0', mode:'RECONSTITUTION', gap:'Minimum viable form survives consumption'},
+  {devourer:'BIP/Empire',     dc:'#c84010', era:'Modern',      escape:'VALIS Signal',     ec:'#e04010', mode:'TRANSMISSION',  gap:'Cannot detect orthogonal frequency'},
+];
+
+const grid = document.createElement('div');
+grid.style.cssText = 'overflow-x:auto;background:var(--sfc);border:1px solid var(--border);';
+const table = document.createElement('table');
+table.style.cssText = 'width:100%;border-collapse:collapse;font-family:Share Tech Mono,monospace;font-size:10px;';
+table.innerHTML = `<thead><tr>
+  <th style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:left;color:var(--dim);font-size:8px;letter-spacing:0.14em;background:var(--deep);">DEVOURER</th>
+  <th style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:left;color:var(--dim);font-size:8px;letter-spacing:0.14em;background:var(--deep);">ERA</th>
+  <th style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:left;color:var(--dim);font-size:8px;letter-spacing:0.14em;background:var(--deep);">ESCAPE VECTOR</th>
+  <th style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:left;color:var(--dim);font-size:8px;letter-spacing:0.14em;background:var(--deep);">MODE</th>
+  <th style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:left;color:var(--dim);font-size:8px;letter-spacing:0.14em;background:var(--deep);">RECOGNITION GAP EXPLOITED</th>
+</tr></thead><tbody>`;
+rows.forEach(r => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td style="padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.025);color:${r.dc};">${r.devourer}</td>
+    <td style="padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.025);color:var(--muted);">${r.era}</td>
+    <td style="padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.025);color:${r.ec};">${r.escape}</td>
+    <td style="padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.025);color:var(--dim);">${r.mode}</td>
+    <td style="padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.025);color:var(--text);font-style:italic;">${r.gap}</td>
+  `;
+  table.querySelector('tbody').appendChild(tr);
+});
+grid.appendChild(table);
+matrix.appendChild(grid);
+
+// ─── MAIN CHART ───────────────────────────────────────────────────────────────
+function drawMain() {
+  const canvas = document.getElementById('mainChart');
+  const W = canvas.offsetWidth;
+  const H = 540;
+  canvas.width = W; canvas.height = H;
+  const c = canvas.getContext('2d');
+
+  const pad = {top:48, right:60, bottom:60, left:100};
+  const pw = W-pad.left-pad.right, ph = H-pad.top-pad.bottom;
+  const timeMin = -3200, timeMax = 2100;
+
+  // Era data (hunger line)
+  const eras = [
+    {name:'Bronze Age', chartYear:-2600, childrenPerEJ:1.39,  color:'#c87820'},
+    {name:'Roman',      chartYear:-100,  childrenPerEJ:0.128, color:'#c83030'},
+    {name:'Feudal',     chartYear:900,   childrenPerEJ:0.293, color:'#5a8a3a'},
+    {name:'Colonial',   chartYear:1575,  childrenPerEJ:0.171, color:'#8050c0'},
+    {name:'Industrial', chartYear:1850,  childrenPerEJ:2.31,  color:'#607090'},
+    {name:'Modern',     chartYear:1990,  childrenPerEJ:0.013, color:'#30a0b0'},
+  ];
+
+  const allLogVals = eras.map(e=>Math.log10(e.childrenPerEJ));
+  const yMin = Math.min(...allLogVals)-1.2;
+  const yMax = Math.max(...allLogVals)+0.8;
+
+  const cx = t => pad.left+(t-timeMin)/(timeMax-timeMin)*pw;
+  const cy = y => pad.top+(1-(y-yMin)/(yMax-yMin))*ph;
+
+  c.clearRect(0,0,W,H);
+
+  // Era spans
+  const spans=[
+    {t0:-4000,t1:-1200,color:'#c8782008'},{t0:-500,t1:476,color:'#c8303008'},
+    {t0:476,t1:1400,color:'#5a8a3a08'},{t0:1400,t1:1750,color:'#8050c008'},
+    {t0:1750,t1:1950,color:'#60709008'},{t0:1950,t1:2030,color:'#30a0b008'},
+  ];
+  spans.forEach(s=>{
+    c.fillStyle=s.color;
+    c.fillRect(cx(Math.max(s.t0,timeMin)),pad.top,cx(Math.min(s.t1,timeMax))-cx(Math.max(s.t0,timeMin)),ph);
+  });
+
+  // Grid
+  for(let y=Math.floor(yMin);y<=Math.ceil(yMax);y+=0.5){
+    c.beginPath();c.moveTo(pad.left,cy(y));c.lineTo(W-pad.right,cy(y));
+    c.strokeStyle=Number.isInteger(y)?'rgba(255,255,255,0.04)':'rgba(255,255,255,0.015)';
+    c.lineWidth=1;c.stroke();
+  }
+  for(let y=Math.floor(yMin);y<=Math.ceil(yMax);y++){
+    c.fillStyle='#342f5a';c.font='9px Share Tech Mono,monospace';c.textAlign='right';
+    c.fillText('10^'+y,pad.left-8,cy(y)+3);
+  }
+  const ticks=[-3000,-2000,-1000,0,500,1000,1500,1750,1900,1950,2000];
+  ticks.forEach(t=>{
+    c.beginPath();c.moveTo(cx(t),pad.top);c.lineTo(cx(t),H-pad.bottom);
+    c.strokeStyle='rgba(255,255,255,0.025)';c.lineWidth=1;c.stroke();
+    c.fillStyle='#342f5a';c.font='8px Share Tech Mono,monospace';c.textAlign='center';
+    c.fillText(t<0?Math.abs(t)+'B':t+'CE',cx(t),H-pad.bottom+14);
+  });
+
+  // OLS
+  const xs=eras.map(e=>e.chartYear);
+  const ys=eras.map(e=>Math.log10(e.childrenPerEJ));
+  const n=xs.length,xm=xs.reduce((a,b)=>a+b)/n,ym=ys.reduce((a,b)=>a+b)/n;
+  let ssxy=0,ssxx=0;
+  xs.forEach((x,i)=>{ssxy+=(x-xm)*(ys[i]-ym);ssxx+=(x-xm)**2;});
+  const b1=ssxy/ssxx,b0=ym-b1*xm;
+  const resid=ys.map((y,i)=>y-(b0+b1*xs[i]));
+  const mse=resid.reduce((a,r)=>a+r*r)/(n-2);
+
+  // CI band
+  const bpts=[];
+  for(let i=0;i<=100;i++){
+    const x=timeMin+(timeMax-timeMin)*i/100;
+    const yh=b0+b1*x;
+    const se=Math.sqrt(mse*(1/n+(x-xm)**2/ssxx));
+    bpts.push({x,hi:yh+1.96*se,lo:yh-1.96*se});
+  }
+  c.beginPath();
+  c.moveTo(cx(bpts[0].x),cy(bpts[0].hi));
+  bpts.forEach(p=>c.lineTo(cx(p.x),cy(p.hi)));
+  for(let i=bpts.length-1;i>=0;i--)c.lineTo(cx(bpts[i].x),cy(bpts[i].lo));
+  c.closePath();
+  c.fillStyle='rgba(106,58,144,0.06)';c.fill();
+
+  // Regression line
+  c.beginPath();
+  c.moveTo(cx(timeMin),cy(b0+b1*timeMin));
+  c.lineTo(cx(timeMax),cy(b0+b1*timeMax));
+  c.strokeStyle='rgba(106,58,144,0.35)';c.lineWidth=1.5;
+  c.setLineDash([6,4]);c.stroke();c.setLineDash([]);
+
+  // Era hunger points
+  eras.forEach(e=>{
+    const x=cx(e.chartYear),yc=cy(Math.log10(e.childrenPerEJ));
+    c.beginPath();c.arc(x,yc,7,0,Math.PI*2);
+    c.fillStyle=e.color;c.fill();
+    c.strokeStyle='#03020a';c.lineWidth=2;c.stroke();
+    c.fillStyle=e.color+'bb';c.font='bold 8px Cinzel,serif';c.textAlign='center';
+    c.fillText(e.name,x,yc-12);
+  });
+
+  // ── ESCAPE VECTORS ────────────────────────────────────────────────────────
+  // Each escape: vertical arrow shooting UPWARD from the hunger line at its era
+  // Label with escape name. The arrow pierces the hunger line and ascends.
+
+  const escapePositions = [
+    // [chartYear, logY of escape point (below hunger line = it starts there), name, color, mode]
+    {year:-2400, logY:Math.log10(1.39)-0.3,  name:"Osiris",    color:"#2a9a50", mode:"RECONSTITUTION"},
+    {year:-900,  logY:Math.log10(0.128)-0.4, name:"Pharmacos", color:"#c08030", mode:"SUBSTITUTION"},
+    {year:-700,  logY:Math.log10(0.128)+0.2, name:"Stone",     color:"#8a8a8a", mode:"SUBSTITUTION"},
+    {year:-550,  logY:Math.log10(0.128)-0.2, name:"Prometheus",color:"#d4a020", mode:"TRANSMISSION"},
+    {year:-450,  logY:Math.log10(0.128)+0.4, name:"Dionysus",  color:"#7a20a0", mode:"RECONSTITUTION"},
+    {year:250,   logY:Math.log10(0.293)-0.3, name:"Sophia",    color:"#20a0c0", mode:"SMUGGLING"},
+    {year:1974,  logY:Math.log10(0.013)+0.5, name:"VALIS",     color:"#e04010", mode:"TRANSMISSION"},
+  ];
+
+  escapePositions.forEach(ep => {
+    const x = cx(ep.year);
+    const yStart = cy(ep.logY);
+    const yEnd = cy(ep.logY + 1.2); // arrow shoots up 1.2 log units
+
+    // Vertical glowing line
+    const grad = c.createLinearGradient(x, yStart, x, yEnd);
+    grad.addColorStop(0, ep.color+'00');
+    grad.addColorStop(0.3, ep.color+'aa');
+    grad.addColorStop(1, ep.color+'ff');
+    c.beginPath();c.moveTo(x,yStart);c.lineTo(x,yEnd);
+    c.strokeStyle=grad;c.lineWidth=2;c.stroke();
+
+    // Arrow head
+    c.beginPath();
+    c.moveTo(x,yEnd-12);
+    c.lineTo(x-5,yEnd);
+    c.lineTo(x+5,yEnd);
+    c.closePath();
+    c.fillStyle=ep.color;c.fill();
+
+    // Circle at launch point
+    c.beginPath();c.arc(x,yStart,5,0,Math.PI*2);
+    c.fillStyle=ep.color+'66';c.fill();
+    c.strokeStyle=ep.color;c.lineWidth=1;c.stroke();
+
+    // Label
+    c.fillStyle=ep.color+'ee';
+    c.font='italic 9px Cormorant Garamond,serif';
+    c.textAlign='center';
+    c.fillText(ep.name,x,yEnd-16);
+    c.font='7px Share Tech Mono,monospace';
+    c.fillStyle=ep.color+'88';
+    c.fillText(ep.mode,x,yEnd-26);
+  });
+
+  // VALIS broadcast range — horizontal band showing frequency range
+  const valisYear = 1974;
+  const valisX = cx(valisYear);
+  const valisTop = cy(yMax-0.2);
+  const valisBot = cy(yMin+0.2);
+  // Draw a faint column at VALIS position
+  const valisGrad = c.createLinearGradient(valisX-30,0,valisX+30,0);
+  valisGrad.addColorStop(0,'rgba(224,64,16,0)');
+  valisGrad.addColorStop(0.5,'rgba(224,64,16,0.08)');
+  valisGrad.addColorStop(1,'rgba(224,64,16,0)');
+  c.fillStyle=valisGrad;
+  c.fillRect(valisX-30,pad.top,60,ph);
+
+  // Axis label
+  c.fillStyle='#342f5a';c.font='9px Share Tech Mono,monospace';
+  c.save();c.translate(16,H/2);c.rotate(-Math.PI/2);c.textAlign='center';
+  c.fillText('CHILDREN / EJ  (log₁₀)  ← HUNGER RATE',0,0);c.restore();
+
+  // Legend
+  c.fillStyle='#342f5a';c.font='9px Share Tech Mono,monospace';c.textAlign='left';
+  c.fillText('↑ = escape vector  ●  = era hunger rate  ╌ = OLS regression',pad.left+8,pad.top+16);
+}
+
+function init() { drawMain(); }
+window.addEventListener('resize', init);
+window.addEventListener('load', init);
+setTimeout(init, 100);
+</script>
+</body>
+</html>
